@@ -138,8 +138,13 @@ public class MovieListServlet extends HttpServlet {
                 JsonArray InnerStarArry = new JsonArray();
 //
                 while (resultSetFirstThreeStars.next()){
+                    JsonObject InnerStarObj = new JsonObject();
                     System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
-                    InnerStarArry.add(resultSetFirstThreeStars.getString("name"));
+                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("id"));
+                    InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
+
+                    //append to the innerstar list
+                    InnerStarArry.add(InnerStarObj);
 
                 }
 
