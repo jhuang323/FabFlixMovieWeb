@@ -56,11 +56,11 @@ public class MovieListServlet extends HttpServlet {
                     "ORDER BY rtng.rating DESC\n" +
                     "LIMIT 20;\n";
 
-            String queryMovieInfo = "SELECT m.id,m.title, m.year, m.director" +
-                    "FROM movies as m " +
-                    "WHERE m.id in (SELECT id FROM top20);";
-
-            String queryRatings = "SELECT * from stars";
+//            String queryMovieInfo = "SELECT m.id,m.title, m.year, m.director" +
+//                    "FROM movies as m " +
+//                    "WHERE m.id in (SELECT id FROM top20);";
+//
+//            String queryRatings = "SELECT * from stars";
 
             //Executed in a while loop of the top 20 movies
             String queryFirstThreeGenres = "SELECT grne.name\n" +

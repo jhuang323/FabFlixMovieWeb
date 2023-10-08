@@ -67,7 +67,7 @@ public class SingleStarServlet extends HttpServlet {
             // Perform the query
             ResultSet resultSetStarInfo = statementStarInfo.executeQuery();
 
-            JsonArray jsonArrayStar = new JsonArray();
+            JsonObject jsonObjStar = new JsonObject();
 
             // Move pointer to next, which is name and birthYear
             resultSetStarInfo.next();
@@ -78,11 +78,12 @@ public class SingleStarServlet extends HttpServlet {
 
             // Create a JsonObject based on the data we retrieve from rs
 
-            JsonObject jsonObjectStarInfo = new JsonObject();
-            jsonObjectStarInfo.addProperty("star_name", starName);
-            jsonObjectStarInfo.addProperty("star_dob", starDob);
-
-            jsonArrayStar.add(jsonObjectStarInfo);
+//            JsonObject jsonObjectStarInfo = new JsonObject();
+//            jsonObjectStarInfo.addProperty("star_name", starName);
+//            jsonObjectStarInfo.addProperty("star_dob", starDob);
+            jsonObjStar.addProperty("star_name", starName);
+            jsonObjStar.addProperty("star_dob", starDob);
+            //jsonArrayStar.add(jsonObjectStarInfo);
 
             resultSetStarInfo.close();
 
@@ -106,6 +107,8 @@ public class SingleStarServlet extends HttpServlet {
             // Perform the query
             ResultSet resultSetStarMovieInfo = statementStarMovieInfo.executeQuery();
 
+            //Create Movie jsonArray
+            JsonArray jsonArrayMovies = new JsonArray();
             // Iterate through each row of rs
             while (resultSetStarMovieInfo.next()) {
 
@@ -118,14 +121,17 @@ public class SingleStarServlet extends HttpServlet {
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
 
-                jsonArrayStar.add(jsonObject);
+                jsonArrayMovies.add(jsonObject);
             }
-            resultSetStarMovieInfo.close();
+            //Add jsonArrayMovies to jsonObjStar object
+            jsonObjStar.add("movies", jsonArrayMovies);
 
+            //Closing StarMovieInfo statement and resultSet
+            resultSetStarMovieInfo.close();
             statementStarMovieInfo.close();
 
             // Write JSON string to output
-            out.write(jsonArrayStar.toString());
+            out.write(jsonObjStar.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
