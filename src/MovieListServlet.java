@@ -47,8 +47,7 @@ public class MovieListServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Declare our statement
             Statement statementTop20 = conn.createStatement();
-//            Statement statementMovieInfo = conn.createStatement();
-//            Statement statementRatings = conn.createStatement();
+
 
             //Execute once to grab necessary information
             String queryTop20 = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
@@ -76,29 +75,12 @@ public class MovieListServlet extends HttpServlet {
                     "WHERE sim.movieId=?\n" +
                     "LIMIT 3;";
 
-            //
-//
-//            // Perform the query
-            ResultSet resultSetTop20 = statementTop20.executeQuery(queryTop20);
-//            ResultSet resultSetMovieInfo = statementMovieInfo.executeQuery(queryMovieInfo);
-//            ResultSet resultSetRatings = statementRatings.executeQuery(queryRatings);
 
-//            ResultSet resultSetFirstThreeStars;
-//
+            // Perform the query
+            ResultSet resultSetTop20 = statementTop20.executeQuery(queryTop20);
+            //Create the final json array to be returned
             JsonArray jsonArrayMovieList = new JsonArray();
-//
-//            //While loop to fill jsonArrayMovieList with MovieInfo
-//            while(resultSetMovieInfo.next()){
-//
-//            }
-//            //While loop to fill jsonArrayMovieList with Ratings
-//            while(resultSetRatings.next()){
-//
-//            }
-//            PreparedStatement statementFirstThreeGenres;
-//            PreparedStatement statementFirstThreeStars;
-//
-//            //Loop through top20 resultset and call 2 queries:
+
 //            //queryFirstThreeGenres and queryFirstThreeStars
             while (resultSetTop20.next()){
                 //get movie id
@@ -172,23 +154,6 @@ public class MovieListServlet extends HttpServlet {
                 SingleMovieJsonObj.addProperty("rating",resultSetTop20.getString("rating"));
 
 
-
-
-
-//
-//                // Declare our FirstThreeStars statement
-//                statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
-//
-//                // Set the parameter represented by "?" in the query to the movie id from top20,
-//                // num 1 indicates the first "?" in the query
-//                statementFirstThreeStars.setString(1, resultSetTop20.getString("id"));
-//                resultSetFirstThreeStars = statementFirstThreeStars.executeQuery(queryFirstThreeStars);
-//
-//                resultSetFirstThreeGenres.close();
-//                resultSetFirstThreeStars.close();
-//                statementFirstThreeGenres.close();
-//                statementFirstThreeStars.close();
-
                 //append json obj to array
                 jsonArrayMovieList.add(SingleMovieJsonObj);
 
@@ -198,46 +163,12 @@ public class MovieListServlet extends HttpServlet {
             resultSetTop20.close();
             statementTop20.close();
 
-            //close Genre query
 
 
-//            resultSetMovieInfo.close();
-//            resultSetRatings.close();
-//            statementTop20.close();
-//            statementMovieInfo.close();
-//            statementRatings.close();
+            // Log to localhost log
+            request.getServletContext().log("getting " + jsonArrayMovieList.size() + " results");
 
-
-            // Iterate through each row of rs
-//            System.out.println("inssservlet");
-//            while (rs.next()) {
-//                System.out.println("test" + rs.getString("id"));
-//                String star_id = rs.getString("id");
-//                String star_name = rs.getString("name");
-//                String star_dob = rs.getString("birthYear");
-//
-//                // Create a JsonObject based on the data we retrieve from rs
-//                JsonObject jsonObject = new JsonObject();
-//                jsonObject.addProperty("star_id", star_id);
-//                jsonObject.addProperty("star_name", star_name);
-//                jsonObject.addProperty("star_dob", star_dob);
-//
-//                jsonArray.add(jsonObject);
-//            }
-//            rs.close();
-//            statement.close();
-
-            //Drop top20 temp table
-//            Statement statementDropTable = conn.createStatement();
-//            String queryDropTop20 = "DROP TEMPORARY TABLE IF EXISTS top20;\n";
-//            ResultSet resultSetDropTop20 = statementTop20.executeQuery(queryTop20);
-//            resultSetDropTop20.close();
-//            statementDropTable.close();
-//
-//            // Log to localhost log
-//            request.getServletContext().log("getting " + jsonArray.size() + " results");
-//
-//            // Write JSON string to output
+            // Write JSON string to output
             out.write(jsonArrayMovieList.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
