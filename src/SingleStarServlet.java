@@ -69,21 +69,20 @@ public class SingleStarServlet extends HttpServlet {
 
             JsonArray jsonArrayStar = new JsonArray();
 
-            // Iterate through each row of rs
-            while (resultSetStarInfo.next()) {
+            // Move pointer to next, which is name and birthYear
+            resultSetStarInfo.next();
 
-                //The names in the .getString() call must match the name of the columns from the SELECT line
-                String starName = resultSetStarInfo.getString("name");
-                String starDob = resultSetStarInfo.getString("birthYear");
+            //The names in the .getString() call must match the name of the columns from the SELECT line
+            String starName = resultSetStarInfo.getString("name");
+            String starDob = resultSetStarInfo.getString("birthYear");
 
-                // Create a JsonObject based on the data we retrieve from rs
+            // Create a JsonObject based on the data we retrieve from rs
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
+            JsonObject jsonObjectStarInfo = new JsonObject();
+            jsonObjectStarInfo.addProperty("star_name", starName);
+            jsonObjectStarInfo.addProperty("star_dob", starDob);
 
-                jsonArrayStar.add(jsonObject);
-            }
+            jsonArrayStar.add(jsonObjectStarInfo);
 
             resultSetStarInfo.close();
 

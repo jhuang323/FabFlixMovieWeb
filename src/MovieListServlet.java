@@ -12,12 +12,13 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
-@WebServlet(name = "StarsServlet", urlPatterns = "/api/movie-list")
+@WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
 public class MovieListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -44,41 +45,124 @@ public class MovieListServlet extends HttpServlet {
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-
             // Declare our statement
-            Statement statement = conn.createStatement();
+            Statement statementTop20 = conn.createStatement();
+            Statement statementMovieInfo = conn.createStatement();
+            Statement statementRatings = conn.createStatement();
 
-            String query = "SELECT * from stars";
+            //Execute once to grab necessary information
+            String queryTop20 = "CREATE TEMPORARY TABLE top20 AS\n" +
+                    "SELECT movies.id\n" +
+                    "FROM movies\n" +
+                    "JOIN ratings ON movies.id=ratings.movieId\n" +
+                    "ORDER BY ratings.rating DESC\n" +
+                    "LIMIT 20;";
+
+            String queryMovieInfo = "SELECT m.id,m.title, m.year, m.director" +
+                    "FROM movies as m " +
+                    "WHERE m.id in (SELECT id FROM top20);";
+
+            String queryRatings = "SELECT * from stars";
+
+            //Executed in a while loop of the top 20 movies
+            String queryFirstThreeGenres = "SELECT grne.name\n" +
+                    "FROM genres_in_movies as gim\n" +
+                    "JOIN genres as grne ON gim.genreId=grne.id\n" +
+                    "WHERE gim.movieId = ?\n" +
+                    "LIMIT 3;";
+
+            String queryFirstThreeStars = "SELECT str.id,str.name\n" +
+                    "FROM stars_in_movies as sim\n" +
+                    "JOIN stars as str ON sim.starId=str.id\n" +
+                    "WHERE sim.movieId=?\n" +
+                    "LIMIT 3;";
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet resultSetTop20 = statementTop20.executeQuery(queryTop20);
+            ResultSet resultSetMovieInfo = statementMovieInfo.executeQuery(queryMovieInfo);
+            ResultSet resultSetRatings = statementRatings.executeQuery(queryRatings);
+            ResultSet resultSetFirstThreeGenres;
+            ResultSet resultSetFirstThreeStars;
 
-            JsonArray jsonArray = new JsonArray();
+            JsonArray jsonArrayMovieList = new JsonArray();
+
+            //While loop to fill jsonArrayMovieList with MovieInfo
+            while(resultSetMovieInfo.next()){
+
+            }
+            //While loop to fill jsonArrayMovieList with Ratings
+            while(resultSetRatings.next()){
+
+            }
+            PreparedStatement statementFirstThreeGenres;
+            PreparedStatement statementFirstThreeStars;
+
+            //Loop through top20 resultset and call 2 queries:
+            //queryFirstThreeGenres and queryFirstThreeStars
+            while (resultSetTop20.next()){
+                //call the get movie
+                // Declare our FirstThreeGenres statement
+                statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
+
+                // Set the parameter represented by "?" in the query to the movie id from top20,
+                // num 1 indicates the first "?" in the query
+                statementFirstThreeGenres.setString(1, resultSetTop20.getString("id"));
+                //Execute statement
+                resultSetFirstThreeGenres = statementFirstThreeGenres.executeQuery(queryFirstThreeGenres);
+
+                // Declare our FirstThreeStars statement
+                statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
+
+                // Set the parameter represented by "?" in the query to the movie id from top20,
+                // num 1 indicates the first "?" in the query
+                statementFirstThreeStars.setString(1, resultSetTop20.getString("id"));
+                resultSetFirstThreeStars = statementFirstThreeStars.executeQuery(queryFirstThreeStars);
+
+                resultSetFirstThreeGenres.close();
+                resultSetFirstThreeStars.close();
+                statementFirstThreeGenres.close();
+                statementFirstThreeStars.close();
+
+            }
+            resultSetTop20.close();
+            resultSetMovieInfo.close();
+            resultSetRatings.close();
+            statementTop20.close();
+            statementMovieInfo.close();
+            statementRatings.close();
+
 
             // Iterate through each row of rs
-            System.out.println("inssservlet");
-            while (rs.next()) {
-                System.out.println("test" + rs.getString("id"));
-                String star_id = rs.getString("id");
-                String star_name = rs.getString("name");
-                String star_dob = rs.getString("birthYear");
+//            System.out.println("inssservlet");
+//            while (rs.next()) {
+//                System.out.println("test" + rs.getString("id"));
+//                String star_id = rs.getString("id");
+//                String star_name = rs.getString("name");
+//                String star_dob = rs.getString("birthYear");
+//
+//                // Create a JsonObject based on the data we retrieve from rs
+//                JsonObject jsonObject = new JsonObject();
+//                jsonObject.addProperty("star_id", star_id);
+//                jsonObject.addProperty("star_name", star_name);
+//                jsonObject.addProperty("star_dob", star_dob);
+//
+//                jsonArray.add(jsonObject);
+//            }
+//            rs.close();
+//            statement.close();
 
-                // Create a JsonObject based on the data we retrieve from rs
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", star_id);
-                jsonObject.addProperty("star_name", star_name);
-                jsonObject.addProperty("star_dob", star_dob);
-
-                jsonArray.add(jsonObject);
-            }
-            rs.close();
-            statement.close();
-
-            // Log to localhost log
-            request.getServletContext().log("getting " + jsonArray.size() + " results");
-
-            // Write JSON string to output
-            out.write(jsonArray.toString());
+            //Drop top20 temp table
+            Statement statementDropTable = conn.createStatement();
+            String queryDropTop20 = "DROP TEMPORARY TABLE IF EXISTS top20;\n";
+            ResultSet resultSetDropTop20 = statementTop20.executeQuery(queryTop20);
+            resultSetDropTop20.close();
+            statementDropTable.close();
+//
+//            // Log to localhost log
+//            request.getServletContext().log("getting " + jsonArray.size() + " results");
+//
+//            // Write JSON string to output
+//            out.write(jsonArray.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
