@@ -55,12 +55,16 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < resultData.length; i++) {
+    //Begin at index 1 because the first index will have Star name and DOB as used above
+    for (let i = 1; i < resultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<th>" + resultData[i]["movie_title"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_year"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
+        console.log("AQUI");
+        console.log(resultData[i]);
+        rowHTML += "<th>" +
+            // Add a link to single-star.html with id passed with GET url parameter
+            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">' +
+            resultData[i]["movie_title"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
