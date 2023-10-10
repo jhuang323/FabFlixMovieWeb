@@ -44,9 +44,10 @@ function handleResult(resultData) {
     // find the empty h3 body by id "star_info"
     let starInfoElement = jQuery("#star_info");
 
+
     // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
-        "<p>Date Of Birth: " + resultData[0]["star_dob"] + "</p>");
+    starInfoElement.append("<p>Star Name: " + resultData.star_name + "</p>" +
+        "<p>Date Of Birth: " + resultData.star_dob + "</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
@@ -55,16 +56,15 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    //Begin at index 1 because the first index will have Star name and DOB as used above
-    for (let i = 1; i < resultData.length; i++) {
+    //
+
+    for (let i = 0; i < resultData.movies.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
-        console.log("AQUI");
-        console.log(resultData[i]);
         rowHTML += "<th>" +
             // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">' +
-            resultData[i]["movie_title"] + "</th>";
+            '<a href="single-movie.html?id=' + resultData.movies[i]['movie_id'] + '">' +
+            resultData.movies[i]["movie_title"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
