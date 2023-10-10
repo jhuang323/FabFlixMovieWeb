@@ -67,23 +67,23 @@ public class SingleStarServlet extends HttpServlet {
             // Perform the query
             ResultSet resultSetStarInfo = statementStarInfo.executeQuery();
 
-            JsonArray jsonArrayStar = new JsonArray();
+            JsonObject jsonObjStar = new JsonObject();
 
-            // Iterate through each row of rs
-            while (resultSetStarInfo.next()) {
+            // Move pointer to next, which is name and birthYear
+            resultSetStarInfo.next();
 
-                //The names in the .getString() call must match the name of the columns from the SELECT line
-                String starName = resultSetStarInfo.getString("name");
-                String starDob = resultSetStarInfo.getString("birthYear");
+            //The names in the .getString() call must match the name of the columns from the SELECT line
+            String starName = resultSetStarInfo.getString("name");
+            String starDob = resultSetStarInfo.getString("birthYear");
 
-                // Create a JsonObject based on the data we retrieve from rs
+            // Create a JsonObject based on the data we retrieve from rs
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
-
-                jsonArrayStar.add(jsonObject);
-            }
+//            JsonObject jsonObjectStarInfo = new JsonObject();
+//            jsonObjectStarInfo.addProperty("star_name", starName);
+//            jsonObjectStarInfo.addProperty("star_dob", starDob);
+            jsonObjStar.addProperty("star_name", starName);
+            jsonObjStar.addProperty("star_dob", starDob);
+            //jsonArrayStar.add(jsonObjectStarInfo);
 
             resultSetStarInfo.close();
 
@@ -107,6 +107,8 @@ public class SingleStarServlet extends HttpServlet {
             // Perform the query
             ResultSet resultSetStarMovieInfo = statementStarMovieInfo.executeQuery();
 
+            //Create Movie jsonArray
+            JsonArray jsonArrayMovies = new JsonArray();
             // Iterate through each row of rs
             while (resultSetStarMovieInfo.next()) {
 
@@ -119,14 +121,17 @@ public class SingleStarServlet extends HttpServlet {
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
 
-                jsonArrayStar.add(jsonObject);
+                jsonArrayMovies.add(jsonObject);
             }
-            resultSetStarMovieInfo.close();
+            //Add jsonArrayMovies to jsonObjStar object
+            jsonObjStar.add("movies", jsonArrayMovies);
 
+            //Closing StarMovieInfo statement and resultSet
+            resultSetStarMovieInfo.close();
             statementStarMovieInfo.close();
 
             // Write JSON string to output
-            out.write(jsonArrayStar.toString());
+            out.write(jsonObjStar.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
