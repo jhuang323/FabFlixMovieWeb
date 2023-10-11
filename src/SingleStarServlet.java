@@ -75,6 +75,10 @@ public class SingleStarServlet extends HttpServlet {
             //The names in the .getString() call must match the name of the columns from the SELECT line
             String starName = resultSetStarInfo.getString("name");
             String starDob = resultSetStarInfo.getString("birthYear");
+            if(resultSetStarInfo.wasNull()){
+                starDob = "N/A";
+            }
+
 
             // Create a JsonObject based on the data we retrieve from rs
 
