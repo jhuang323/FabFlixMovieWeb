@@ -14,32 +14,30 @@
  * @param resultData jsonObject
  */
 function handleStarResult(resultData) {
-    console.log("handleStarResult: populating star table from resultData");
+    console.log("handleMovieListResult: populating movies table from resultData");
 
     // Populate the star table
     // Find the empty table body by id "star_table_body"
-    let starTableBodyElement = jQuery("#star_table_body");
+    let Top20TableBodyElement = jQuery("#top20_table_body");
 
     // Iterate through resultData, no more than 10 entries
-    console.log("the result length" + resultData.length);
+
+    console.log(resultData.length)
+
     for (let i = 0; i < resultData.length; i++) {
 
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML +=
-            "<th>" +
-            // Add a link to single-star.html with id passed with GET url parameter
-            '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-            + resultData[i]["star_name"] +     // display star_name for the link text
-            '</a>' +
-            "</th>";
-        // console.log("Adding the data" + resultData[i]["star_name"]);
-        rowHTML += "<th>" + resultData[i]["star_dob"] + "</th>";
+        rowHTML += "<td>"+ resultData[i].title +"</td>";
+        rowHTML += "<td>"+ resultData[i].year +"</td>";
+        rowHTML += "<td>"+ resultData[i].director +"</td>";
+        rowHTML += "<td>"+ resultData[i].rating +"</td>";
+        
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
-        starTableBodyElement.append(rowHTML);
+        Top20TableBodyElement.append(rowHTML);
     }
 }
 
@@ -52,6 +50,6 @@ function handleStarResult(resultData) {
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/stars", // Setting request url, which is mapped by StarsServlet in Stars.java
+    url: "api/movie-list", // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleStarResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
