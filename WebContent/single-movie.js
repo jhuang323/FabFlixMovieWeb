@@ -97,7 +97,7 @@ function handleResult(resultData) {
 
     for (let n = 0; n < starListData.length; n++){
         let starULHtml = "";
-        starULHtml += "<li>" +'<a href=single-star.html?id='+ starListData[n]["id"] + ">" + starListData[n]["name"] + "</li>";
+        starULHtml += "<li>" +'<a href=single-star.html?id='+ starListData[n]["id"] + ">" + starListData[n]["name"] + "</a></li>";
 
         //append to UL
         starsUListElement.append(starULHtml)
