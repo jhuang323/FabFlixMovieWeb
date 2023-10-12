@@ -79,15 +79,9 @@ public class SingleStarServlet extends HttpServlet {
                 starDob = "N/A";
             }
 
-
             // Create a JsonObject based on the data we retrieve from rs
-
-//            JsonObject jsonObjectStarInfo = new JsonObject();
-//            jsonObjectStarInfo.addProperty("star_name", starName);
-//            jsonObjectStarInfo.addProperty("star_dob", starDob);
             jsonObjStar.addProperty("star_name", starName);
             jsonObjStar.addProperty("star_dob", starDob);
-            //jsonArrayStar.add(jsonObjectStarInfo);
 
             resultSetStarInfo.close();
 
@@ -119,8 +113,8 @@ public class SingleStarServlet extends HttpServlet {
                 //The names in the .getString() call must match the name of the columns from the SELECT line
                 String movieId = resultSetStarMovieInfo.getString("id");
                 String movieTitle = resultSetStarMovieInfo.getString("title");
-                // Create a JsonObject based on the data we retrieve from rs
 
+                // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
