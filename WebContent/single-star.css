@@ -1,0 +1,45 @@
+body{
+    background-color: #cbfdc9;
+}
+
+h1{
+    color: #4F564F;
+    font-weight: bold;
+    /*text-shadow: 2px 2px 4px #000000;*/
+    background-image: linear-gradient(
+            -225deg,
+            #cf575b 0%,
+            #f5ca3b 29%,
+            #f57f3b 67%,
+            #6b5a9e 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate 2s linear infinite;
+    display: inline-block;
+}
+
+#star_info{
+    color: #4F564F;
+    font-size: 21px;
+}
+
+thead{
+    background-color: #F1E5C6;
+    color: #4F564F;
+}
+
+#movie_table_body{
+    background-color: #e9eef5;
+}
+@keyframes animate {
+    to {
+        background-position: 200% center;
+    }
+}
