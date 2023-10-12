@@ -46,8 +46,8 @@ function handleResult(resultData) {
 
 
     // append two html <p> created to the h3 body, which will refresh the page
-    starInfoElement.append("<p>Star Name: " + resultData.star_name + "</p>" +
-        "<p>Date Of Birth: " + resultData.star_dob + "</p>");
+    starInfoElement.append("<p>Star Name: " + "<b>" + resultData.star_name + "</b>" + "</p>" +
+        "<p>Date Of Birth: " + "<b>" + resultData.star_dob + "</b>" + "</p>");
 
     console.log("handleResult: populating star info from resultData");
 
