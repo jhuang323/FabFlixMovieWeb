@@ -4,7 +4,7 @@
  * Before this .js is loaded, the html skeleton is created.
  *
  * This .js performs three steps:
- *      1. Get parameter from request URL so it know which id to look for
+ *      1. Get parameter from request URL so it knows which id to look for
  *      2. Use jQuery to talk to backend API to get the json data.
  *      3. Populate the data to correct html elements.
  */
@@ -49,20 +49,18 @@ function handleResult(resultData) {
     starInfoElement.append("<p>Star Name: " + resultData.star_name + "</p>" +
         "<p>Date Of Birth: " + resultData.star_dob + "</p>");
 
-    console.log("handleResult: populating movie table from resultData");
+    console.log("handleResult: populating star info from resultData");
 
     // Populate the star table
     // Find the empty table body by id "movie_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
-
+    console.log("handleResult: populating star table from resultData.movies");
     // Concatenate the html tags with resultData jsonObject to create table rows
-    //
-
     for (let i = 0; i < resultData.movies.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<th>" +
-            // Add a link to single-star.html with id passed with GET url parameter
+            // Add a link to single-movie.html with id passed with GET url parameter
             '<a href="single-movie.html?id=' + resultData.movies[i]['movie_id'] + '">' +
             resultData.movies[i]["movie_title"] + "</th>";
         rowHTML += "</tr>";
@@ -70,6 +68,7 @@ function handleResult(resultData) {
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
+    console.log("handleResult: successful population of star table from resultData.movies");
 }
 
 /**
