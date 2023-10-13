@@ -50,3 +50,15 @@ thead{
 }
 
 
+/*For the stars list section*/
+#starsList-div{
+    width: 50%;
+    float: left;
+}
+
+/*For the return to the top20 movielist section*/
+#ButtonTop20ML-div{
+    width: 50%;
+    float: right;
+    text-align: center;
+}
