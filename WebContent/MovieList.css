@@ -25,6 +25,13 @@ h1{
     display: inline-block;
 }
 
+/*Animation behind color changing text*/
+@keyframes animate {
+    to {
+        background-position: 200% center;
+    }
+}
+
 /*Change color of star info text*/
 #star_info{
     color: #4F564F;
