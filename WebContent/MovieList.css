@@ -1,11 +1,4 @@
-
-h2 {
-    color: #4F564F;
-}
-
-
-
-body {
+body{
     background-color: #cbfdc9;
 }
 
@@ -32,21 +25,21 @@ h1{
     display: inline-block;
 }
 
-/*Animation behind color changing text*/
-@keyframes animate {
-    to {
-        background-position: 200% center;
-    }
+/*Change color of star info text*/
+#star_info{
+    color: #4F564F;
+    font-size: 21px;
 }
 
+/*Change table header row to beige*/
 thead{
     background-color: #F1E5C6;
     color: #4F564F;
 }
 
-#movie_table_detail{
+/*Change table body background to lighter grey*/
+#top20_table_body{
     background-color: #e9eef5;
-
 }
 
 
