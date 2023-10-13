@@ -67,7 +67,7 @@ function handleResult(resultData) {
             genreHtml += genreListData[j];
         }
         else{
-            genreHtml += genreListData[j] + ",";
+            genreHtml += genreListData[j] + ", ";
 
         }
 
