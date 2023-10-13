@@ -16,25 +16,46 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="single-movie.css">
 
     <title>Single Movie</title>
 </head>
 <body>
 <h1>Single Movie Page</h1>
 
-<h2 id = "movie_title">The movie title: </h2>
 
-<h3 id = "movie_year">Year: </h3>
+<h2 id = "movie_title"></h2>
 
-<h3 id = "movie_director">Director: </h3>
+<!-- The table -->
+<div>
+<table class="table table-striped" id="movie_table_detail">
+    <thead>
+        <tr>
+            <th>Director</th>
+            <th>Rating</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody id="movie_table_detail_body"></tbody>
+</table>
+</div>
 
-<h3 id = "movie_rating">Rating: </h3>
-
-<!-- CSV genre -->
-<h3 id = "movie_genre">Genre: </h3>
 
 <!--  the stars list -->
-<ul id="stars-table">
+<div style="width: 50%;height: 10px; float: left">
+    <h3 style="text-align: center;"> The Stars: </h3>
+    <ul style=""class="list-group" id="stars-table"></ul>
+</div>
+
+
+
+<!-- Button back to the movie list page -->
+
+<div style="text-align: center;">
+    <a href="MovieList.html" class="btn btn-primary" role="button">Back to Movie List</a>
+</div>
+
+
 
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->

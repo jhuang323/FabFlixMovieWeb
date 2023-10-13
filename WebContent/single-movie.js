@@ -43,34 +43,21 @@ function handleResult(resultData) {
     //populate the title
     let movieTitleElement = jQuery("#movie_title");
 
-    movieTitleElement.append(resultData["title"])
+    movieTitleElement.append("<b>" + resultData["title"] + "</b>");
 
-    console.log("result data" + resultData["title"])
+    console.log("result data" + resultData["title"]);
 
     //populate year
-    let movieYearElement = jQuery("#movie_year");
 
-    movieYearElement.append(resultData["year"])
 
-    console.log("result data" + resultData["year"])
+    movieTitleElement.append(" (" + resultData["year"] + ")");
 
-    //populate director
-    let movieDirectorElement = jQuery("#movie_director");
+    console.log("result data" + resultData["year"]);
 
-    movieDirectorElement.append(resultData["director"])
+    //populate movie detail page
+    let movieDetailTableElement = jQuery("#movie_table_detail_body");
 
-    console.log("result data" + resultData["director"])
-
-    //populate rating
-    let movieRatingElement = jQuery("#movie_rating");
-
-    movieRatingElement.append(resultData["rating"])
-
-    console.log("result data" + resultData["rating"])
-
-    //populate genre CSV
-    let movieGenreElement = jQuery("#movie_genre");
-
+    //create genre string
     let genreListData = resultData["genre"];
 
     let genreHtml = "";
@@ -86,7 +73,19 @@ function handleResult(resultData) {
 
     }
 
-    movieGenreElement.append(genreHtml);
+    let movieDetailStr = "<td>";
+    movieDetailStr += resultData["director"];
+    movieDetailStr += "</td>";
+
+    movieDetailStr += "<td>";
+    movieDetailStr += resultData["rating"];
+    movieDetailStr += "</td>";
+
+    movieDetailStr += "<td>";
+    movieDetailStr += genreHtml;
+    movieDetailStr += "</td>";
+
+    movieDetailTableElement.append(movieDetailStr);
 
 
 
@@ -97,7 +96,7 @@ function handleResult(resultData) {
 
     for (let n = 0; n < starListData.length; n++){
         let starULHtml = "";
-        starULHtml += "<li>" +'<a href=single-star.html?id='+ starListData[n]["id"] + ">" + starListData[n]["name"] + "</li>";
+        starULHtml += "<li class=\"list-group-item list-group-item-secondary\">" +'<a href=single-star.html?id='+ starListData[n]["id"] + ">" + starListData[n]["name"] + "</a></li>";
 
         //append to UL
         starsUListElement.append(starULHtml)
