@@ -40,6 +40,47 @@ public class MovieListServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
+        //searching
+
+        // Retrieve parameter title from url request.
+        String title = request.getParameter("title");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting title: " + title);
+        System.out.println("the movie title search:" + title);
+
+        // Retrieve parameter year from url request.
+        String year = request.getParameter("year");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting year: " + year);
+        System.out.println("the movie year search:" + year);
+
+        // Retrieve parameter director from url request.
+        String director = request.getParameter("director");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting director: " + director);
+        System.out.println("the movie director search:" + director);
+
+        // Retrieve parameter star_name from url request.
+        String star_name = request.getParameter("star_name");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting star's name: " + star_name);
+        System.out.println("the movie star's name search:" + star_name);
+
+        //browsing section
+
+        // Retrieve parameter genre from url request.
+        String genreNameParam = request.getParameter("genre");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting genre: " + genreNameParam);
+        //retrieve the single char title
+        String genreSingleCharTitleParam = request.getParameter("singleCharTitle");
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting singleCharTitle: " + genreSingleCharTitleParam);
+
+
+
+//        System.out.println("the movie id:" + id);
+
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
@@ -48,9 +89,57 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statementTop20 = conn.createStatement();
 
+            String query = "";
+            if(genreNameParam == null && genreSingleCharTitleParam == null){
+                //Build Search query
 
+                String searchQuery = "";
+                System.out.println("the search query.");
+                String searchQuery = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
+                          "FROM movies as m\n" +
+                if(star_name != null){
+
+                else{
+                    searchQuery += "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
+                              "FROM movies as m\n" +
+                              "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+              searchQuery += "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
+                              "FROM movies as m\n" +
+                              "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                              "WHERE ;\n";                    "WHERE ;\n";
+                }
+                }          "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                          "ORDER BY rtng.rating DESC\n" +
+                          "LIMIT 20;\n";
+               WHERE ;\n";
+                if(title != null){
+
+                }
+                if(year != null){
+
+                }    searchQuery += "m.title = ?";
+
+
+                if(director != null){
+                    searchQuery +=
+                }
+                if(star_name != null){
+
+               }
+            }
+            else{
+                //Building the Browsing query
+                String browseQuerySQL = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
+                        "FROM movies as m \n" +
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                        "ORDER BY rtng.rating DESC\n" +
+                        "LIMIT 20;\n";
+
+            }
+
+            //not used
             //Execute once to grab necessary information
-            String queryTop20 = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
+            String queryTop20 = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                     "FROM movies as m \n" +
                     "JOIN ratings rtng ON m.id=rtng.movieId\n" +
                     "ORDER BY rtng.rating DESC\n" +
@@ -93,7 +182,7 @@ public class MovieListServlet extends HttpServlet {
 
 
 
-                System.out.println("the movie id: " + currentMovId + " title: " + resultSetTop20.getString("title"));
+//                System.out.println("the movie id: " + currentMovId + " title: " + resultSetTop20.getString("title"));
                 //call the get movie The three genres portion
                 // Declare our FirstThreeGenres statement
                 PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
@@ -108,7 +197,7 @@ public class MovieListServlet extends HttpServlet {
                 JsonArray InnerGenreArry = new JsonArray();
 //
                 while (resultSetFirstThreeGenres.next()){
-                    System.out.println("Genres:" + resultSetFirstThreeGenres.getString("name"));
+//                    System.out.println("Genres:" + resultSetFirstThreeGenres.getString("name"));
                     InnerGenreArry.add(resultSetFirstThreeGenres.getString("name"));
 
                 }
@@ -135,7 +224,7 @@ public class MovieListServlet extends HttpServlet {
 //
                 while (resultSetFirstThreeStars.next()){
                     JsonObject InnerStarObj = new JsonObject();
-                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
+//                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
                     InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("id"));
                     InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
 
