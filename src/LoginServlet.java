@@ -11,9 +11,7 @@ import java.sql.Connection;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -37,8 +35,8 @@ public class LoginServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         /* This example only allows username/password to be test/test
         /  in the real project, you should talk to the database to verify username/password
@@ -49,7 +47,13 @@ public class LoginServlet extends HttpServlet {
         String queryUserInput = "SELECT *" +
                 " FROM customers" +
                 " WHERE customers.email = ?" +
-                "AND customers.password = ?;";
+                " AND customers.password = ?;";
+
+        String queryUserEmail = "SELECT email" +
+                " FROM customers" +
+                " WHERE customers.email = ?";
+
+
 
         
 
@@ -59,7 +63,8 @@ public class LoginServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
 
-            // Declare our statement
+            JsonObject responseJsonObject = new JsonObject();
+            // Declare our email and password statement
             PreparedStatement statementUserInput = conn.prepareStatement(queryUserInput);
 
             // Set the parameter represented by "?" in the query to the username and password we get from the form,
@@ -68,16 +73,53 @@ public class LoginServlet extends HttpServlet {
             statementUserInput.setString(2, password);
 
             // Perform the query
-            ResultSet resultSetStarInfo = statementUserInput.executeQuery();
+            ResultSet resultUserInput = statementUserInput.executeQuery();
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            JsonObject responseJsonObject = new JsonObject();
-            if (username.equals("anteater") && password.equals("123456")) {
-                // Login success:
 
-            
-            
+            if(resultUserInput.next() == false){
+                // Login fail
+                responseJsonObject.addProperty("status", "fail");
+                // Log to localhost log
+                request.getServletContext().log("Login failed");
+
+                //Verify that email exists
+                // Declare our email and password statement
+                PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
+
+                // Set the parameter represented by "?" in the query to the username and password we get from the form,
+                // num 1 indicates the first "?" in the query
+                statementUserEmailInput.setString(1, username);
+
+
+                // Perform the query
+                ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
+
+                if(resultUserEmailInput.next() == false){
+                    //email problem
+                    responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
+                }
+                else{
+                    responseJsonObject.addProperty("message", "Incorrect password");
+
+                }
+                resultUserEmailInput.close();
+                statementUserEmailInput.close();
+                // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
+//                if (inputEmail==null) {
+//                    responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
+//                } else {
+//                    responseJsonObject.addProperty("message", "Incorrect password");
+//
+//                }
+            }
+            else{
+
+                String inputEmail = resultUserInput.getString("email");
+                String inputPassword = resultUserInput.getString("password");
+
+                // Login success:
 
                 // set this user into the session
                 request.getSession().setAttribute("user", new User(username));
@@ -85,21 +127,12 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
 
-
-            } else {
-                // Login fail
-                responseJsonObject.addProperty("status", "fail");
-                // Log to localhost log
-                request.getServletContext().log("Login failed");
-                // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
-                if (!username.equals("anteater")) {
-                    responseJsonObject.addProperty("message", "User " + username + " doesn't exist");
-                } else {
-                    responseJsonObject.addProperty("message", "Incorrect password");
-
-                }
-                out.write(responseJsonObject.toString());
             }
+            //check for null
+
+            resultUserInput.close();
+            statementUserInput.close();
+            out.write(responseJsonObject.toString());
 
         } catch (Exception e) {
             // Write error message JSON object to output

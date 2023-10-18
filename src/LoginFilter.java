@@ -47,6 +47,7 @@ public class LoginFilter implements Filter {
     }
 
     public void init(FilterConfig fConfig) {
+        //whitelist of urls that allows for no login
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
