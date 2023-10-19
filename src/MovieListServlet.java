@@ -19,7 +19,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/MovieList"
-@WebServlet(name = "MovieListServlet", urlPatterns = "/api/MovieList")
+@WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
 public class MovieListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -90,13 +90,42 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statementTop20 = conn.createStatement();
 
-            String query = "";
-            if(genreNameParam == null && genreSingleCharTitleParam == null && title == null &&
-                    year == null && director == null && star_name == null){
+            //Declare the main query
+            String Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
+                    "FROM movies as m\n" +
+                    "JOIN ratings rtng ON m.id=rtng.movieId\n";
+            //Declare the prepare statement
+            PreparedStatement MainPrepStatement = null;
+
+
+            if(request.getParameterMap().isEmpty()){
                 //do something that shows you didnt input anything
+                //should not be possible??? maybe since we control the api calls from front end
+
+                Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
+                        "FROM movies as m \n" +
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                        "ORDER BY rtng.rating DESC\n" +
+                        "LIMIT 20;\n";
+
+                MainPrepStatement = conn.prepareStatement(Mainquery);
             }
             else if(genreNameParam == null && genreSingleCharTitleParam == null){
                 //Build Search query
+                //see note below but need to add %title% aka % in the setString
+                if (star_name != null){
+                    star_name = '%' + star_name + '%';
+                }
+                if (title != null){
+                    title = '%' + title + '%';
+                }
+                if (director != null){
+                    director = '%' + director + '%';
+                }
+
+
+
+
                 String[] paramsArray = {star_name, title, year, director};
 
                 HashMap<String, Integer> params = new HashMap<String, Integer>();
@@ -112,72 +141,99 @@ public class MovieListServlet extends HttpServlet {
                         "JOIN ratings ON m.id=ratings.movieId \n";
                 System.out.println("the search query is now being built.");
                 if(params.get(star_name) != null) {
-                    searchQuery += "JOIN stars_in_movies ON m.id=stars_in_movies.movieId \n" +
+                    Mainquery += "JOIN stars_in_movies ON m.id=stars_in_movies.movieId \n" +
                             "JOIN stars ON stars_in_movies.starId=stars.id \n" +
-                            "WHERE stars.name LIKE %?% ";
+                            "WHERE stars.name LIKE ? ";
                     if(params.get(star_name) != counter-1){
-                        searchQuery += "AND ";
+                        Mainquery += "AND ";
                     }
                 }
                 if(params.get(title) != null){
                     if(params.get(title) == 1){
-                        searchQuery += "WHERE m.title LIKE %?% ";
+                        Mainquery += "WHERE m.title LIKE ? ";
                     }
                     else{
-                        searchQuery += "m.title LIKE %?% ";
+                        Mainquery += "m.title LIKE ? ";
                     }
                     if(params.get(title) != counter-1){
-                        searchQuery += "AND ";
+                        Mainquery += "AND ";
                     }
                 }
                 if(params.get(year) != null){
                     if(params.get(year) == 1){
-                        searchQuery += "WHERE m.year = ? ";
+                        Mainquery += "WHERE m.year = ? ";
                     }
                     else{
-                        searchQuery += "m.year = ? ";
+                        Mainquery += "m.year = ? ";
                     }
                     if(params.get(year) != counter-1){
-                        searchQuery += "AND ";
+                        Mainquery += "AND ";
                     }
                 }
                 if(params.get(director) != null){
                     if(params.get(director) == 1){
-                        searchQuery += "WHERE m.director LIKE %?% ";
+                        Mainquery += "WHERE m.director LIKE ? ";
                     }
                     else{
-                        searchQuery += "m.director LIKE %?% ";
+                        Mainquery += "m.director LIKE ? ";
                     }
-                    if(params.get(director) != counter-1){
-                        searchQuery += "AND ";
+                    if(params.get(director) != counter-1) {
+                        Mainquery += "AND ";
                     }
+
+
+
                 }
-                searchQuery += ";";
+                Mainquery += ";";
+
+                //!!Modifying hashmap to have %% searching for title,director etc
+                //this is due to the preparestatement replacing? with 'title'
+                //so it becomes %'title'% this leads to an error
+
+
+
                 // Declare our statement
-                PreparedStatement statementSearch = conn.prepareStatement(searchQuery);
+                MainPrepStatement = conn.prepareStatement(Mainquery);
                 // Set the parameter represented by "?" in the query to the id we get from url,
                 // num 1 indicates the first "?" in the query
                 for (String key : params.keySet()) {
-                    statementSearch.setString(params.get(key), key);
+                    MainPrepStatement.setString(params.get(key), key);
                 }
 
-                JsonObject jsonObjStar = new JsonObject();
-                // Perform the query
-                ResultSet resultSetSearch = statementSearch.executeQuery();
-                if(resultSetSearch.next() == false){
-                    System.out.println("No movie results found");
-                }
-                else{
-                    System.out.println("Movie results found!!!!");
-                }
+                System.out.println(MainPrepStatement);
+
+//                JsonObject jsonObjStar = new JsonObject();
+//                // Perform the query
+//                ResultSet resultSetSearch = statementSearch.executeQuery();
+//                if(resultSetSearch.next() == false){
+//                    System.out.println("No movie results found");
+//                }
+//                else{
+//                    System.out.println("Movie results found!!!!");
+//                }
             }
             else{
                 //Building the Browsing query
-                String browseQuerySQL = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
-                        "FROM movies as m \n" +
-                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                        "ORDER BY rtng.rating DESC\n" +
-                        "LIMIT 20;\n";
+                if(genreNameParam != null){
+                    //looking for genre
+                    Mainquery += "JOIN genres_in_movies as gim ON m.id=gim.movieId\n" +
+                            "JOIN genres as grne ON gim.genreId=grne.id\n" +
+                            "WHERE grne.name=?";
+
+                    MainPrepStatement = conn.prepareStatement(Mainquery);
+                    MainPrepStatement.setString(1, genreNameParam);
+
+                }
+                else{
+                    //browse by movies starting by a character
+                    Mainquery += "WHERE m.title LIKE ?";
+
+                    MainPrepStatement = conn.prepareStatement(Mainquery);
+                    MainPrepStatement.setString(1, genreSingleCharTitleParam + '%');
+
+
+                }
+
 
             }
 
@@ -206,7 +262,7 @@ public class MovieListServlet extends HttpServlet {
 
 
             // Perform the query
-            ResultSet resultSetTop20 = statementTop20.executeQuery(queryTop20);
+            ResultSet resultSetTop20 = MainPrepStatement.executeQuery();
             //Create the final json array to be returned
             JsonArray jsonArrayMovieList = new JsonArray();
 
