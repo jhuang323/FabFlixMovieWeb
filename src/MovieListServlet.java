@@ -228,12 +228,14 @@ public class MovieListServlet extends HttpServlet {
             String queryFirstThreeGenres = "SELECT grne.name\n" +
                     "FROM genres_in_movies as gim\n" +
                     "JOIN genres as grne ON gim.genreId=grne.id\n" +
-                    "WHERE gim.movieId = ?\n";
+                    "WHERE gim.movieId = ?\n" +
+                    "LIMIT 3";
 
             String queryFirstThreeStars = "SELECT str.id,str.name\n" +
                     "FROM stars_in_movies as sim\n" +
                     "JOIN stars as str ON sim.starId=str.id\n" +
-                    "WHERE sim.movieId=?\n";
+                    "WHERE sim.movieId=?\n" +
+                    "LIMIT 3";
 
 
             // Perform the query
