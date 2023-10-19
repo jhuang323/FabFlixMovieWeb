@@ -223,7 +223,7 @@ public class MovieListServlet extends HttpServlet {
                 }
 
             }
-            MainPrepStatement.close();
+
             //Executed in a while loop of the top 20 movies
             String queryFirstThreeGenres = "SELECT grne.name\n" +
                     "FROM genres_in_movies as gim\n" +
@@ -279,6 +279,9 @@ public class MovieListServlet extends HttpServlet {
 
                 }
 
+
+
+
                 //closing genres
                 resultSetFirstThreeGenres.close();
                 statementFirstThreeGenres.close();
@@ -328,7 +331,7 @@ public class MovieListServlet extends HttpServlet {
             }
             //close top20
             resultSet.close();
-            statementTop20.close();
+            MainPrepStatement.close();
 
 
 
