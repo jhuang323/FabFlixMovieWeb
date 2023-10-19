@@ -16,9 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import java.util.HashMap;
 
-// Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
-@WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
+// Declaring a WebServlet called StarsServlet, which maps to url "/api/MovieList"
+@WebServlet(name = "MovieListServlet", urlPatterns = "/api/MovieList")
 public class MovieListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -90,42 +91,85 @@ public class MovieListServlet extends HttpServlet {
             Statement statementTop20 = conn.createStatement();
 
             String query = "";
-            if(genreNameParam == null && genreSingleCharTitleParam == null){
+            if(genreNameParam == null && genreSingleCharTitleParam == null && title == null &&
+                    year == null && director == null && star_name == null){
+                //do something that shows you didnt input anything
+            }
+            else if(genreNameParam == null && genreSingleCharTitleParam == null){
                 //Build Search query
+                String[] paramsArray = {star_name, title, year, director};
 
-                String searchQuery = "";
-                System.out.println("the search query.");
-                String searchQuery = "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
-                          "FROM movies as m\n" +
-                if(star_name != null){
+                HashMap<String, Integer> params = new HashMap<String, Integer>();
+                int counter = 1;
+                for(int i=0;i<paramsArray.length;i++){
+                    if(paramsArray[i] != null){
+                        params.put(paramsArray[i], counter);
+                        counter ++;
+                    }
+                }
+                String searchQuery = "SELECT m.id,m.title, m.year, m.director,ratings.rating\n" +
+                        "FROM movies as m \n" +
+                        "JOIN ratings ON m.id=ratings.movieId \n";
+                System.out.println("the search query is now being built.");
+                if(params.get(star_name) != null) {
+                    searchQuery += "JOIN stars_in_movies ON m.id=stars_in_movies.movieId \n" +
+                            "JOIN stars ON stars_in_movies.starId=stars.id \n" +
+                            "WHERE stars.name LIKE %?% ";
+                    if(params.get(star_name) != counter-1){
+                        searchQuery += "AND ";
+                    }
+                }
+                if(params.get(title) != null){
+                    if(params.get(title) == 1){
+                        searchQuery += "WHERE m.title LIKE %?% ";
+                    }
+                    else{
+                        searchQuery += "m.title LIKE %?% ";
+                    }
+                    if(params.get(title) != counter-1){
+                        searchQuery += "AND ";
+                    }
+                }
+                if(params.get(year) != null){
+                    if(params.get(year) == 1){
+                        searchQuery += "WHERE m.year = ? ";
+                    }
+                    else{
+                        searchQuery += "m.year = ? ";
+                    }
+                    if(params.get(year) != counter-1){
+                        searchQuery += "AND ";
+                    }
+                }
+                if(params.get(director) != null){
+                    if(params.get(director) == 1){
+                        searchQuery += "WHERE m.director LIKE %?% ";
+                    }
+                    else{
+                        searchQuery += "m.director LIKE %?% ";
+                    }
+                    if(params.get(director) != counter-1){
+                        searchQuery += "AND ";
+                    }
+                }
+                searchQuery += ";";
+                // Declare our statement
+                PreparedStatement statementSearch = conn.prepareStatement(searchQuery);
+                // Set the parameter represented by "?" in the query to the id we get from url,
+                // num 1 indicates the first "?" in the query
+                for (String key : params.keySet()) {
+                    statementSearch.setString(params.get(key), key);
+                }
 
+                JsonObject jsonObjStar = new JsonObject();
+                // Perform the query
+                ResultSet resultSetSearch = statementSearch.executeQuery();
+                if(resultSetSearch.next() == false){
+                    System.out.println("No movie results found");
+                }
                 else{
-                    searchQuery += "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
-                              "FROM movies as m\n" +
-                              "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-              searchQuery += "SELECT m.id,m.title, m.year, m.director,rtng.rating\n" +
-                              "FROM movies as m\n" +
-                              "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                              "WHERE ;\n";                    "WHERE ;\n";
+                    System.out.println("Movie results found!!!!");
                 }
-                }          "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                          "ORDER BY rtng.rating DESC\n" +
-                          "LIMIT 20;\n";
-               WHERE ;\n";
-                if(title != null){
-
-                }
-                if(year != null){
-
-                }    searchQuery += "m.title = ?";
-
-
-                if(director != null){
-                    searchQuery +=
-                }
-                if(star_name != null){
-
-               }
             }
             else{
                 //Building the Browsing query
