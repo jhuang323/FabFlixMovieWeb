@@ -74,9 +74,9 @@ public class MovieListServlet extends HttpServlet {
         // The log message can be found in localhost log
         request.getServletContext().log("getting genre: " + genreNameParam);
         //retrieve the single char title
-        String genreSingleCharTitleParam = request.getParameter("singleCharTitle");
+        String chr = request.getParameter("chr");
         // The log message can be found in localhost log
-        request.getServletContext().log("getting singleCharTitle: " + genreSingleCharTitleParam);
+        request.getServletContext().log("getting singleCharTitle: " + chr);
 
 
 
@@ -110,7 +110,7 @@ public class MovieListServlet extends HttpServlet {
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
             }
-            else if(genreNameParam == null && genreSingleCharTitleParam == null){
+            else if(genreNameParam == null && chr == null){
                 //Build Search query
                 //see note below but need to add %title% aka % in the setString
                 if (star_name != null){
@@ -136,24 +136,24 @@ public class MovieListServlet extends HttpServlet {
                         counter ++;
                     }
                 }
-                String searchQuery = "SELECT m.id,m.title, m.year, m.director,ratings.rating\n" +
-                        "FROM movies as m \n" +
-                        "JOIN ratings ON m.id=ratings.movieId \n";
+//                String searchQuery = "SELECT m.id,m.title, m.year, m.director,ratings.rating\n" +
+//                        "FROM movies as m \n" +
+//                        "JOIN ratings ON m.id=ratings.movieId \n";
                 System.out.println("the search query is now being built.");
                 if(params.get(star_name) != null) {
                     Mainquery += "JOIN stars_in_movies ON m.id=stars_in_movies.movieId \n" +
                             "JOIN stars ON stars_in_movies.starId=stars.id \n" +
-                            "WHERE stars.name LIKE ? ";
+                            "WHERE lower(stars.name) LIKE lower(?) ";
                     if(params.get(star_name) != counter-1){
                         Mainquery += "AND ";
                     }
                 }
                 if(params.get(title) != null){
                     if(params.get(title) == 1){
-                        Mainquery += "WHERE m.title LIKE ? ";
+                        Mainquery += "WHERE lower(m.title) LIKE lower(?) ";
                     }
                     else{
-                        Mainquery += "m.title LIKE ? ";
+                        Mainquery += "lower(m.title) LIKE lower(?) ";
                     }
                     if(params.get(title) != counter-1){
                         Mainquery += "AND ";
@@ -161,10 +161,10 @@ public class MovieListServlet extends HttpServlet {
                 }
                 if(params.get(year) != null){
                     if(params.get(year) == 1){
-                        Mainquery += "WHERE m.year = ? ";
+                        Mainquery += "WHERE lower(m.year) = lower(?) ";
                     }
                     else{
-                        Mainquery += "m.year = ? ";
+                        Mainquery += "lower(m.year) = lower(?) ";
                     }
                     if(params.get(year) != counter-1){
                         Mainquery += "AND ";
@@ -172,10 +172,10 @@ public class MovieListServlet extends HttpServlet {
                 }
                 if(params.get(director) != null){
                     if(params.get(director) == 1){
-                        Mainquery += "WHERE m.director LIKE ? ";
+                        Mainquery += "WHERE lower(m.director) LIKE lower(?) ";
                     }
                     else{
-                        Mainquery += "m.director LIKE ? ";
+                        Mainquery += "lower(m.director) LIKE lower(?) ";
                     }
                     if(params.get(director) != counter-1) {
                         Mainquery += "AND ";
@@ -185,13 +185,6 @@ public class MovieListServlet extends HttpServlet {
 
                 }
                 Mainquery += ";";
-
-                //!!Modifying hashmap to have %% searching for title,director etc
-                //this is due to the preparestatement replacing? with 'title'
-                //so it becomes %'title'% this leads to an error
-
-
-
                 // Declare our statement
                 MainPrepStatement = conn.prepareStatement(Mainquery);
                 // Set the parameter represented by "?" in the query to the id we get from url,
@@ -199,18 +192,6 @@ public class MovieListServlet extends HttpServlet {
                 for (String key : params.keySet()) {
                     MainPrepStatement.setString(params.get(key), key);
                 }
-
-                System.out.println(MainPrepStatement);
-
-//                JsonObject jsonObjStar = new JsonObject();
-//                // Perform the query
-//                ResultSet resultSetSearch = statementSearch.executeQuery();
-//                if(resultSetSearch.next() == false){
-//                    System.out.println("No movie results found");
-//                }
-//                else{
-//                    System.out.println("Movie results found!!!!");
-//                }
             }
             else{
                 //Building the Browsing query
@@ -218,7 +199,7 @@ public class MovieListServlet extends HttpServlet {
                     //looking for genre
                     Mainquery += "JOIN genres_in_movies as gim ON m.id=gim.movieId\n" +
                             "JOIN genres as grne ON gim.genreId=grne.id\n" +
-                            "WHERE grne.name=?";
+                            "WHERE lower(grne.name) = lower(?) ";
 
                     MainPrepStatement = conn.prepareStatement(Mainquery);
                     MainPrepStatement.setString(1, genreNameParam);
@@ -226,63 +207,57 @@ public class MovieListServlet extends HttpServlet {
                 }
                 else{
                     //browse by movies starting by a character
-                    Mainquery += "WHERE m.title LIKE ?";
+                    if(chr.equals("*")){
+                        Mainquery += "WHERE lower(m.title) LIKE lower(\'[^a-zA-Z0-9]%\') ";
+                        MainPrepStatement = conn.prepareStatement(Mainquery);
+//                        MainPrepStatement.setString(1,  "^[^a-zA-Z0-9]%");
+                    }
+                    else{
+                        Mainquery += "WHERE lower(m.title) LIKE lower(?) ";
 
-                    MainPrepStatement = conn.prepareStatement(Mainquery);
-                    MainPrepStatement.setString(1, genreSingleCharTitleParam + '%');
+                        MainPrepStatement = conn.prepareStatement(Mainquery);
+                        MainPrepStatement.setString(1, chr + '%');
+                    }
 
 
                 }
 
-
             }
-
-            //not used
-            //Execute once to grab necessary information
-            String queryTop20 = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
-                    "FROM movies as m \n" +
-                    "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                    "ORDER BY rtng.rating DESC\n" +
-                    "LIMIT 20;\n";
-
-
-
+            MainPrepStatement.close();
             //Executed in a while loop of the top 20 movies
             String queryFirstThreeGenres = "SELECT grne.name\n" +
                     "FROM genres_in_movies as gim\n" +
                     "JOIN genres as grne ON gim.genreId=grne.id\n" +
-                    "WHERE gim.movieId = ?\n" +
-                    "LIMIT 3";
+                    "WHERE gim.movieId = ?\n";
 
             String queryFirstThreeStars = "SELECT str.id,str.name\n" +
                     "FROM stars_in_movies as sim\n" +
                     "JOIN stars as str ON sim.starId=str.id\n" +
-                    "WHERE sim.movieId=?\n" +
-                    "LIMIT 3;";
+                    "WHERE sim.movieId=?\n";
 
 
             // Perform the query
-            ResultSet resultSetTop20 = MainPrepStatement.executeQuery();
+            ResultSet resultSet = MainPrepStatement.executeQuery();
             //Create the final json array to be returned
             JsonArray jsonArrayMovieList = new JsonArray();
 
 //            //queryFirstThreeGenres and queryFirstThreeStars
-            while (resultSetTop20.next()){
+            while (resultSet.next()){
                 //get movie id
-                String currentMovId = resultSetTop20.getString("id");
+                String currentMovId = resultSet.getString("id");
                 //create a json object
                 JsonObject SingleMovieJsonObj = new JsonObject();
 
                 //add id title year and director
                 SingleMovieJsonObj.addProperty("id",currentMovId);
-                SingleMovieJsonObj.addProperty("title",resultSetTop20.getString("title"));
-                SingleMovieJsonObj.addProperty("year",resultSetTop20.getString("year"));
-                SingleMovieJsonObj.addProperty("director",resultSetTop20.getString("director"));
+                SingleMovieJsonObj.addProperty("title",resultSet.getString("title"));
+                SingleMovieJsonObj.addProperty("year",resultSet.getString("year"));
+                SingleMovieJsonObj.addProperty("director",resultSet.getString("director"));
 
 
 
 
-//                System.out.println("the movie id: " + currentMovId + " title: " + resultSetTop20.getString("title"));
+//                System.out.println("the movie id: " + currentMovId + " title: " + resultSet.getString("title"));
                 //call the get movie The three genres portion
                 // Declare our FirstThreeGenres statement
                 PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
@@ -341,7 +316,7 @@ public class MovieListServlet extends HttpServlet {
                 SingleMovieJsonObj.add("star",InnerStarArry);
 
                 //rating portion
-                SingleMovieJsonObj.addProperty("rating",resultSetTop20.getString("rating"));
+                SingleMovieJsonObj.addProperty("rating",resultSet.getString("rating"));
 
 
                 //append json obj to array
@@ -350,7 +325,7 @@ public class MovieListServlet extends HttpServlet {
 //
             }
             //close top20
-            resultSetTop20.close();
+            resultSet.close();
             statementTop20.close();
 
 
