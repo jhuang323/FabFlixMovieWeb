@@ -13,6 +13,25 @@
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
+
+let myform = $("#myform");
+
+function getParameterByName(target) {
+    // Get request URL
+    let url = window.location.href;
+    // Encode target parameter name to url encoding
+    target = target.replace(/[\[\]]/g, "\\$&");
+
+    // Ues regular expression to find matched parameter value
+    let regex = new RegExp("[?&]" + target + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    // Return the decoded parameter value
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movies table from resultData");
 
@@ -58,15 +77,38 @@ function handleMovieListResult(resultData) {
     }
 }
 
+function handleBrowseInfo(cartEvent){
+    // cartEvent.preventDefault();
+    $(this)
+        .find('input[name]')
+        .filter(function () {
+            return !this.value;
+        })
+        .prop('name', '');
+
+
+}
+
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
  */
 
+const queryString = window.location.search;
+console.log(queryString);
+console.log("hello")
+
 // Makes the HTTP GET request and registers on success callback function handleMovieListResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
     method: "GET", // Setting request method
-    url: "api/movie-list", // Setting request url, which is mapped by StarsServlet in Stars.java
+    url: "api/movie-list" + queryString, // Setting request url, which is mapped by MovieListServlet
     success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
+
+let genreName = getParameterByName('genre');
+
+$("#gnre").attr("value", genreName);
+
+//bind the submit
+myform.submit(handleBrowseInfo);

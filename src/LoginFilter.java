@@ -51,6 +51,8 @@ public class LoginFilter implements Filter {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
+        //added for debugging resons remove later
+        allowedURIs.add("/api/movie-list");
     }
 
     public void destroy() {
