@@ -63,6 +63,8 @@ function handleResult(resultData) {
             // Add a link to single-movie.html with id passed with GET url parameter
             '<a href="single-movie.html?id=' + resultData.movies[i]['movie_id'] + '">' +
             resultData.movies[i]["movie_title"] + "</th>";
+        rowHTML += "<th>" + resultData.movies[i]["movie_director"] + "</th>";
+        rowHTML += "<th>" + resultData.movies[i]["movie_year"] + "</th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page

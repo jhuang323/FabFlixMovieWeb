@@ -58,13 +58,21 @@ public class SingleMovieServlet extends HttpServlet {
             JsonObject jsonObject = new JsonObject();
 
             // Construct a query with parameter represented by "?"
-//            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-//                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
 
             //create the strings for the mysql query
             String querymovie = "SELECT m.title, m.year, m.director FROM movies as m WHERE m.id = ?";
-            String querygenre = "SELECT grne.name FROM genres_in_movies as gim JOIN genres as grne ON gim.genreId=grne.id WHERE gim.movieId = ?";
-            String querystar = "SELECT str.id,str.name FROM stars_in_movies as sim JOIN stars as str ON sim.starId=str.id WHERE sim.movieId=?";
+            String querygenre = "SELECT grne.name FROM genres_in_movies as gim JOIN genres as grne ON gim.genreId=grne.id WHERE gim.movieId = ? ORDER BY grne.name ASC";
+           // String querystar = "SELECT str.id,str.name FROM stars_in_movies as sim JOIN stars as str ON sim.starId=str.id WHERE sim.movieId=?";
+            String querystar =
+                    "SELECT simo.starId,COUNT(simo.starId),str.name\n" +
+                            "FROM stars_in_movies as simo\n" +
+                            "JOIN stars as str ON simo.starId=str.id\n" +
+                            "WHERE simo.starId IN (\n" +
+                            "SELECT DISTINCT sim.starId\n" +
+                            "FROM stars_in_movies as sim\n" +
+                            "WHERE sim.movieId=?)\n" +
+                            "GROUP BY simo.starId\n" +
+                            "ORDER BY COUNT(simo.starId) DESC,str.name ASC;";
             String queryrating = "SELECT * FROM ratings as rtng WHERE rtng.movieId=?";
 
             // Declare our statement
@@ -133,11 +141,8 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject.add("genre",GenrejsonArray);
             System.out.println(GenrejsonArray);
 
-
             genreResultSet.close();
             genreStatement.close();
-
-
 
             //Query Star section
             //prepare statement
@@ -150,9 +155,9 @@ public class SingleMovieServlet extends HttpServlet {
 
             while(starResultSet.next()){
                 System.out.println("stars: " + starResultSet.getString("name"));
-                System.out.println("stars id: " + starResultSet.getString("id"));
+                System.out.println("stars id: " + starResultSet.getString("starId"));
 
-                String tempStarId = starResultSet.getString("id");
+                String tempStarId = starResultSet.getString("starId");
                 String tempStarName = starResultSet.getString("name");
 
                 //create json object
@@ -167,12 +172,8 @@ public class SingleMovieServlet extends HttpServlet {
 
             }
 
-
             //append json array to main jsonobj
             jsonObject.add("star",StarjsonArray);
-
-
-
 
 
             starResultSet.close();
@@ -197,48 +198,8 @@ public class SingleMovieServlet extends HttpServlet {
             //add to main json obj
             jsonObject.addProperty("rating",TheRating);
 
-
             ratingStatement.close();
             ratingResultSet.close();
-
-
-
-
-
-
-            
-
-//            System.out.println("the array: " + movieTitle + movieYear + movieDirector);
-
-//            // Iterate through each row of rs
-//            while (rs.next()) {
-//
-//                String starId = rs.getString("starId");
-//                String starName = rs.getString("name");
-//                String starDob = rs.getString("birthYear");
-//
-//                String movieId = rs.getString("movieId");
-//                String movieTitle = rs.getString("title");
-//                String movieYear = rs.getString("year");
-//                String movieDirector = rs.getString("director");
-//
-//                // Create a JsonObject based on the data we retrieve from rs
-//
-//                JsonObject jsonObject = new JsonObject();
-//                jsonObject.addProperty("star_id", starId);
-//                jsonObject.addProperty("star_name", starName);
-//                jsonObject.addProperty("star_dob", starDob);
-//                jsonObject.addProperty("movie_id", movieId);
-//                jsonObject.addProperty("movie_title", movieTitle);
-//                jsonObject.addProperty("movie_year", movieYear);
-//                jsonObject.addProperty("movie_director", movieDirector);
-//
-//                jsonArray.add(jsonObject);
-//            }
-//            rs.close();
-//            statement.close();
-
-
 
             // Write JSON string to output
             out.write(jsonObject.toString());
