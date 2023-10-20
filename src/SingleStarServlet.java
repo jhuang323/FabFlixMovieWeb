@@ -88,13 +88,14 @@ public class SingleStarServlet extends HttpServlet {
             statementStarInfo.close();
 
             // Construct a query with parameter represented by "?" that grabs all movie ids and titles star is in
-            String queryStarMovieInfo = "SELECT movies.id, movies.title" +
-                    " FROM stars" +
-                    " JOIN stars_in_movies" +
-                    " ON stars.id = stars_in_movies.starId" +
+            String queryStarMovieInfo = "SELECT movies.id, movies.title, movies.director, movies.year\n" +
+                    "FROM stars\n" +
+                    "JOIN stars_in_movies" +
+                    " ON stars.id = stars_in_movies.starId\n" +
                     " JOIN movies" +
-                    " ON stars_in_movies.movieId = movies.id" +
-                    " WHERE stars.id = ?;";
+                    " ON stars_in_movies.movieId = movies.id\n" +
+                    "WHERE stars.id = ?\n" +
+                    "ORDER BY movies.year DESC, movies.title ASC;";
             // Declare our statement
             PreparedStatement statementStarMovieInfo = conn.prepareStatement(queryStarMovieInfo);
 
@@ -113,11 +114,15 @@ public class SingleStarServlet extends HttpServlet {
                 //The names in the .getString() call must match the name of the columns from the SELECT line
                 String movieId = resultSetStarMovieInfo.getString("id");
                 String movieTitle = resultSetStarMovieInfo.getString("title");
+                String movieDirector = resultSetStarMovieInfo.getString("director");
+                String movieYear = resultSetStarMovieInfo.getString("year");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
+                jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_year", movieYear);
 
                 jsonArrayMovies.add(jsonObject);
             }
