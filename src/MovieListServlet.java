@@ -229,6 +229,7 @@ public class MovieListServlet extends HttpServlet {
                     "FROM genres_in_movies as gim\n" +
                     "JOIN genres as grne ON gim.genreId=grne.id\n" +
                     "WHERE gim.movieId = ?\n" +
+                    "ORDER BY grne.name ASC\n" +
                     "LIMIT 3";
 
             String queryFirstThreeStars = "SELECT str.id,str.name\n" +
