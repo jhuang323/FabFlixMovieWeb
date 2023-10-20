@@ -34,6 +34,32 @@ public class MovieListServlet extends HttpServlet {
         }
     }
 
+//    my sorting string constructing helper funct
+    private String createSortingString(String afirstparam,String atypeparam){
+        String retSortsqlQuery = "";
+        if(afirstparam != null){
+            //replace the atypeparam with ASC OR DESC
+            String OrderSqlString = "";
+            if(atypeparam.equals("a")){
+                OrderSqlString = "ASC";
+            }
+            else{
+                OrderSqlString = "DESC";
+            }
+
+            //check if first is title
+            if(afirstparam.equals("title")){
+                //by title first
+                retSortsqlQuery = afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += "" + afirstparam + " " + OrderSqlString;
+            }
+            else{
+                retSortsqlQuery = afirstparam + " " + OrderSqlString;
+            }
+        }
+
+        return retSortsqlQuery;
+    }
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -78,6 +104,14 @@ public class MovieListServlet extends HttpServlet {
         // The log message can be found in localhost log
         request.getServletContext().log("getting singleCharTitle: " + chr);
 
+        //sorting section
+        //get the sortfirst param
+        String sortFirstParam = request.getParameter("sortfirst");
+
+        //get the sorttype param
+        String sortTypeParam = request.getParameter("sorttype");
+
+
 
 
 //        System.out.println("the movie id:" + id);
@@ -98,15 +132,20 @@ public class MovieListServlet extends HttpServlet {
             PreparedStatement MainPrepStatement = null;
 
 
-            if(request.getParameterMap().isEmpty()){
+            if(genreNameParam == null && chr == null && star_name == null && title == null && director == null && year == null){
                 //do something that shows you didnt input anything
                 //should not be possible??? maybe since we control the api calls from front end
 
                 Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                         "FROM movies as m \n" +
-                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                        "ORDER BY rtng.rating DESC\n" +
-                        "LIMIT 20;\n";
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n";
+
+                //sorting
+                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                Mainquery += "ORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                //add the limits
+                Mainquery += "LIMIT 20\n";
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
             }
@@ -229,12 +268,18 @@ public class MovieListServlet extends HttpServlet {
                     "FROM genres_in_movies as gim\n" +
                     "JOIN genres as grne ON gim.genreId=grne.id\n" +
                     "WHERE gim.movieId = ?\n" +
+                    "ORDER BY grne.name ASC\n" +
                     "LIMIT 3";
 
-            String queryFirstThreeStars = "SELECT str.id,str.name\n" +
+            String queryFirstThreeStars = "SELECT simo.starId,COUNT(simo.starId),str.name\n" +
+                    "FROM stars_in_movies as simo\n" +
+                    "JOIN stars as str ON simo.starId=str.id\n" +
+                    "WHERE simo.starId IN (\n" +
+                    "SELECT DISTINCT sim.starId\n" +
                     "FROM stars_in_movies as sim\n" +
-                    "JOIN stars as str ON sim.starId=str.id\n" +
-                    "WHERE sim.movieId=?\n" +
+                    "WHERE sim.movieId=?)\n" +
+                    "GROUP BY simo.starId\n" +
+                    "ORDER BY COUNT(simo.starId) DESC,str.name ASC\n" +
                     "LIMIT 3";
 
 
@@ -305,7 +350,7 @@ public class MovieListServlet extends HttpServlet {
                 while (resultSetFirstThreeStars.next()){
                     JsonObject InnerStarObj = new JsonObject();
 //                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
-                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("id"));
+                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("starId"));
                     InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
 
                     //append to the innerstar list
