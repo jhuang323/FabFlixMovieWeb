@@ -54,26 +54,10 @@ function handleBrowseInfo(cartEvent){
  * Once this .js is loaded, following scripts will be executed by the browser
  */
 
-const queryString = window.location.search;
-console.log(queryString);
-console.log("hello")
 
-// Makes the HTTP GET request and registers on success callback function handleMovieListResult
-jQuery.ajax({
-    dataType: "json", // Setting return data type
-    method: "GET", // Setting request method
-    url: "api/main-page" + queryString, // Setting request url, which is mapped by MovieListServlet
-    success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
-});
 
-let title_name = getParameterByName('title');
-$("#title_form").attr("value", title_name);
-let year_name = getParameterByName('year');
-$("#year_form").attr("value", year_name);
-let director_name = getParameterByName('director');
-$("#director_form").attr("value", director_name);
-let star_name = getParameterByName('star_name');
-$("#star_name_form").attr("value", star_name);
+
+
 
 //bind the submit
 myform.submit(handleBrowseInfo);
