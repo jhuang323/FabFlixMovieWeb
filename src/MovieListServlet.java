@@ -232,10 +232,15 @@ public class MovieListServlet extends HttpServlet {
                     "ORDER BY grne.name ASC\n" +
                     "LIMIT 3";
 
-            String queryFirstThreeStars = "SELECT str.id,str.name\n" +
+            String queryFirstThreeStars = "SELECT simo.starId,COUNT(simo.starId),str.name\n" +
+                    "FROM stars_in_movies as simo\n" +
+                    "JOIN stars as str ON simo.starId=str.id\n" +
+                    "WHERE simo.starId IN (\n" +
+                    "SELECT DISTINCT sim.starId\n" +
                     "FROM stars_in_movies as sim\n" +
-                    "JOIN stars as str ON sim.starId=str.id\n" +
-                    "WHERE sim.movieId=?\n" +
+                    "WHERE sim.movieId=?)\n" +
+                    "GROUP BY simo.starId\n" +
+                    "ORDER BY COUNT(simo.starId) DESC,str.name ASC\n" +
                     "LIMIT 3";
 
 
@@ -306,7 +311,7 @@ public class MovieListServlet extends HttpServlet {
                 while (resultSetFirstThreeStars.next()){
                     JsonObject InnerStarObj = new JsonObject();
 //                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
-                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("id"));
+                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("starId"));
                     InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
 
                     //append to the innerstar list
