@@ -51,10 +51,12 @@ public class MovieListServlet extends HttpServlet {
             if(afirstparam.equals("title")){
                 //by title first
                 retSortsqlQuery = afirstparam + " " + OrderSqlString;
-                retSortsqlQuery += "" + afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += ", rating " + OrderSqlString;
             }
             else{
+                //by rating first
                 retSortsqlQuery = afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += ", title " + OrderSqlString;
             }
         }
 
@@ -138,14 +140,11 @@ public class MovieListServlet extends HttpServlet {
 
                 Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                         "FROM movies as m \n" +
-                        "JOIN ratings rtng ON m.id=rtng.movieId\n";
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                        "ORDER BY rtng.rating DESC\n" +
+                        "LIMIT 20";
 
-                //sorting
-                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                Mainquery += "ORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
 
-                //add the limits
-                Mainquery += "LIMIT 20\n";
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
             }
@@ -223,6 +222,14 @@ public class MovieListServlet extends HttpServlet {
 
 
                 }
+
+                //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                //add the limits
+                Mainquery += "";
+
                 Mainquery += ";";
                 // Declare our statement
                 MainPrepStatement = conn.prepareStatement(Mainquery);
@@ -238,7 +245,15 @@ public class MovieListServlet extends HttpServlet {
                     //looking for genre
                     Mainquery += "JOIN genres_in_movies as gim ON m.id=gim.movieId\n" +
                             "JOIN genres as grne ON gim.genreId=grne.id\n" +
-                            "WHERE lower(grne.name) = lower(?) ";
+                            "WHERE lower(grne.name) = lower(?)";
+
+                    //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                    //add the limits
+                    Mainquery += "";
+
 
                     MainPrepStatement = conn.prepareStatement(Mainquery);
                     MainPrepStatement.setString(1, genreNameParam);
@@ -248,11 +263,28 @@ public class MovieListServlet extends HttpServlet {
                     //browse by movies starting by a character
                     if(chr.equals("*")){
                         Mainquery += "WHERE lower(m.title) REGEXP lower(?) ";
+
+                        //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                        //add the limits
+                        Mainquery += "";
+
                         MainPrepStatement = conn.prepareStatement(Mainquery);
                         MainPrepStatement.setString(1,  "^[^A-Za-z0-9]");
                     }
                     else{
                         Mainquery += "WHERE lower(m.title) LIKE lower(?) ";
+
+
+                        //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                        //add the limits
+                        Mainquery += "";
+
 
                         MainPrepStatement = conn.prepareStatement(Mainquery);
                         MainPrepStatement.setString(1, chr + '%');
