@@ -74,7 +74,7 @@ public class MovieListServlet extends HttpServlet {
         // The log message can be found in localhost log
         request.getServletContext().log("getting genre: " + genreNameParam);
         //retrieve the single char title
-        String chr = request.getParameter("chr");
+        String chr = request.getParameter("char");
         // The log message can be found in localhost log
         request.getServletContext().log("getting singleCharTitle: " + chr);
 
