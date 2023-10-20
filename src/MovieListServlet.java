@@ -208,9 +208,9 @@ public class MovieListServlet extends HttpServlet {
                 else{
                     //browse by movies starting by a character
                     if(chr.equals("*")){
-                        Mainquery += "WHERE lower(m.title) LIKE lower(\'[^a-zA-Z0-9]%\') ";
+                        Mainquery += "WHERE lower(m.title) REGEXP lower(?) ";
                         MainPrepStatement = conn.prepareStatement(Mainquery);
-//                        MainPrepStatement.setString(1,  "^[^a-zA-Z0-9]%");
+                        MainPrepStatement.setString(1,  "^[^A-Za-z0-9]");
                     }
                     else{
                         Mainquery += "WHERE lower(m.title) LIKE lower(?) ";
