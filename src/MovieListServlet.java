@@ -34,6 +34,32 @@ public class MovieListServlet extends HttpServlet {
         }
     }
 
+//    my sorting string constructing helper funct
+    private String createSortingString(String afirstparam,String atypeparam){
+        String retSortsqlQuery = "";
+        if(afirstparam != null){
+            //replace the atypeparam with ASC OR DESC
+            String OrderSqlString = "";
+            if(atypeparam.equals("a")){
+                OrderSqlString = "ASC";
+            }
+            else{
+                OrderSqlString = "DESC";
+            }
+
+            //check if first is title
+            if(afirstparam.equals("title")){
+                //by title first
+                retSortsqlQuery = afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += "" + afirstparam + " " + OrderSqlString;
+            }
+            else{
+                retSortsqlQuery = afirstparam + " " + OrderSqlString;
+            }
+        }
+
+        return retSortsqlQuery;
+    }
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -78,6 +104,14 @@ public class MovieListServlet extends HttpServlet {
         // The log message can be found in localhost log
         request.getServletContext().log("getting singleCharTitle: " + chr);
 
+        //sorting section
+        //get the sortfirst param
+        String sortFirstParam = request.getParameter("sortfirst");
+
+        //get the sorttype param
+        String sortTypeParam = request.getParameter("sorttype");
+
+
 
 
 //        System.out.println("the movie id:" + id);
@@ -98,15 +132,20 @@ public class MovieListServlet extends HttpServlet {
             PreparedStatement MainPrepStatement = null;
 
 
-            if(request.getParameterMap().isEmpty()){
+            if(genreNameParam == null && chr == null && star_name == null && title == null && director == null && year == null){
                 //do something that shows you didnt input anything
                 //should not be possible??? maybe since we control the api calls from front end
 
                 Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                         "FROM movies as m \n" +
-                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
-                        "ORDER BY rtng.rating DESC\n" +
-                        "LIMIT 20;\n";
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n";
+
+                //sorting
+                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                Mainquery += "ORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+
+                //add the limits
+                Mainquery += "LIMIT 20\n";
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
             }
