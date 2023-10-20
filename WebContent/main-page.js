@@ -37,6 +37,38 @@ function handleMovieListResult(resultData) {
 
 }
 
+function  handleGenreListResult(resultData){
+    //modify the search alphabet below
+    let SearchAlpabetParam = '0123456789abcdefghijklmnopqrstuvwxyz*'.split('');
+
+    //handles result data from the api
+    console.log("In handle genre list function");
+
+    //find the div
+    let GenreLinkElem = $("#genre_div");
+    let SearchAlphaElem = $("#searchAlpha_div");
+
+    // populate the div with links
+    let gnreHrefstr = "";
+    for(let i = 0;i < resultData.length; i++){
+        //appending  a link
+        console.log('adding ' + resultData[i]);
+        gnreHrefstr = " <a href=\"MovieList.html?genre="+ resultData[i] +"\">" + resultData[i] + "</a>";
+        GenreLinkElem.append(gnreHrefstr);
+
+    }
+
+    //insert search alpha
+    for(let j = 0; j < SearchAlpabetParam.length;j++){
+        console.log("alpha " + SearchAlpabetParam[j] );
+        let alphaSStr = " <a href=\"MovieList.html?char="+ SearchAlpabetParam[j] +"\">" + SearchAlpabetParam[j] + "</a>";
+        SearchAlphaElem.append(alphaSStr)
+    }
+
+
+
+}
+
 function handleBrowseInfo(cartEvent){
     // cartEvent.preventDefault();
     $(this)
@@ -55,7 +87,13 @@ function handleBrowseInfo(cartEvent){
  */
 
 
-
+//call the api to get list of genres
+$.ajax({
+    dataType: "json", // Setting return data type
+    method: "GET", // Setting request method
+    url: "api/main-page", // Setting request url, which is mapped by MovieListServlet
+    success: (resultData) => handleGenreListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
+});
 
 
 
