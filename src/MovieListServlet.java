@@ -62,6 +62,11 @@ public class MovieListServlet extends HttpServlet {
 
         return retSortsqlQuery;
     }
+    private int calcPageOffset(int aPageNum,int aNumLimit){
+        return (aPageNum-1) * aNumLimit;
+    }
+
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
@@ -112,6 +117,14 @@ public class MovieListServlet extends HttpServlet {
 
         //get the sorttype param
         String sortTypeParam = request.getParameter("sorttype");
+
+        //Pagination section
+        //get the page param
+        int pageParam = Integer.parseInt(request.getParameter("page"));
+
+        //get the numlimit param
+        int numlimitParam = Integer.parseInt(request.getParameter("numlimit"));
+
 
 
 
@@ -225,10 +238,11 @@ public class MovieListServlet extends HttpServlet {
 
                 //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                 //add the limits
-                Mainquery += "";
+                Mainquery += "\nLIMIT " + numlimitParam;
+                Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
                 Mainquery += ";";
                 // Declare our statement
@@ -249,10 +263,11 @@ public class MovieListServlet extends HttpServlet {
 
                     //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                     //add the limits
-                    Mainquery += "";
+                    Mainquery += "\nLIMIT " + numlimitParam;
+                    Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
 
                     MainPrepStatement = conn.prepareStatement(Mainquery);
@@ -266,10 +281,11 @@ public class MovieListServlet extends HttpServlet {
 
                         //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                         //add the limits
-                        Mainquery += "";
+                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
                         MainPrepStatement = conn.prepareStatement(Mainquery);
                         MainPrepStatement.setString(1,  "^[^A-Za-z0-9]");
@@ -280,10 +296,11 @@ public class MovieListServlet extends HttpServlet {
 
                         //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                         //add the limits
-                        Mainquery += "";
+                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
 
                         MainPrepStatement = conn.prepareStatement(Mainquery);
