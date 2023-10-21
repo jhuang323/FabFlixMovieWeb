@@ -42,6 +42,14 @@ function handleMovieListResult(resultData) {
     // Iterate through resultData, no more than 20 entries
 
     console.log(resultData.length)
+    const urlParams = new URLSearchParams(window.location.search);
+    //clean up url params
+    urlParams.delete("genre");
+
+    urlParams.delete("title");
+    urlParams.delete("year");
+    urlParams.delete("director");
+    urlParams.delete("star_name");
 
     for (let i = 0; i < resultData.length; i++) {
 
@@ -66,7 +74,10 @@ function handleMovieListResult(resultData) {
         rowHTML += "<td>";
         rowHTML += "<ul>";
         for(let j = 0; j < resultData[i].genre.length; j++){
-            rowHTML += "<li>" + resultData[i].genre[j] + "</li>";
+            urlParams.set("genre",resultData[i].genre[j]);
+            // console.log("the new url " + "single-movie.html?"+ urlParams.toString());
+            //set the url
+            rowHTML += "<li><a href=\"MovieList.html?"+ urlParams.toString() + "\">"+resultData[i].genre[j]+"</a></li>";
         }
         rowHTML += "</ul>";
         rowHTML += "</td>";
