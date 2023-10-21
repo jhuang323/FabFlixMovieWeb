@@ -1,10 +1,12 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mysql.cj.Session;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -17,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import java.util.HashMap;
+import java.util.Map;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/MovieList"
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
@@ -51,21 +54,35 @@ public class MovieListServlet extends HttpServlet {
             if(afirstparam.equals("title")){
                 //by title first
                 retSortsqlQuery = afirstparam + " " + OrderSqlString;
-                retSortsqlQuery += "" + afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += ", rating " + OrderSqlString;
             }
             else{
+                //by rating first
                 retSortsqlQuery = afirstparam + " " + OrderSqlString;
+                retSortsqlQuery += ", title " + OrderSqlString;
             }
         }
 
         return retSortsqlQuery;
     }
+    private int calcPageOffset(int aPageNum,int aNumLimit){
+        return (aPageNum-1) * aNumLimit;
+    }
+
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
+
+        //get session and store url
+        HttpSession currUserSess = (HttpSession) request.getSession();
+
+        String theFullUrlString = request.getRequestURL().toString() + "?" + request.getQueryString();
+
+        currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
 
         //searching
 
@@ -111,6 +128,14 @@ public class MovieListServlet extends HttpServlet {
         //get the sorttype param
         String sortTypeParam = request.getParameter("sorttype");
 
+        //Pagination section
+        //get the page param
+        int pageParam = Integer.parseInt(request.getParameter("page"));
+
+        //get the numlimit param
+        int numlimitParam = Integer.parseInt(request.getParameter("numlimit"));
+
+
 
 
 
@@ -138,14 +163,11 @@ public class MovieListServlet extends HttpServlet {
 
                 Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                         "FROM movies as m \n" +
-                        "JOIN ratings rtng ON m.id=rtng.movieId\n";
+                        "JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                        "ORDER BY rtng.rating DESC\n" +
+                        "LIMIT 20";
 
-                //sorting
-                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                Mainquery += "ORDER BY " + createSortingString(sortFirstParam,sortTypeParam) + "\n";
 
-                //add the limits
-                Mainquery += "LIMIT 20\n";
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
             }
@@ -223,6 +245,15 @@ public class MovieListServlet extends HttpServlet {
 
 
                 }
+
+                //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+
+                //add the limits
+                Mainquery += "\nLIMIT " + numlimitParam;
+                Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
                 Mainquery += ";";
                 // Declare our statement
                 MainPrepStatement = conn.prepareStatement(Mainquery);
@@ -238,7 +269,16 @@ public class MovieListServlet extends HttpServlet {
                     //looking for genre
                     Mainquery += "JOIN genres_in_movies as gim ON m.id=gim.movieId\n" +
                             "JOIN genres as grne ON gim.genreId=grne.id\n" +
-                            "WHERE lower(grne.name) = lower(?) ";
+                            "WHERE lower(grne.name) = lower(?)";
+
+                    //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+
+                    //add the limits
+                    Mainquery += "\nLIMIT " + numlimitParam;
+                    Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
 
                     MainPrepStatement = conn.prepareStatement(Mainquery);
                     MainPrepStatement.setString(1, genreNameParam);
@@ -248,11 +288,30 @@ public class MovieListServlet extends HttpServlet {
                     //browse by movies starting by a character
                     if(chr.equals("*")){
                         Mainquery += "WHERE lower(m.title) REGEXP lower(?) ";
+
+                        //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+
+                        //add the limits
+                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
                         MainPrepStatement = conn.prepareStatement(Mainquery);
                         MainPrepStatement.setString(1,  "^[^A-Za-z0-9]");
                     }
                     else{
                         Mainquery += "WHERE lower(m.title) LIKE lower(?) ";
+
+
+                        //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+
+                        //add the limits
+                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
 
                         MainPrepStatement = conn.prepareStatement(Mainquery);
                         MainPrepStatement.setString(1, chr + '%');

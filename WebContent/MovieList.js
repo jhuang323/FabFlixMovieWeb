@@ -14,7 +14,7 @@
  * @param resultData jsonObject
  */
 
-let myform = $("#myform");
+let TheSearchformElem = $("#search_form");
 
 function getParameterByName(target) {
     // Get request URL
@@ -42,6 +42,14 @@ function handleMovieListResult(resultData) {
     // Iterate through resultData, no more than 20 entries
 
     console.log(resultData.length)
+    const urlParams = new URLSearchParams(window.location.search);
+    //clean up url params
+    urlParams.delete("genre");
+
+    urlParams.delete("title");
+    urlParams.delete("year");
+    urlParams.delete("director");
+    urlParams.delete("star_name");
 
     for (let i = 0; i < resultData.length; i++) {
 
@@ -66,7 +74,10 @@ function handleMovieListResult(resultData) {
         rowHTML += "<td>";
         rowHTML += "<ul>";
         for(let j = 0; j < resultData[i].genre.length; j++){
-            rowHTML += "<li>" + resultData[i].genre[j] + "</li>";
+            urlParams.set("genre",resultData[i].genre[j]);
+            // console.log("the new url " + "single-movie.html?"+ urlParams.toString());
+            //set the url
+            rowHTML += "<li><a href=\"MovieList.html?"+ urlParams.toString() + "\">"+resultData[i].genre[j]+"</a></li>";
         }
         rowHTML += "</ul>";
         rowHTML += "</td>";
@@ -77,18 +88,162 @@ function handleMovieListResult(resultData) {
     }
 }
 
-function handleBrowseInfo(cartEvent){
-    // cartEvent.preventDefault();
-    $(this)
-        .find('input[name]')
-        .filter(function () {
-            return !this.value;
-        })
-        .prop('name', '');
+function handleBrowseInfo(SubmitEvent){
+    console.log("handling cart event")
+    SubmitEvent.preventDefault();
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    //first clean the url params
+    urlParams.delete("genre");
+
+    urlParams.delete("title");
+    urlParams.delete("year");
+    urlParams.delete("director");
+    urlParams.delete("star_name");
+
+    //get fields
+    console.log("the title is:" + $("#title_field").val());
+
+    let titleVal = $("#title_field").val();
+    let yearVal = $("#year_field").val();
+    let directorVal = $("#director_field").val();
+    let starNameVal = $("#star_name_field").val();
+
+    if(titleVal != ""){
+        urlParams.set("title",titleVal);
+    }
+    if(yearVal != ""){
+        urlParams.set("year",yearVal);
+    }
+    if(directorVal != ""){
+        urlParams.set("director",directorVal);
+    }
+    if(starNameVal != ""){
+        urlParams.set("star_name",starNameVal);
+    }
+    // urlParams.set("title",$("#title_field").val());
+    // urlParams.set("year",$("#year_field").val());
+    // urlParams.set("director",$("#director_field").val());
+    // urlParams.set("star_name",$("#star_name_field").val());
+
+
+    //update the query param in browser
+    window.location.search = urlParams.toString();
+
+
 
 
 }
 
+function handleSortOption(cartEvent){
+    console.log("handling sort");
+    // cartEvent.preventDefault();
+    //test set query string
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let DropdownValSelectedArray = $("#sort_dd").children("option:selected").val().split("_");
+
+    // console.log("the val " + $("#sort_dd").children("option:selected").val() + " " + DropdownValSelectedArray[0]);
+
+    //change query param
+    urlParams.set("sortfirst",DropdownValSelectedArray[0]);
+    urlParams.set("sorttype",DropdownValSelectedArray[1]);
+
+    //update the query param in browser
+    window.location.search = urlParams.toString();
+
+
+}
+
+function handleItemLimitOption(cartEvent){
+    console.log("handling sort");
+    // cartEvent.preventDefault();
+    //test set query string
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let ItemLimitSelectVal = $("#itemlimit_dd").children("option:selected").val();
+
+    console.log("the item limit val " + $("#itemlimit_dd").children("option:selected").val());
+
+    //change query param
+    urlParams.set("numlimit",ItemLimitSelectVal);
+
+    //update the query param in browser
+    window.location.search = urlParams.toString();
+
+}
+
+function InitsetURLParamtoDef(){
+    //check if the sort and page options exists
+
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("check url params" + urlParams.has("sortfirst") + "sorttype" + urlParams.has("sorttype"));
+
+    // console.log(urlParams.has("sortfirst"))
+    //test for sort
+    if(!urlParams.has("sortfirst") || !urlParams.has("sorttype")){
+        //setting to default
+        urlParams.set("sortfirst","title");
+        urlParams.set("sorttype","a");
+        urlParams.set("page","1");
+        urlParams.set("numlimit","10");
+        window.location.search = urlParams.toString();
+
+    }
+
+    //test for pagination url params
+    InitSetButtonsAndBox()
+
+
+
+}
+
+function OnclickPrevious(){
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("page",Number(urlParams.get("page"))-1);
+    window.location.search = urlParams.toString();
+}
+
+function OnclickNext(){
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("page",Number(urlParams.get("page"))+1);
+    window.location.search = urlParams.toString();
+}
+
+// Function to set the buttons and search box to what ever value is in url
+function InitSetButtonsAndBox(){
+    const urlParams = new URLSearchParams(window.location.search);
+
+
+    //change the form value for input
+
+    $("#title_field").val(urlParams.get("title"));
+    $("#year_field").val(urlParams.get("year"));
+    $("#director_field").val(urlParams.get("director"));
+    $("#star_name_field").val(urlParams.get("star_name"));
+
+
+
+
+// change sort dropdown to what ever is url
+    if(urlParams.has("sortfirst") && urlParams.has("sorttype")){
+        let ValStr = urlParams.get("sortfirst") + "_" + urlParams.get("sorttype");
+        console.log("setting: " + ValStr);
+        $("#sort_dd").val(ValStr);
+        $('#sort_dd').select;
+
+    }
+
+// change item limit dropdown to what ever is url
+    if(urlParams.has("numlimit")){
+        let ItemLimitnumUrl = urlParams.get("numlimit");
+        console.log("setting: " + ItemLimitnumUrl);
+        $("#itemlimit_dd").val(ItemLimitnumUrl);
+        $('#itemlimit_dd').select;
+
+    }
+}
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser
@@ -98,6 +253,8 @@ const queryString = window.location.search;
 console.log(queryString);
 console.log("hello")
 
+InitsetURLParamtoDef();
+
 // Makes the HTTP GET request and registers on success callback function handleMovieListResult
 jQuery.ajax({
     dataType: "json", // Setting return data type
@@ -106,9 +263,10 @@ jQuery.ajax({
     success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
 
-let genreName = getParameterByName('genre');
 
-$("#gnre").attr("value", genreName);
+
+
+
 
 //bind the submit
-myform.submit(handleBrowseInfo);
+TheSearchformElem.submit(handleBrowseInfo);

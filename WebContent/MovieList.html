@@ -25,9 +25,13 @@
 
 <h1>Top 20 Movies Page</h1>
 
+
+
 <div style="width: 50%;float: right">
     <a href="logout" class="btn btn-primary" role="button">Logout</a>
 </div>
+
+
 
 
 <!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
@@ -49,16 +53,51 @@
     <tbody id=top20_table_body></tbody>
 </table>
 
-<form id="myform" ACTION="MovieList.html" METHOD="GET">
-    <label>Genre:</label>
-    <input id="gnre" TYPE="TEXT" name="genre">(Use % to replace any strings. e.g. Arnold%)<br>
-    <label>Single char</label>
-    <input id="singechartext" TYPE="TEXT" name="singleCharTitle">
+<form id="search_form" ACTION="MovieList.html" METHOD="GET">
+    <label>Title:</label>
+    <input id="title_field" TYPE="TEXT">
+    <label>Year:</label>
+    <input id="year_field" TYPE="TEXT">
+    <label>Director:</label>
+    <input id="director_field" TYPE="TEXT">
+    <label>Star Name:</label>
+    <input id="star_name_field" TYPE="TEXT">
 
-    <input TYPE="SUBMIT" VALUE="Browse">
+    <input TYPE="SUBMIT" VALUE="Search">
 
 </form>
 
+<!--Test drop down for sorting-->
+<!--<form id="dropdown_form" METHOD="GET">-->
+<label for="sort_dd">Select a Sorting Option: </label>
+<select id="sort_dd" name="tt" onchange="handleSortOption()">
+    <option value="title_a" name="tet">Title Asc,Rating Asc</option>
+    <option value="title_d" name="ee">Title Desc,Rating Desc</option>
+    <option value="rating_a" name="ee">Rating Asc,Title Asc</option>
+    <option value="rating_d" name="ee">Rating Desc,Title Desc</option>
+</select>
+
+<br>
+<!--num limit form for 10,25,50,100-->
+<label for="itemlimit_dd">Select a Items Limit Option: </label>
+<select id="itemlimit_dd" onchange="handleItemLimitOption()">
+    <option value="10" >10</option>
+    <option value="25" >25</option>
+    <option value="50" >50</option>
+    <option value="100" >100</option>
+</select>
+<br>
+<!--Create the next and previous arrows-->
+<div>
+<!--    The previous button-->
+    <button onclick="OnclickPrevious()">Prevous Page</button>
+    <button onclick="OnclickNext()">Next Page</button>
+</div>
+
+
+
+
+<!--</form>-->
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
