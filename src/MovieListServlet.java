@@ -1,10 +1,12 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mysql.cj.Session;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -17,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import java.util.HashMap;
+import java.util.Map;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/MovieList"
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
@@ -73,6 +76,13 @@ public class MovieListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
+
+        //get session and store url
+        HttpSession currUserSess = (HttpSession) request.getSession();
+
+        String theFullUrlString = request.getRequestURL().toString() + "?" + request.getQueryString();
+
+        currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
 
         //searching
 

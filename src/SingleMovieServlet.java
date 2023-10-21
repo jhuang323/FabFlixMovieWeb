@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -38,6 +39,9 @@ public class SingleMovieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
+
+//        HttpSession currUserSess = (HttpSession) request.getSession();
+//        String theUrl = (String) currUserSess.getAttribute("MovieStoreUrl");
 
         // Retrieve parameter id from url request.
         String id = request.getParameter("id");
