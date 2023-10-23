@@ -44,17 +44,12 @@ function handleMovieListResult(resultData) {
     console.log(resultData.length)
     const urlParams = new URLSearchParams(window.location.search);
     //clean up url params
-    // urlParams.delete("genre");
-    //
-    // urlParams.delete("title");
-    // urlParams.delete("year");
-    // urlParams.delete("director");
-    // urlParams.delete("star_name");
-    //Set required params
-    // urlParams.set("sortfirst","title");
-    // urlParams.set("sorttype","d");
-    // urlParams.set("page",1);
-    // urlParams.set("numlimit",20);
+    urlParams.delete("genre");
+
+    urlParams.delete("title");
+    urlParams.delete("year");
+    urlParams.delete("director");
+    urlParams.delete("star_name");
 
     for (let i = 0; i < resultData.length; i++) {
 
@@ -258,7 +253,8 @@ const queryString = window.location.search;
 console.log(queryString);
 console.log("hello")
 
-InitsetURLParamtoDef();
+//initialize textbox and buttons to the text in  url params
+InitSetButtonsAndBox();
 
 // Makes the HTTP GET request and registers on success callback function handleMovieListResult
 jQuery.ajax({

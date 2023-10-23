@@ -15,7 +15,7 @@
  */
 
 
-let Searchform = $("#search_form");
+let MPSearchform = $("#search_form");
 
 
 
@@ -144,4 +144,4 @@ $.ajax({
 
 
 //bind the submit
-Searchform.submit(handleSearchInfo);
+MPSearchform.submit(handleSearchInfo);
