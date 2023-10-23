@@ -80,10 +80,9 @@ public class MovieListServlet extends HttpServlet {
         //get session and store url
         HttpSession currUserSess = (HttpSession) request.getSession();
 
-        String theFullUrlString = request.getRequestURL().toString() + "?" + request.getQueryString();
-        String[] urlSplit = theFullUrlString.split("api/movie-list");
-        String newURL = urlSplit[0] + "MovieList.html" + urlSplit[1];
-        currUserSess.setAttribute("MovieStoreUrl",newURL);
+        //set the curr session Movie List store URL
+        String theFullUrlString = "MovieList.html" + "?" + request.getQueryString();
+        currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
 
         //searching
 
