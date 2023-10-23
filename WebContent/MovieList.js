@@ -51,10 +51,10 @@ function handleMovieListResult(resultData) {
     // urlParams.delete("director");
     // urlParams.delete("star_name");
     //Set required params
-    urlParams.set("sortfirst","title");
-    urlParams.set("sorttype","d");
-    urlParams.set("page",1);
-    urlParams.set("numlimit",20);
+    // urlParams.set("sortfirst","title");
+    // urlParams.set("sorttype","d");
+    // urlParams.set("page",1);
+    // urlParams.set("numlimit",20);
 
     for (let i = 0; i < resultData.length; i++) {
 

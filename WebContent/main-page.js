@@ -14,6 +14,8 @@
  * @param resultData jsonObject
  */
 
+const DefaultSearchParams = "sortfirst=title&sorttype=a&page=1&numlimit=10"
+
 let myform = $("#search_form");
 
 function getParameterByName(target) {
@@ -53,7 +55,7 @@ function  handleGenreListResult(resultData){
     for(let i = 0;i < resultData.length; i++){
         //appending  a link
         console.log('adding ' + resultData[i]);
-        gnreHrefstr = " <a href=\"MovieList.html?genre="+ resultData[i] +"\">" + resultData[i] + "</a>";
+        gnreHrefstr = " <a href=\"MovieList.html?genre="+ resultData[i] + "&" + DefaultSearchParams +"\">" + resultData[i] +  "</a>";
         GenreLinkElem.append(gnreHrefstr);
 
     }
@@ -61,7 +63,7 @@ function  handleGenreListResult(resultData){
     //insert search alpha
     for(let j = 0; j < SearchAlpabetParam.length;j++){
         console.log("alpha " + SearchAlpabetParam[j] );
-        let alphaSStr = " <a href=\"MovieList.html?char="+ SearchAlpabetParam[j] +"\">" + SearchAlpabetParam[j] + "</a>";
+        let alphaSStr = " <a href=\"MovieList.html?char="+ SearchAlpabetParam[j] + "&" + DefaultSearchParams +"\">" + SearchAlpabetParam[j] + "</a>";
         SearchAlphaElem.append(alphaSStr)
     }
 
