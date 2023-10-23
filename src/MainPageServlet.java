@@ -41,9 +41,6 @@ public class MainPageServlet extends HttpServlet {
 
         response.setContentType("application/json"); // Response mime type
 
-
-
-
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
@@ -60,8 +57,6 @@ public class MainPageServlet extends HttpServlet {
                     "ORDER BY grne.name;\n";
 
             //create the strings for the mysql query
-
-
             // Declare our statement
 //            PreparedStatement statement = conn.prepareStatement(query);
 
@@ -69,11 +64,6 @@ public class MainPageServlet extends HttpServlet {
 
             //create statement
             Statement qGerneNameStatement = conn.createStatement();
-
-
-
-
-
 
             // Perform the query
 //            ResultSet rs = statement.executeQuery();
@@ -84,15 +74,9 @@ public class MainPageServlet extends HttpServlet {
                 RetJsonArray.add(genreNameRS.getString("name"));
             }
 
-
-
-
             //close genre things
             genreNameRS.close();
             qGerneNameStatement.close();
-
-
-
 
             // Write JSON string to output
             out.write(RetJsonArray.toString());
@@ -112,7 +96,6 @@ public class MainPageServlet extends HttpServlet {
         } finally {
             out.close();
         }
-
         // Always remember to close db connection after usage. Here it's done by try-with-resources
 
     }

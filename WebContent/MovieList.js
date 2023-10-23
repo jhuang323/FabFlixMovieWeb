@@ -44,12 +44,17 @@ function handleMovieListResult(resultData) {
     console.log(resultData.length)
     const urlParams = new URLSearchParams(window.location.search);
     //clean up url params
-    urlParams.delete("genre");
-
-    urlParams.delete("title");
-    urlParams.delete("year");
-    urlParams.delete("director");
-    urlParams.delete("star_name");
+    // urlParams.delete("genre");
+    //
+    // urlParams.delete("title");
+    // urlParams.delete("year");
+    // urlParams.delete("director");
+    // urlParams.delete("star_name");
+    //Set required params
+    urlParams.set("sortfirst","title");
+    urlParams.set("sorttype","d");
+    urlParams.set("page",1);
+    urlParams.set("numlimit",20);
 
     for (let i = 0; i < resultData.length; i++) {
 
@@ -89,7 +94,7 @@ function handleMovieListResult(resultData) {
 }
 
 function handleBrowseInfo(SubmitEvent){
-    console.log("handling cart event")
+    console.log("handling Browse event")
     SubmitEvent.preventDefault();
 
     const urlParams = new URLSearchParams(window.location.search);
