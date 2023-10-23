@@ -135,12 +135,6 @@ public class MovieListServlet extends HttpServlet {
         //get the numlimit param
         int numlimitParam = Integer.parseInt(request.getParameter("numlimit"));
 
-
-
-
-
-//        System.out.println("the movie id:" + id);
-
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
