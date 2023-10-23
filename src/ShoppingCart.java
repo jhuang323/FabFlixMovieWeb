@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * This IndexServlet is declared in the web annotation below,
@@ -22,12 +23,38 @@ public class ShoppingCart extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        String sessionId = session.getId();
-        long lastAccessTime = session.getLastAccessedTime();
+        //HashMap<String, MoviePrice> cart = new HashMap<String, MoviePrice>();
+        HashMap<String, MoviePrice> cart = (HashMap<String, MoviePrice>) session.getAttribute("Cart");
+        //Grab action type and movieId from parameters
+        String action = request.getParameter("action");
+        String movieId = request.getParameter("movieid");
+
+        //Check if movieId is in Cart
+        if(cart.get(movieId) == null){
+            cart.put(movieId, new MoviePrice(0));
+        }
+
+        //Perform corresponding action
+        switch (action) {
+            case "add":
+                cart.get(movieId).setMovieCount(1);
+                break;
+            case "subtract":
+                cart.get(movieId).setMovieCount(-1);
+                break;
+            case "delete":
+                cart.remove(movieId);
+                break;
+            default:
+                //Perform view
+                
+                break;
+        }
+        //long lastAccessTime = session.getLastAccessedTime();
 
         JsonObject responseJsonObject = new JsonObject();
-        responseJsonObject.addProperty("sessionID", sessionId);
-        responseJsonObject.addProperty("lastAccessTime", new Date(lastAccessTime).toString());
+       // responseJsonObject.addProperty("sessionID", sessionId);
+        //responseJsonObject.addProperty("lastAccessTime", new Date(lastAccessTime).toString());
 
         ArrayList<String> previousItems = (ArrayList<String>) session.getAttribute("previousItems");
         if (previousItems == null) {

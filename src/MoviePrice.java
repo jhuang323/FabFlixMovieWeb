@@ -7,10 +7,10 @@ public class MoviePrice {
     private int count;
     private float price;
 
-    public MoviePrice(int count, float price) {
+    public MoviePrice(float price) {
 
         this.count = 0;
-        this.price = 0;
+        this.price = price;
     }
     public float getMoviePrice(){
         return this.price;
