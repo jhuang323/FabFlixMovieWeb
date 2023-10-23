@@ -14,9 +14,13 @@
  * @param resultData jsonObject
  */
 
-const DefaultSearchParams = "sortfirst=title&sorttype=a&page=1&numlimit=10"
 
-let myform = $("#search_form");
+let Searchform = $("#search_form");
+
+
+
+// Define the default parameters for movielist page
+const DefaultQueryParams = "sortfirst=title&sorttype=a&page=1&numlimit=10"
 
 function getParameterByName(target) {
     // Get request URL
@@ -55,7 +59,7 @@ function  handleGenreListResult(resultData){
     for(let i = 0;i < resultData.length; i++){
         //appending  a link
         console.log('adding ' + resultData[i]);
-        gnreHrefstr = " <a href=\"MovieList.html?genre="+ resultData[i] + "&" + DefaultSearchParams +"\">" + resultData[i] +  "</a>";
+        gnreHrefstr = " <a href=\"MovieList.html?genre="+ resultData[i] + "&" + DefaultQueryParams +"\">" + resultData[i] +  "</a>";
         GenreLinkElem.append(gnreHrefstr);
 
     }
@@ -63,7 +67,7 @@ function  handleGenreListResult(resultData){
     //insert search alpha
     for(let j = 0; j < SearchAlpabetParam.length;j++){
         console.log("alpha " + SearchAlpabetParam[j] );
-        let alphaSStr = " <a href=\"MovieList.html?char="+ SearchAlpabetParam[j] + "&" + DefaultSearchParams +"\">" + SearchAlpabetParam[j] + "</a>";
+        let alphaSStr = " <a href=\"MovieList.html?char="+ SearchAlpabetParam[j] + "&" + DefaultQueryParams +"\">" + SearchAlpabetParam[j] + "</a>";
         SearchAlphaElem.append(alphaSStr)
     }
 
@@ -71,14 +75,54 @@ function  handleGenreListResult(resultData){
 
 }
 
-function handleBrowseInfo(cartEvent){
-    // cartEvent.preventDefault();
-    $(this)
-        .find('input[name]')
-        .filter(function () {
-            return !this.value;
-        })
-        .prop('name', '');
+function handleSearchInfo(cartEvent){
+    cartEvent.preventDefault();
+
+    //define final search param str
+    let FinalSearchParamStr = "";
+
+
+    //get the search form fields
+    let titleVal = $("#title_form").val();
+    let yearVal = $("#year_form").val();
+    let directorVal = $("#director_form").val();
+    let starNameVal = $("#star_name_form").val();
+
+
+    let paramCount = 0;
+
+    //checking of any of the vals are null
+    if(titleVal != ''){
+        FinalSearchParamStr += "title=" + titleVal;
+        paramCount++;
+    }
+    if(yearVal != ''){
+        FinalSearchParamStr += "&year=" + yearVal;
+        paramCount++;
+    }
+    if(directorVal != ''){
+        FinalSearchParamStr += "&director=" + directorVal;
+        paramCount++;
+    }
+    if(starNameVal != ''){
+        FinalSearchParamStr += "&star_name=" + starNameVal;
+        paramCount++;
+    }
+
+
+
+    //add on the default
+    FinalSearchParamStr += "&" + DefaultQueryParams;
+
+
+    // redirect user to new movielist url
+    if(paramCount > 0){
+        location.href = "MovieList.html?" + FinalSearchParamStr;
+    }
+    else{
+        $("#search_error_message").text("ERROR: You must enter at least one search parameter")
+    }
+
 
 
 }
@@ -100,4 +144,4 @@ $.ajax({
 
 
 //bind the submit
-myform.submit(handleBrowseInfo);
+Searchform.submit(handleSearchInfo);
