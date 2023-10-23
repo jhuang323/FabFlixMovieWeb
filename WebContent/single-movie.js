@@ -63,11 +63,13 @@ function handleResult(resultData) {
     let genreHtml = "";
 
     for (let j = 0; j < genreListData.length; j++){
+        genreHtml += "<a href=" + resultData.genreLink + "&genre=" + genreListData[j] + ">";
         if (j === (genreListData.length-1) ){
-            genreHtml += genreListData[j];
+
+            genreHtml += genreListData[j] + "</a>";
         }
         else{
-            genreHtml += genreListData[j] + ", ";
+            genreHtml += genreListData[j] + "</a>" + ", ";
 
         }
 
