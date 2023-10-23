@@ -129,6 +129,9 @@ public class SingleStarServlet extends HttpServlet {
             //Add jsonArrayMovies to jsonObjStar object
             jsonObjStar.add("movies", jsonArrayMovies);
 
+            //Add session MovieList Url
+            jsonObjStar.addProperty("movieListUrl", (String) request.getSession().getAttribute("MovieStoreUrl"));
+
             //Closing StarMovieInfo statement and resultSet
             resultSetStarMovieInfo.close();
             statementStarMovieInfo.close();

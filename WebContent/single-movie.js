@@ -102,6 +102,11 @@ function handleResult(resultData) {
         starsUListElement.append(starULHtml)
     }
 
+    //Access button within div and fill in the sessioned MovieListUrl
+    $("#ButtonTop20ML-div").find("#backHomeButton").click(function(){
+        window.location.href= resultData.movieListUrl;
+    })
+
 
 }
 

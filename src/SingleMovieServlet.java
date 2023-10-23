@@ -202,6 +202,9 @@ public class SingleMovieServlet extends HttpServlet {
             //add to main json obj
             jsonObject.addProperty("rating",TheRating);
 
+            //Add the sessioned MovieList url
+            jsonObject.addProperty("movieListUrl", (String) request.getSession().getAttribute("MovieStoreUrl"));
+
             ratingStatement.close();
             ratingResultSet.close();
 
