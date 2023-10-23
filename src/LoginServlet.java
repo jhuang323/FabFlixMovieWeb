@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -123,6 +124,8 @@ public class LoginServlet extends HttpServlet {
 
                 // set this user into the session
                 request.getSession().setAttribute("user", new User(username));
+                //set empty Cart for User
+                request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
 
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "success");
