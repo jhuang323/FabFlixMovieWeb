@@ -70,6 +70,11 @@ function handleResult(resultData) {
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
+
+    //Access button and fill in the sessioned MovieListUrl
+    $('#backHomeButton').click(function(){
+        window.location.href= resultData.movieListUrl;
+    })
     console.log("handleResult: successful population of star table from resultData.movies");
 }
 

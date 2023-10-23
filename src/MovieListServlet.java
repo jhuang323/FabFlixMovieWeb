@@ -81,8 +81,9 @@ public class MovieListServlet extends HttpServlet {
         HttpSession currUserSess = (HttpSession) request.getSession();
 
         String theFullUrlString = request.getRequestURL().toString() + "?" + request.getQueryString();
-
-        currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
+        String[] urlSplit = theFullUrlString.split("api/movie-list");
+        String newURL = urlSplit[0] + "MovieList.html" + urlSplit[1];
+        currUserSess.setAttribute("MovieStoreUrl",newURL);
 
         //searching
 
