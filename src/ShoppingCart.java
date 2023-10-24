@@ -80,7 +80,7 @@ public class ShoppingCart extends HttpServlet {
             // Output stream to STDOUT
             PrintWriter out = response.getWriter();
             try (Connection conn = dataSource.getConnection()) {
-                String queryNamePrice = "SELECT mv.title\n" +
+                String queryNamePrice = "SELECT mv.title,mv.price\n" +
                         "FROM movies as mv\n" +
                         "WHERE mv.id=?";
 
@@ -94,8 +94,10 @@ public class ShoppingCart extends HttpServlet {
                 //advance to next
                 namePriceResultSet.next();
 
+                Float afloatprice = Float.valueOf(namePriceResultSet.getString("price"));
+
                 //in cart put in data
-                cart.put(movieId,new MoviePrice(movieId,namePriceResultSet.getString("title"),0));
+                cart.put(movieId,new MoviePrice(movieId,namePriceResultSet.getString("title"),afloatprice));
 
                 //close pricetitle table
                 namePriceResultSet.close();

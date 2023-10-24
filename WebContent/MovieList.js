@@ -32,6 +32,22 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function handleAddtoCart(amovieId){
+    let curMovieTitle = $("#"+amovieId).attr("data-movtitle");
+    console.log("button clicked" + amovieId + " " + $("#"+amovieId).attr("data-movtitle"));
+
+    //make back end jquery to shopping cart
+    jQuery.ajax({
+        // dataType: "json", // Setting return data type
+        method: "GET", // Setting request method
+        url: "api/shopping-cart?" + "action=add" + "&movieid=" + amovieId, // Setting request url, which is mapped by MovieListServlet
+        // success: window.alert("Successfully Added Movie: " + curMovieTitle) // Setting callback function to handle data returned successfully by the StarsServlet
+    });
+
+    //move windows alert out side of ajax call since blocking
+    window.alert("Successfully Added Movie: " + curMovieTitle);
+}
+
 function handleMovieListResult(resultData) {
     console.log("handleMovieListResult: populating movies table from resultData");
 
@@ -81,6 +97,19 @@ function handleMovieListResult(resultData) {
         }
         rowHTML += "</ul>";
         rowHTML += "</td>";
+
+
+        //adding a add to cart button
+        rowHTML += "<td>";
+
+        let theMovid = resultData[i].id;
+
+        rowHTML +="<button type=\"button\" onclick=\"handleAddtoCart(this.id)\" data-movtitle=\""+resultData[i].title+"\" id=\"" +resultData[i].id + "\">Add to Cart</button>";
+
+        rowHTML += "</td>";
+
+
+        //add row end html
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
