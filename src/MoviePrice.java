@@ -7,10 +7,23 @@ public class MoviePrice {
     private int count;
     private float price;
 
-    public MoviePrice(float price) {
+    private String movieTitle;
+    private String movieId;
+
+    public MoviePrice(String aMovId, String amovTitle, float price) {
+
+        this.movieId = aMovId;
+        this.movieTitle = amovTitle;
 
         this.count = 0;
         this.price = price;
+    }
+
+    public String getMovieId(){
+        return this.movieId;
+    }
+    public String getMovieTitle(){
+        return this.movieTitle;
     }
     public float getMoviePrice(){
         return this.price;
