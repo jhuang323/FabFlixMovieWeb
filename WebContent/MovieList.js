@@ -33,15 +33,21 @@ function getParameterByName(target) {
 }
 
 function handleAddtoCart(amovieId){
-    let curMovieTitle = $("#"+amovieId).attr("data-movtitle");
-    console.log("button clicked" + amovieId + " " + $("#"+amovieId).attr("data-movtitle"));
+    //prevent default
 
-    //make back end jquery to shopping cart
-    jQuery.ajax({
-        // dataType: "json", // Setting return data type
-        method: "GET", // Setting request method
-        url: "api/shopping-cart?" + "action=add" + "&movieid=" + amovieId, // Setting request url, which is mapped by MovieListServlet
-        // success: window.alert("Successfully Added Movie: " + curMovieTitle) // Setting callback function to handle data returned successfully by the StarsServlet
+
+    let thisButton = $("#"+amovieId);
+
+    let curMovieTitle = $("#"+amovieId).attr("data-movtitle");
+    console.log("button clicked" + amovieId + " ");
+
+    //use post to make back end query
+    $.ajax("api/shopping-cart", {
+        method: "POST",
+        data: {
+            action:"add",
+            movieid:amovieId
+        }
     });
 
     //move windows alert out side of ajax call since blocking
@@ -104,7 +110,15 @@ function handleMovieListResult(resultData) {
 
         let theMovid = resultData[i].id;
 
-        rowHTML +="<button type=\"button\" onclick=\"handleAddtoCart(this.id)\" data-movtitle=\""+resultData[i].title+"\" id=\"" +resultData[i].id + "\">Add to Cart</button>";
+        let AddtoCartPost = "<form action=\"\" method=\"post\">\n" +
+            "    <button onclick=\"handleAddtoCart(this.id)\" id=\""+theMovid+"\" value=\"add\">Add to C</button>\n" +
+            "</form>\n";
+
+        //atempt to bind
+
+        rowHTML += AddtoCartPost;
+
+        // rowHTML +="<button type=\"button\" onclick=\"handleAddtoCart(this.id)\" data-movtitle=\""+resultData[i].title+"\" id=\"" +resultData[i].id + "\">Add to Cart</button>";
 
         rowHTML += "</td>";
 
