@@ -110,7 +110,7 @@ function handleMovieListResult(resultData) {
 
         let theMovid = resultData[i].id;
 
-        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\" value=\"add\">Add to C</button>\n";
+        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\">Add to Cart</button>\n";
 
         //atempt to bind
 
