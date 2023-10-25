@@ -31,6 +31,28 @@ function getParameterByName(target) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function handleAddtoCart(movieId){
+    //prevent default
+
+
+    let thisButton = $("#"+movieId);
+
+    let curMovieTitle = $("#"+movieId).attr("data-movtitle");
+    console.log("button clicked" + movieId + " ");
+
+    //use post to make back end query
+    $.ajax("api/shopping-cart", {
+        method: "POST",
+        data: {
+            action:"add",
+            movieid:movieId
+        }
+    });
+
+    //move windows alert out side of ajax call since blocking
+    window.alert("Successfully Added Movie: " + curMovieTitle);
+}
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
@@ -89,7 +111,11 @@ function handleResult(resultData) {
     movieDetailStr += "</td>";
 
     movieDetailStr += "<td>";
-    movieDetailStr += "<button id=\"addToCartButton\" type=\"button\" >Add</button>";
+    let movieId = getParameterByName('id');
+    let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" " +
+        "id=\""+movieId+"\" data-movtitle=\""+resultData["title"]+"\">Add to Cart</button>\n";
+    //atempt to bind
+    movieDetailStr += AddtoCartPost;
     movieDetailStr += "</td>";
 
     movieDetailTableElement.append(movieDetailStr);
