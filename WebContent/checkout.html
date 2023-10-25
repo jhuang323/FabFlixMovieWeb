@@ -1,0 +1,35 @@
+<!-- This page will be seen if you logged in -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fablix Checkout</title>
+</head>
+<body>
+Welcome to Checkout!
+<form ACTION="#" id="checkout-form" METHOD="post">
+    <label>First Name</label>
+    <label>
+        <input name="First_name" required="required" type="text">
+    </label>
+    <label>Last Name</label>
+    <label>
+        <input name="Last_name" required="required" type="text">
+    </label>
+    <label>Credit Card Number</label>
+    <label>
+        <input name="CreditCard_number" required="required" type="text">
+    </label>
+    <label>Expiration Date</label>
+    <label>
+        <input name="Expiration_date" required="required" type="date">
+    </label>
+    <input type="submit" VALUE="add">
+</form>
+<div id="item_list"></div>
+
+<!-- include your own JS file -->
+<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+<script type='text/javascript' src='checkout.js'></script>
+</body>
+</html>

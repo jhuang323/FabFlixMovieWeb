@@ -114,13 +114,20 @@ function handleResult(resultData) {
         window.location.href= resultData.movieListUrl;
     })
     $("#movie_info_table").find("#addToCartButton").click(function(){
+
         let movieId = getParameterByName('id');
         jQuery.ajax({
-            dataType: "json",  // Setting return data type
-            method: "GET",// Setting request method
-            url: "api/shopping-cart?movieid=" + movieId + "&action=add", // Setting request url, which is mapped by StarsServlet in Stars.java
-            success: window.alert("Successfully added " + resultData["title"] + " to cart!")// Setting callback function to handle data returned successfully by the SingleStarServlet
+            // dataType: "json",  // Setting return data type
+            method: "POST",// Setting request method
+            url: "api/shopping-cart", // Setting request url, which is mapped by StarsServlet in Stars.java
+            data:{
+                action:"add",
+                movieid:movieId,
+            },
+            // success: window.alert("Successfully added " + resultData["title"] + " to cart!")// Setting callback function to handle data returned successfully by the SingleStarServlet
         });
+
+        window.alert("Successfully added " + resultData["title"] + " to cart!")
     })
 
 
