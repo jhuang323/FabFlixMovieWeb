@@ -34,9 +34,6 @@ function getParameterByName(target) {
 function handleAddtoCart(movieId){
     //prevent default
 
-
-    let thisButton = $("#"+movieId);
-
     let curMovieTitle = $("#"+movieId).attr("data-movtitle");
     console.log("button clicked" + movieId + " ");
 
@@ -139,23 +136,6 @@ function handleResult(resultData) {
     $("#ButtonTop20ML-div").find("#backHomeButton").click(function(){
         window.location.href= resultData.movieListUrl;
     })
-    $("#movie_info_table").find("#addToCartButton").click(function(){
-
-        let movieId = getParameterByName('id');
-        jQuery.ajax({
-            // dataType: "json",  // Setting return data type
-            method: "POST",// Setting request method
-            url: "api/shopping-cart", // Setting request url, which is mapped by StarsServlet in Stars.java
-            data:{
-                action:"add",
-                movieid:movieId,
-            },
-            // success: window.alert("Successfully added " + resultData["title"] + " to cart!")// Setting callback function to handle data returned successfully by the SingleStarServlet
-        });
-
-        window.alert("Successfully added " + resultData["title"] + " to cart!")
-    })
-
 
 }
 

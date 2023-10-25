@@ -49,6 +49,7 @@ public class ShoppingCart extends HttpServlet {
         for(Map.Entry<String,MoviePrice> ahashmapEntry: ahashMap.entrySet()){
             //build json obj
             JsonObject aMovieJsonobj = new JsonObject();
+            aMovieJsonobj.addProperty("MovieID", ahashmapEntry.getValue().getMovieId());
             aMovieJsonobj.addProperty("MovieTitle", ahashmapEntry.getValue().getMovieTitle());
             aMovieJsonobj.addProperty("MoviePrice",ahashmapEntry.getValue().getMoviePrice());
             aMovieJsonobj.addProperty("MovieQuantity",ahashmapEntry.getValue().getMovieCount());
@@ -121,19 +122,19 @@ public class ShoppingCart extends HttpServlet {
                 out.close();
             }
 
-
-
-
-
         }
-
         //Perform corresponding action
         switch (action) {
             case "add":
                 cart.get(movieId).setMovieCount(1);
                 break;
             case "subtract":
-                cart.get(movieId).setMovieCount(-1);
+                if((cart.get(movieId).getMovieCount() - 1) == 0){
+                    cart.remove(movieId);
+                }
+                else {
+                    cart.get(movieId).setMovieCount(-1);
+                }
                 break;
             case "delete":
                 cart.remove(movieId);
@@ -143,8 +144,6 @@ public class ShoppingCart extends HttpServlet {
 
                 break;
         }
-
-
 
 
     }

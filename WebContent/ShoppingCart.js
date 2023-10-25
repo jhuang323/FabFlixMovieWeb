@@ -1,74 +1,107 @@
-let cart = $("#cart");
+function handleIncrementtoCart(movieId){
+    //prevent default
 
-/**
- * Handle the data returned by IndexServlet
- * @param resultDataString jsonObject, consists of session info
- */
-function handleSessionData(resultDataString) {
-    let resultDataJson = JSON.parse(resultDataString);
+    console.log(" increment button clicked" + movieId + " ");
 
-    console.log("handle session response");
-    console.log(resultDataJson);
-    console.log(resultDataJson["sessionID"]);
-
-    // show the session information 
-    $("#sessionID").text("Session ID: " + resultDataJson["sessionID"]);
-    $("#lastAccessTime").text("Last access time: " + resultDataJson["lastAccessTime"]);
-
-    // show cart information
-    handleCartArray(resultDataJson["previousItems"]);
-}
-
-/**
- * Handle the items in item list
- * @param resultArray jsonObject, needs to be parsed to html
- */
-function handleCartArray(resultArray) {
-    console.log(resultArray);
-    let item_list = $("#item_list");
-    // change it to html list
-    let res = "<ul>";
-    for (let i = 0; i < resultArray.length; i++) {
-        // each item will be in a bullet point
-        res += "<li>" + resultArray[i] + "</li>";
-    }
-    res += "</ul>";
-
-    // clear the old array and show the new array in the frontend
-    item_list.html("");
-    item_list.append(res);
-}
-
-/**
- * Submit form content with POST method
- * @param cartEvent
- */
-function handleCartInfo(cartEvent) {
-    console.log("submit cart form");
-    /**
-     * When users click the submit button, the browser will not direct
-     * users to the url defined in HTML form. Instead, it will call this
-     * event handler when the event is triggered.
-     */
-    cartEvent.preventDefault();
-
-    $.ajax("api/index", {
+    //use post to make back end query
+    $.ajax("api/shopping-cart", {
         method: "POST",
-        data: cart.serialize(),
-        success: resultDataString => {
-            let resultDataJson = JSON.parse(resultDataString);
-            handleCartArray(resultDataJson["previousItems"]);
+        data: {
+            action:"add",
+            movieid:movieId
         }
     });
 
-    // clear input form
-    cart[0].reset();
 }
 
-$.ajax("api/index", {
-    method: "GET",
-    success: handleSessionData
-});
+function handleDecrementtoCart(movieId){
+    //prevent default
 
-// Bind the submit action of the form to a event handler function
-cart.submit(handleCartInfo);
+    console.log(" decrement button clicked" + movieId + " ");
+
+    //use post to make back end query
+    $.ajax("api/shopping-cart", {
+        method: "POST",
+        data: {
+            action:"subtract",
+            movieid:movieId
+        }
+    });
+}
+
+function handleDeletetoCart(movieId){
+    //prevent default
+
+    let curMovieTitle = $("#"+movieId).attr("data-movtitle");
+    console.log(" delete button clicked" + movieId + " ");
+
+    //use post to make back end query
+    $.ajax("api/shopping-cart", {
+        method: "POST",
+        data: {
+            action:"delete",
+            movieid:movieId
+        }
+    });
+
+    //move windows alert out side of ajax call since blocking
+    window.alert("Successfully Deleted Movie: " + curMovieTitle);
+}
+
+function handleCartArray(resultArray) {
+    console.log("Handling shopping cart array");
+
+    let shoppingCartTable = jQuery("#shoppingCartTable");
+    for (let i = 0; i < resultArray.length; i++) {
+        let rowHTML = "";
+        rowHTML += "<tr>";
+
+        rowHTML += "<th>";
+        rowHTML += resultArray[i].MovieTitle;
+        rowHTML += "</th>";
+
+        rowHTML += "<th>";
+
+        let theMovid = resultArray[i].MovieID;
+
+        let DecrementtoCartPost = "<button onclick=\"handleDecrementtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultArray[i].MovieTitle+"\"> - </button>\n";
+        //atempt to bind
+        rowHTML += DecrementtoCartPost;
+
+        rowHTML += resultArray[i].MovieQuantity;
+
+        let IncrementtoCartPost = "<button onclick=\"handleIncrementtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultArray[i].MovieTitle+"\"> + </button>\n";
+        //atempt to bind
+        rowHTML += IncrementtoCartPost;
+
+
+        rowHTML += "</th>";
+
+        rowHTML += "<th>";
+        let DeletetoCartPost = "<button onclick=\"handleDeletetoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultArray[i].MovieTitle+"\"> X </button>\n";
+        //atempt to bind
+        rowHTML += DeletetoCartPost;
+        rowHTML += "</th>";
+
+        rowHTML += "<th>";
+        rowHTML += resultArray[i].MoviePrice;
+        rowHTML += "</th>";
+
+        rowHTML += "<th>";
+        let total = parseFloat(resultArray[i].MoviePrice) * parseFloat(resultArray[i].MovieQuantity);
+        rowHTML += total.toString();
+        rowHTML += "</th>";
+
+        rowHTML += "</tr>";
+
+        // Append the row created to the table body, which will refresh the page
+        shoppingCartTable.append(rowHTML);
+    }
+}
+
+jQuery.ajax({
+    dataType: "json",  // Setting return data type
+    method: "GET",// Setting request method
+    url: "api/shopping-cart?action=view", // Setting request url, which is mapped by StarsServlet in Stars.java
+    success: (resultArray) => handleCartArray(resultArray) // Setting callback function to handle data returned successfully by the SingleStarServlet
+});
