@@ -84,12 +84,6 @@ public class MovieListServlet extends HttpServlet {
         String theFullUrlString = "MovieList.html" + "?" + request.getQueryString();
         currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
 
-        //checking
-        String isChecking = request.getParameter("checking");
-        if(isChecking == null){
-            isChecking="false";
-        }
-
 
         //searching
 
@@ -141,6 +135,18 @@ public class MovieListServlet extends HttpServlet {
 
         //get the numlimit param
         int numlimitParam = Integer.parseInt(request.getParameter("numlimit"));
+        int CalcnumlimitParam = numlimitParam;
+
+
+        //checking
+        String isChecking = request.getParameter("checking");
+        if(isChecking == null){
+            isChecking="false";
+        }
+        else{
+            //is checking is true
+            CalcnumlimitParam = 1;
+        }
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -252,7 +258,7 @@ public class MovieListServlet extends HttpServlet {
                 Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                 //add the limits
-                Mainquery += "\nLIMIT " + numlimitParam;
+                Mainquery += "\nLIMIT " + CalcnumlimitParam;
                 Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
                 Mainquery += ";";
@@ -277,7 +283,7 @@ public class MovieListServlet extends HttpServlet {
                     Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                     //add the limits
-                    Mainquery += "\nLIMIT " + numlimitParam;
+                    Mainquery += "\nLIMIT " + CalcnumlimitParam;
                     Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
 
@@ -295,7 +301,7 @@ public class MovieListServlet extends HttpServlet {
                         Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                         //add the limits
-                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nLIMIT " + CalcnumlimitParam;
                         Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
                         MainPrepStatement = conn.prepareStatement(Mainquery);
@@ -310,7 +316,7 @@ public class MovieListServlet extends HttpServlet {
                         Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
 
                         //add the limits
-                        Mainquery += "\nLIMIT " + numlimitParam;
+                        Mainquery += "\nLIMIT " + CalcnumlimitParam;
                         Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
 
 

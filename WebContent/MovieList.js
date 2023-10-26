@@ -245,7 +245,7 @@ function OnclickPrevious(){
     //checking for page 1
     let prevPageNum = Number(urlParams.get("page"))-1;
 
-    if(prevPageNum > 1){
+    if(prevPageNum >= 1){
         urlParams.set("page",prevPageNum);
         window.location.search = urlParams.toString();
     }
