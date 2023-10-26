@@ -210,6 +210,9 @@ function handleItemLimitOption(cartEvent){
     //change query param
     urlParams.set("numlimit",ItemLimitSelectVal);
 
+    //reset the page to 1
+    urlParams.set("page",1)
+
     //update the query param in browser
     window.location.search = urlParams.toString();
 
