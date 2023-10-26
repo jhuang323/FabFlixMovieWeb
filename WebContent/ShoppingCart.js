@@ -9,8 +9,21 @@ function handleIncrementtoCart(movieId){
         data: {
             action:"add",
             movieid:movieId
+        },
+        success: (resultData) => {
+            window.location.reload()
+            jQuery.ajax({
+                dataType: "json",  // Setting return data type
+                method: "GET",// Setting request method
+                url: "api/shopping-cart?action=view", // Setting request url, which is mapped by StarsServlet in Stars.java
+                success: (resultArray) => {
+                    handleCartArray(resultArray)
+                } // Setting callback function to handle data returned successfully by the SingleStarServlet
+            });
         }
     });
+
+
 
 }
 
@@ -25,6 +38,17 @@ function handleDecrementtoCart(movieId){
         data: {
             action:"subtract",
             movieid:movieId
+        },
+        success: (resultData) => {
+            window.location.reload()
+            jQuery.ajax({
+                dataType: "json",  // Setting return data type
+                method: "GET",// Setting request method
+                url: "api/shopping-cart?action=view", // Setting request url, which is mapped by StarsServlet in Stars.java
+                success: (resultArray) => {
+                    handleCartArray(resultArray)
+                } // Setting callback function to handle data returned successfully by the SingleStarServlet
+            });
         }
     });
 }
@@ -41,6 +65,17 @@ function handleDeletetoCart(movieId){
         data: {
             action:"delete",
             movieid:movieId
+        },
+        success: (resultData) => {
+            window.location.reload()
+            jQuery.ajax({
+                dataType: "json",  // Setting return data type
+                method: "GET",// Setting request method
+                url: "api/shopping-cart?action=view", // Setting request url, which is mapped by StarsServlet in Stars.java
+                success: (resultArray) => {
+                    handleCartArray(resultArray)
+                } // Setting callback function to handle data returned successfully by the SingleStarServlet
+            });
         }
     });
 
