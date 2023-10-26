@@ -41,6 +41,34 @@ public class ShoppingCart extends HttpServlet {
         }
     }
 
+    //helper function to build json obj for total
+    private JsonObject buildTotalObj(HashMap<String, MoviePrice> ahashMap){
+        JsonObject retTotalObj = new JsonObject();
+
+        float runningTotal = 0;
+        int totalItems = 0;
+
+        //iter overhash map
+        for(Map.Entry<String,MoviePrice> ahashmapEntry: ahashMap.entrySet()) {
+            //get quantity and price
+            int thecount = ahashmapEntry.getValue().getMovieCount();
+            float theprice = ahashmapEntry.getValue().getMoviePrice();
+
+            totalItems += thecount;
+
+            runningTotal += thecount * theprice;
+        }
+
+
+
+        retTotalObj.addProperty("total",Math.round(runningTotal * 100.0) / 100.0);
+        retTotalObj.addProperty("numofitems",totalItems);
+
+        //return
+        return retTotalObj;
+
+    }
+
     //helper function to build json
     private JsonArray buildShoppingCartArr(HashMap<String, MoviePrice> ahashMap){
         JsonArray retShoppingCartArr = new JsonArray();
@@ -152,86 +180,30 @@ public class ShoppingCart extends HttpServlet {
      * handles GET requests to store session information
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //get action parameter
+        String actionparam = request.getParameter("action");
+
+        //load the session hashmap
         HttpSession session = request.getSession();
         HashMap<String, MoviePrice> cart = (HashMap<String, MoviePrice>) session.getAttribute("Cart");
-        //Grab action type  which is only view
-//        String action = request.getParameter("action");
-//        String movieId = request.getParameter("movieid");
 
-//        //Check if movieId is in Cart
-//        if(action.equals("add") && cart.get(movieId) == null){
-//            //run sql to get title and price
-//
-//            // Output stream to STDOUT
-//            PrintWriter out = response.getWriter();
-//            try (Connection conn = dataSource.getConnection()) {
-//                String queryNamePrice = "SELECT mv.title,mv.price\n" +
-//                        "FROM movies as mv\n" +
-//                        "WHERE mv.id=?";
-//
-//                //prepare statement
-//                PreparedStatement namePriceStatement = conn.prepareStatement(queryNamePrice);
-//                //set prepare statement params
-//                namePriceStatement.setString(1,movieId);
-//
-//                ResultSet namePriceResultSet = namePriceStatement.executeQuery();
-//
-//                //advance to next
-//                namePriceResultSet.next();
-//
-//                Float afloatprice = Float.valueOf(namePriceResultSet.getString("price"));
-//
-//                //in cart put in data
-//                cart.put(movieId,new MoviePrice(movieId,namePriceResultSet.getString("title"),afloatprice));
-//
-//                //close pricetitle table
-//                namePriceResultSet.close();
-//                namePriceStatement.close();
-//
-//            } catch (Exception e) {
-//                // Write error message JSON object to output
-//                JsonObject jsonObject = new JsonObject();
-//                jsonObject.addProperty("errorMessage", e.getMessage());
-//                out.write(jsonObject.toString());
-//
-//                // Log error to localhost log
-//                request.getServletContext().log("Error:", e);
-//                // Set response status to 500 (Internal Server Error)
-//                response.setStatus(500);
-//            } finally {
-//                out.close();
-//            }
-//
-//
-//
-//
-//
-//        }
+        //set response as json
+        response.setContentType("application/json");
 
-        //Perform corresponding action
-//        switch (action) {
-//            case "add":
-//                cart.get(movieId).setMovieCount(1);
-//                break;
-//            case "subtract":
-//                cart.get(movieId).setMovieCount(-1);
-//                break;
-//            case "delete":
-//                cart.remove(movieId);
-//                break;
-//            case "view":
-//                //
-//                response.setContentType("application/json");
-//                JsonArray ThefinalJsonArr = buildShoppingCartArr(cart);
-//                response.getWriter().write(ThefinalJsonArr.toString());
-//
-//            default:
-//                //Perform view
-//
-//                break;
-                response.setContentType("application/json");
-                JsonArray ThefinalJsonArr = buildShoppingCartArr(cart);
-                response.getWriter().write(ThefinalJsonArr.toString());
+        if(actionparam.equals("total")){
+            //return the total
+            JsonObject ThefinalJsonObjTotal = buildTotalObj(cart);
+            response.getWriter().write(ThefinalJsonObjTotal.toString());
+
+        }
+        else{
+            //return a json array of the objects
+            JsonArray ThefinalJsonArr = buildShoppingCartArr(cart);
+            response.getWriter().write(ThefinalJsonArr.toString());
+        }
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-let CheckoutForm = $("#checkout-form");
+
 
 /**
  * Handle the data returned by IndexServlet
@@ -44,12 +44,11 @@ function handleCheckoutResponse(ajsonobj){
     let resultDataJson = JSON.parse(ajsonobj);
 
     if(resultDataJson.success == 0){
-        window.alert(resultDataJson.message);
+        window.alert("failed")
     }
     else {
-        // window.alert("success");
+        window.alert("success")
         //redirect to success page
-        window.location.href = "paymentsuccess.html";
     }
 }
 
@@ -78,5 +77,6 @@ function handleCheckoutInfo(cartEvent) {
     cart[0].reset();
 }
 
+
 // Bind the submit action of the form to a event handler function
-CheckoutForm.submit(handleCheckoutInfo);
+
