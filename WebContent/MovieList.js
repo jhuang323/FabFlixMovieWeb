@@ -129,7 +129,7 @@ function handleMovieListResult(resultData) {
     }
 }
 
-function handleBrowseInfo(SubmitEvent){
+function handleSortInfo(SubmitEvent){
     console.log("handling Browse event")
     SubmitEvent.preventDefault();
 
@@ -142,6 +142,8 @@ function handleBrowseInfo(SubmitEvent){
     urlParams.delete("year");
     urlParams.delete("director");
     urlParams.delete("star_name");
+    //reset the page to 1
+    urlParams.set("page",1)
 
     //get fields
     console.log("the title is:" + $("#title_field").val());
@@ -343,4 +345,4 @@ jQuery.ajax({
 
 
 //bind the submit
-TheSearchformElem.submit(handleBrowseInfo);
+TheSearchformElem.submit(handleSortInfo);
