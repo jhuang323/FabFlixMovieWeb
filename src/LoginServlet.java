@@ -119,11 +119,14 @@ public class LoginServlet extends HttpServlet {
 
                 String inputEmail = resultUserInput.getString("email");
                 String inputPassword = resultUserInput.getString("password");
+                int inputID = resultUserInput.getInt("id");
 
                 // Login success:
 
+
+
                 // set this user into the session
-                request.getSession().setAttribute("user", new User(username));
+                request.getSession().setAttribute("user", new User(username,inputID));
                 //set empty Cart for User
                 request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
 
