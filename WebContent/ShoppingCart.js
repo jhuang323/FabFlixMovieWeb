@@ -56,11 +56,11 @@ function handleCartArray(resultArray) {
         let rowHTML = "";
         rowHTML += "<tr>";
 
-        rowHTML += "<th>";
+        rowHTML += "<td>";
         rowHTML += resultArray[i].MovieTitle;
-        rowHTML += "</th>";
+        rowHTML += "</td>";
 
-        rowHTML += "<th>";
+        rowHTML += "<td>";
 
         let theMovid = resultArray[i].MovieID;
 
@@ -75,22 +75,22 @@ function handleCartArray(resultArray) {
         rowHTML += IncrementtoCartPost;
 
 
-        rowHTML += "</th>";
+        rowHTML += "</td>";
 
-        rowHTML += "<th>";
+        rowHTML += "<td>";
         let DeletetoCartPost = "<button onclick=\"handleDeletetoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultArray[i].MovieTitle+"\"> X </button>\n";
         //atempt to bind
         rowHTML += DeletetoCartPost;
-        rowHTML += "</th>";
+        rowHTML += "</td>";
 
-        rowHTML += "<th>";
+        rowHTML += "<td>";
         rowHTML += resultArray[i].MoviePrice;
-        rowHTML += "</th>";
+        rowHTML += "</td>";
 
-        rowHTML += "<th>";
+        rowHTML += "<td>";
         let total = parseFloat(resultArray[i].MoviePrice) * parseFloat(resultArray[i].MovieQuantity);
         rowHTML += total.toString();
-        rowHTML += "</th>";
+        rowHTML += "</td>";
 
         rowHTML += "</tr>";
 
