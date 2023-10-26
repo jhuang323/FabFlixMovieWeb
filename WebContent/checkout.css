@@ -1,0 +1,69 @@
+body{
+    background-color: #cbfdc9;
+    margin: 10%;
+}
+
+/*Adds color changing effect to "Single Star Page" header*/
+h1{
+    color: #4F564F;
+    font-weight: bold;
+    background-image: linear-gradient(
+            -225deg,
+            #cf575b 0%,
+            #f5ca3b 29%,
+            #f57f3b 67%,
+            #6b5a9e 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate 2s linear infinite;
+    display: inline-block;
+}
+
+/*Animation behind color changing text*/
+@keyframes animate {
+    to {
+        background-position: 400% center;
+    }
+}
+
+#search_div {
+    margin: auto;
+    width: 50%;
+    border: 10px #4F564F;
+    padding: 10px;
+    text-align: center;
+    background-color: #F1E5C6;
+}
+/*label{*/
+/*    display: inline-block;*/
+/*    float: left;*/
+/*    clear: left;*/
+/*    width: 250px;*/
+/*    text-align: right;*/
+/*}*/
+.text-center {
+    text-align: center;
+}
+/*!*Change color of star info text*!*/
+/*#star_info{*/
+/*    color: #4F564F;*/
+/*    font-size: 21px;*/
+/*}*/
+
+/*!*Change table header row to beige*!*/
+/*thead{*/
+/*    background-color: #F1E5C6;*/
+/*    color: #4F564F;*/
+/*}*/
+
+/*!*Change table body background to lighter grey*!*/
+/*#top20_table_body{*/
+/*    background-color: #e9eef5;*/
+/*}*/

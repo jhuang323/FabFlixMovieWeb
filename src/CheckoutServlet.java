@@ -135,6 +135,9 @@ public class CheckoutServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
+
+
+
         try (Connection conn = dataSource.getConnection()) {
             JsonObject responseJsonObject = new JsonObject();
             // Declare our cc statement
@@ -150,7 +153,13 @@ public class CheckoutServlet extends HttpServlet {
             // Perform the query
             ResultSet resultsetCreditCard = statementCreditCard.executeQuery();
 
-            if(resultsetCreditCard.next() == false){
+
+            //check if cart is empty first
+            if(Usercart.isEmpty()) {
+                responseJsonObject.addProperty("success",0);
+                responseJsonObject.addProperty("message","Payment Failed: Cart is Empty");
+
+            }else if(resultsetCreditCard.next() == false){
                 //fail to find the cc info
                 responseJsonObject.addProperty("success",0);
                 responseJsonObject.addProperty("message","Payment Failed: Please recheck the information entered");
