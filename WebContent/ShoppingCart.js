@@ -99,6 +99,10 @@ function handleCartArray(resultArray) {
     }
 }
 
+function OnclickCheckout(){
+    window.location.href= "checkout.html";
+}
+
 jQuery.ajax({
     dataType: "json",  // Setting return data type
     method: "GET",// Setting request method
