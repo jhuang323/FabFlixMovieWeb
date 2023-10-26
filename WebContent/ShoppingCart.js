@@ -1,3 +1,8 @@
+function handleTotal(resultObj){
+    let shoppingCartTable = jQuery("#shoppingCartTable");
+    shoppingCartTable.append("<tr><td>" + "Total Amount: $" + resultObj.total + "</td></tr>")
+
+}
 function handleIncrementtoCart(movieId){
     //prevent default
 
@@ -97,6 +102,12 @@ function handleCartArray(resultArray) {
         // Append the row created to the table body, which will refresh the page
         shoppingCartTable.append(rowHTML);
     }
+    jQuery.ajax({
+        dataType: "json",  // Setting return data type
+        method: "GET",// Setting request method
+        url: "api/shopping-cart?action=total", // Setting request url, which is mapped by StarsServlet in Stars.java
+        success: (resultObj) => handleTotal(resultObj) // Setting callback function to handle data returned successfully by the SingleStarServlet
+    });
 }
 
 function OnclickCheckout(){
