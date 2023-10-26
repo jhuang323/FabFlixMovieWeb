@@ -84,6 +84,13 @@ public class MovieListServlet extends HttpServlet {
         String theFullUrlString = "MovieList.html" + "?" + request.getQueryString();
         currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
 
+        //checking
+        String isChecking = request.getParameter("checking");
+        if(isChecking == null){
+            isChecking="false";
+        }
+
+
         //searching
 
         // Retrieve parameter title from url request.
@@ -340,93 +347,108 @@ public class MovieListServlet extends HttpServlet {
             ResultSet resultSet = MainPrepStatement.executeQuery();
             //Create the final json array to be returned
             JsonArray jsonArrayMovieList = new JsonArray();
+            JsonObject retJsonObjChecking = new JsonObject();
 
-//            //queryFirstThreeGenres and queryFirstThreeStars
-            while (resultSet.next()){
-                //get movie id
-                String currentMovId = resultSet.getString("id");
-                //create a json object
-                JsonObject SingleMovieJsonObj = new JsonObject();
+            if(isChecking.equals("true")){
+                if(resultSet.next() == false){
+                    //is empty
+                    retJsonObjChecking.addProperty("empty",true);
+                }
+                else {
+                    retJsonObjChecking.addProperty("empty",false);
+                }
+            }
+            else{
+                //            //queryFirstThreeGenres and queryFirstThreeStars
+                while (resultSet.next()){
+                    //get movie id
+                    String currentMovId = resultSet.getString("id");
+                    //create a json object
+                    JsonObject SingleMovieJsonObj = new JsonObject();
 
-                //add id title year and director
-                SingleMovieJsonObj.addProperty("id",currentMovId);
-                SingleMovieJsonObj.addProperty("title",resultSet.getString("title"));
-                SingleMovieJsonObj.addProperty("year",resultSet.getString("year"));
-                SingleMovieJsonObj.addProperty("director",resultSet.getString("director"));
+                    //add id title year and director
+                    SingleMovieJsonObj.addProperty("id",currentMovId);
+                    SingleMovieJsonObj.addProperty("title",resultSet.getString("title"));
+                    SingleMovieJsonObj.addProperty("year",resultSet.getString("year"));
+                    SingleMovieJsonObj.addProperty("director",resultSet.getString("director"));
 
 
 
 
 //                System.out.println("the movie id: " + currentMovId + " title: " + resultSet.getString("title"));
-                //call the get movie The three genres portion
-                // Declare our FirstThreeGenres statement
-                PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
+                    //call the get movie The three genres portion
+                    // Declare our FirstThreeGenres statement
+                    PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
 //
 //                // Set the parameter represented by "?" in the query to the movie id from top20,
 //                // num 1 indicates the first "?" in the query
-                statementFirstThreeGenres.setString(1, currentMovId);
+                    statementFirstThreeGenres.setString(1, currentMovId);
 
 //                //Execute statement
-                ResultSet resultSetFirstThreeGenres = statementFirstThreeGenres.executeQuery();
+                    ResultSet resultSetFirstThreeGenres = statementFirstThreeGenres.executeQuery();
 
-                JsonArray InnerGenreArry = new JsonArray();
+                    JsonArray InnerGenreArry = new JsonArray();
 //
-                while (resultSetFirstThreeGenres.next()){
+                    while (resultSetFirstThreeGenres.next()){
 //                    System.out.println("Genres:" + resultSetFirstThreeGenres.getString("name"));
-                    InnerGenreArry.add(resultSetFirstThreeGenres.getString("name"));
+                        InnerGenreArry.add(resultSetFirstThreeGenres.getString("name"));
 
-                }
-
-
+                    }
 
 
-                //closing genres
-                resultSetFirstThreeGenres.close();
-                statementFirstThreeGenres.close();
 
-                //append inner array
-                SingleMovieJsonObj.add("genre",InnerGenreArry);
 
-                //Getting the three stars portion
-                // Declare our FirstThreeGenres statement
-                PreparedStatement statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
+                    //closing genres
+                    resultSetFirstThreeGenres.close();
+                    statementFirstThreeGenres.close();
+
+                    //append inner array
+                    SingleMovieJsonObj.add("genre",InnerGenreArry);
+
+                    //Getting the three stars portion
+                    // Declare our FirstThreeGenres statement
+                    PreparedStatement statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
 //
 //                // Set the parameter represented by "?" in the query to the movie id from top20,
 //                // num 1 indicates the first "?" in the query
-                statementFirstThreeStars.setString(1, currentMovId);
+                    statementFirstThreeStars.setString(1, currentMovId);
 
 //                //Execute statement
-                ResultSet resultSetFirstThreeStars = statementFirstThreeStars.executeQuery();
+                    ResultSet resultSetFirstThreeStars = statementFirstThreeStars.executeQuery();
 
-                JsonArray InnerStarArry = new JsonArray();
+                    JsonArray InnerStarArry = new JsonArray();
 //
-                while (resultSetFirstThreeStars.next()){
-                    JsonObject InnerStarObj = new JsonObject();
+                    while (resultSetFirstThreeStars.next()){
+                        JsonObject InnerStarObj = new JsonObject();
 //                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
-                    InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("starId"));
-                    InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
+                        InnerStarObj.addProperty("id",resultSetFirstThreeStars.getString("starId"));
+                        InnerStarObj.addProperty("name",resultSetFirstThreeStars.getString("name"));
 
-                    //append to the innerstar list
-                    InnerStarArry.add(InnerStarObj);
+                        //append to the innerstar list
+                        InnerStarArry.add(InnerStarObj);
 
-                }
+                    }
 
-                //closing stars
-                resultSetFirstThreeStars.close();
-                statementFirstThreeStars.close();
+                    //closing stars
+                    resultSetFirstThreeStars.close();
+                    statementFirstThreeStars.close();
 
-                //append inner array
-                SingleMovieJsonObj.add("star",InnerStarArry);
+                    //append inner array
+                    SingleMovieJsonObj.add("star",InnerStarArry);
 
-                //rating portion
-                SingleMovieJsonObj.addProperty("rating",resultSet.getString("rating"));
+                    //rating portion
+                    SingleMovieJsonObj.addProperty("rating",resultSet.getString("rating"));
 
 
-                //append json obj to array
-                jsonArrayMovieList.add(SingleMovieJsonObj);
+                    //append json obj to array
+                    jsonArrayMovieList.add(SingleMovieJsonObj);
 
 //
+                }
             }
+
+
+
             //close top20
             resultSet.close();
             MainPrepStatement.close();
@@ -437,7 +459,13 @@ public class MovieListServlet extends HttpServlet {
             request.getServletContext().log("getting " + jsonArrayMovieList.size() + " results");
 
             // Write JSON string to output
-            out.write(jsonArrayMovieList.toString());
+            if(isChecking.equals("true")){
+                out.write(retJsonObjChecking.toString());
+            }
+            else {
+                out.write(jsonArrayMovieList.toString());
+            }
+
             // Set response status to 200 (OK)
             response.setStatus(200);
 

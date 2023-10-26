@@ -242,14 +242,43 @@ function InitsetURLParamtoDef(){
 
 function OnclickPrevious(){
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("page",Number(urlParams.get("page"))-1);
-    window.location.search = urlParams.toString();
+    //checking for page 1
+    let prevPageNum = Number(urlParams.get("page"))-1;
+
+    if(prevPageNum > 1){
+        urlParams.set("page",prevPageNum);
+        window.location.search = urlParams.toString();
+    }
+
+
 }
 
 function OnclickNext(){
     const urlParams = new URLSearchParams(window.location.search);
+
     urlParams.set("page",Number(urlParams.get("page"))+1);
-    window.location.search = urlParams.toString();
+
+    //check if next page is null
+    const curqueryString = window.location.search;
+
+    jQuery.ajax({
+        dataType: "json", // Setting return data type
+        method: "GET", // Setting request method
+        url: "api/movie-list?" + urlParams + "&checking=true", // Setting request url, which is mapped by MovieListServlet
+        success: (resultData) => {
+            // JSON.parse(resultData);
+            // console.log("the checking value" + resultData.empty + urlParams);
+
+            //go to next page if not empty
+            if(!resultData.empty){
+                window.location.search = urlParams.toString();
+            }
+
+        } // Setting callback function to handle data returned successfully by the StarsServlet
+    });
+
+
+
 }
 
 // Function to set the buttons and search box to what ever value is in url
