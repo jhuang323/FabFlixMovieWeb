@@ -169,7 +169,9 @@ public class CheckoutServlet extends HttpServlet {
                 recordTransactions(Usercart,UserObj);
 
                 //clear the Usercart
-                Usercart.clear();
+                synchronized (Usercart) {
+                    Usercart.clear();
+                }
 
                 //store hashmap back in session
                 session.setAttribute("Cart",Usercart);

@@ -61,7 +61,6 @@ function handleDecrementtoCart(movieId){
 function handleDeletetoCart(movieId){
     //prevent default
 
-    let curMovieTitle = $("#"+movieId).attr("data-movtitle");
     console.log(" delete button clicked" + movieId + " ");
 
     //use post to make back end query
@@ -83,9 +82,6 @@ function handleDeletetoCart(movieId){
             });
         }
     });
-
-    //move windows alert out side of ajax call since blocking
-    window.alert("Successfully Deleted Movie: " + curMovieTitle);
 }
 
 function handleCartArray(resultArray) {
@@ -128,7 +124,7 @@ function handleCartArray(resultArray) {
         rowHTML += "</td>";
 
         rowHTML += "<td>";
-        let total = parseFloat(resultArray[i].MoviePrice) * parseFloat(resultArray[i].MovieQuantity);
+        let total = parseFloat(parseFloat(resultArray[i].MoviePrice) * parseFloat(resultArray[i].MovieQuantity)).toFixed(2);
         rowHTML += total.toString();
         rowHTML += "</td>";
 

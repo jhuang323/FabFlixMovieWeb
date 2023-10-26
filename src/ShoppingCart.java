@@ -154,18 +154,26 @@ public class ShoppingCart extends HttpServlet {
         //Perform corresponding action
         switch (action) {
             case "add":
-                cart.get(movieId).setMovieCount(1);
+                synchronized (cart) {
+                    cart.get(movieId).setMovieCount(1);
+                }
                 break;
             case "subtract":
                 if((cart.get(movieId).getMovieCount() - 1) == 0){
-                    cart.remove(movieId);
+                    synchronized (cart) {
+                        cart.remove(movieId);
+                    }
                 }
                 else {
-                    cart.get(movieId).setMovieCount(-1);
+                    synchronized (cart) {
+                        cart.get(movieId).setMovieCount(-1);
+                    }
                 }
                 break;
             case "delete":
-                cart.remove(movieId);
+                synchronized (cart) {
+                    cart.remove(movieId);
+                }
                 break;
             default:
                 //Perform view
