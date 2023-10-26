@@ -159,6 +159,12 @@ public class CheckoutServlet extends HttpServlet {
                 //record the items in session
                 recordTransactions(Usercart,UserObj);
 
+                //clear the Usercart
+                Usercart.clear();
+
+                //store hashmap back in session
+                session.setAttribute("Cart",Usercart);
+
 
                 //payment success
                 responseJsonObject.addProperty("success",1);
