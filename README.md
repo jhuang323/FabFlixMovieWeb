@@ -5,19 +5,29 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: http://54.193.147.228:8080/cs122b-project1/MovieList.html
-URL for video: https://youtu.be/cThhbGbh36c
+URL for Website on AWS: 
+URL for video: 
 
 ## Contributions:
 Jose:
 1. Created Servlet for Single Star Page
 2. Completed Front and Back end of Single Star Page along with color and css for the extra credit
+3. Completed Shopping Cart
+4. Added navbar
+5. Completed Search
+6. Extended Single Movie and Star
 Justin:
 1. Created Servlet for Single Movie Page
 2. Completed Front and Back end of Single Movie Page along with color and css for the extra credit
+3. Beautified the website
+4. Completed task 1
+5. Compelted Browse
+6. Pagination and Sorting
 Jose/Justin:
 1. Created Servlet for Movie List Page
 2. Completed Front and Back end of Movie List Page along with color and css for the extra credit
+3. Completed Movie List updates
+4. Completed Shopping Cart front and back
 
 
 ## Instructions for Use:
