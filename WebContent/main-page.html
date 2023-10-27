@@ -21,45 +21,87 @@
     <title>FabFlix</title>
 </head>
 <body>
-<div id="nav">
-    <a class="active" href="main-page.html">Home</a>
-    <a href="ShoppingCart.html">Cart</a>
-</div>
+<!--The nav bar-->
 
-<h1>FabFlix</h1>
+<nav id="custnav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-success" href="main-page.html">Fabflix</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-<div style="width: 50%;float: right">
-    <a href="logout" class="btn btn-primary" role="button">Logout</a>
-</div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbaracctDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbaracctDropdown">
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
 
-<h2>Search</h2>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Search
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <form id="nav_search" class="px-4 py-3" ACTION="#" METHOD="GET">
+                        <label>Title:</label>
+                        <input id="title_field" TYPE="TEXT">
+                        <label>Year:</label>
+                        <input id="year_field" TYPE="TEXT">
+                        <label>Director:</label>
+                        <input id="director_field" TYPE="TEXT">
+                        <label>Star Name:</label>
+                        <input id="star_name_field" TYPE="TEXT">
 
-<div id="search_div">
-    <form id="search_form" ACTION="MovieList.html" METHOD="GET">
-        <label>Title:</label>
-        <input id="title_form" TYPE="TEXT" name="title"><br>
-        <label>Year:</label>
-        <input id="year_form" TYPE="TEXT" name="year"><br>
-        <label>Director:</label>
-        <input id="director_form" TYPE="TEXT" name="director"><br>
-        <label>Star Name:</label>
-        <input id="star_name_form" TYPE="TEXT" name="star_name"><br>
-        <input TYPE="SUBMIT" VALUE="Search">
+                        <input TYPE="SUBMIT" onclick="handlenavsearch()" VALUE="Search">
 
-    </form>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="window.location.href='ShoppingCart.html'">My Cart</button>
+
+    </div>
+</nav>
+
+<div id="super_div">
+    <h1>FabFlix</h1>
+
+    <div style="width: 50%;float: right">
+        <a href="logout" class="btn btn-primary" role="button">Logout</a>
+    </div>
+
+    <h2>Search</h2>
+
+    <div id="search_div">
+        <form id="search_form" ACTION="MovieList.html" METHOD="GET">
+            <label>Title:</label>
+            <input id="title_form" TYPE="TEXT" name="title"><br>
+            <label>Year:</label>
+            <input id="year_form" TYPE="TEXT" name="year"><br>
+            <label>Director:</label>
+            <input id="director_form" TYPE="TEXT" name="director"><br>
+            <label>Star Name:</label>
+            <input id="star_name_form" TYPE="TEXT" name="star_name"><br>
+            <input TYPE="SUBMIT" VALUE="Search">
+
+        </form>
+        <br>
+        <div id="search_error_message"></div>
+    </div>
+
     <br>
-    <div id="search_error_message"></div>
+
+    <h2>Browsing Section</h2>
+    <div id="browse_div" >
+        <div id="genre_div" style="width: 50%;float: left"></div>
+        <div id="searchAlpha_div" style="width: 50%;float: right"></div>
+    </div>
+
 </div>
-
-<br>
-
-<h2>Browsing Section</h2>
-<div id="browse_div" >
-    <div id="genre_div" style="width: 50%;float: left"></div>
-    <div id="searchAlpha_div" style="width: 50%;float: right"></div>
-</div>
-
-
 
 
 

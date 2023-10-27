@@ -20,101 +20,173 @@
 
     <title>Movie List</title>
 </head>
+
 <body>
 
-<div id="nav">
-    <a class="active" href="main-page.html">Home</a>
-    <a href="ShoppingCart.html">Cart</a>
+<!--The nav bar-->
+
+<nav id="custnav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-success" href="main-page.html">Fabflix</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbaracctDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbaracctDropdown">
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Search
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <form id="search_form" class="px-4 py-3" ACTION="MovieList.html" METHOD="GET">
+                        <label>Title:</label>
+                        <input id="title_field" TYPE="TEXT">
+                        <label>Year:</label>
+                        <input id="year_field" TYPE="TEXT">
+                        <label>Director:</label>
+                        <input id="director_field" TYPE="TEXT">
+                        <label>Star Name:</label>
+                        <input id="star_name_field" TYPE="TEXT">
+
+                        <input TYPE="SUBMIT" VALUE="Search">
+
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="window.location.href='ShoppingCart.html'">My Cart</button>
+
+    </div>
+</nav>
+
+<div id="super_div">
+
+
+    <!--<div id="nav">-->
+    <!--    <a class="active" href="main-page.html">Home</a>-->
+    <!--    <a href="ShoppingCart.html">Cart</a>-->
+    <!--</div>-->
+
+    <div>
+        <h1>Movies Page</h1>
+    </div>
+
+
+
+
+
+
+
+    <div>
+    <!--Test drop down for sorting-->
+    <!--<form id="dropdown_form" METHOD="GET">-->
+    <label for="sort_dd">Select a Sorting Option: </label>
+    <select id="sort_dd" name="tt" onchange="handleSortOption()">
+        <option value="title_a_a">Title Asc,Rating Asc</option>
+        <option value="title_a_d">Title Asc,Rating Desc</option>
+        <option value="title_d_a">Title Desc,Rating Asc</option>
+        <option value="title_d_d">Title Desc,Rating Desc</option>
+        <option value="rating_a_a">Rating Asc,Title Asc</option>
+        <option value="rating_a_d">Rating Asc,Title Desc</option>
+        <option value="rating_d_a">Rating Desc,Title Asc</option>
+        <option value="rating_d_d">Rating Desc,Title Desc</option>
+
+    </select>
+
+
+    <!--num limit form for 10,25,50,100-->
+    <label for="itemlimit_dd">Select a Items Limit Option: </label>
+    <select id="itemlimit_dd" onchange="handleItemLimitOption()">
+        <option value="10" >10</option>
+        <option value="25" >25</option>
+        <option value="50" >50</option>
+        <option value="100" >100</option>
+    </select>
+    <br>
+    </div>
+
+
+    <!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
+    <table id=top20_table class="table table-striped">
+        <!-- Create a table header -->
+        <thead>
+        <tr>
+            <!-- Titles of each column-->
+            <th>Title</th>
+            <th>Year</th>
+            <th>Director</th>
+            <th>Rating</th>
+            <th>Star(s)</th>
+            <th>Genre(s)</th>
+            <th>Cart Button</th>
+        </tr>
+        </thead>
+        <!-- Table body is left empty here, will be populated with the data retrieved with checkout.js -->
+        <!-- Again, id "star_table_body" is useful for jQuery to find this html element -->
+        <tbody id=top20_table_body></tbody>
+    </table>
+
+<!--    <form id="search_form" ACTION="MovieList.html" METHOD="GET">-->
+<!--        <label>Title:</label>-->
+<!--        <input id="title_field" TYPE="TEXT">-->
+<!--        <label>Year:</label>-->
+<!--        <input id="year_field" TYPE="TEXT">-->
+<!--        <label>Director:</label>-->
+<!--        <input id="director_field" TYPE="TEXT">-->
+<!--        <label>Star Name:</label>-->
+<!--        <input id="star_name_field" TYPE="TEXT">-->
+
+<!--        <input TYPE="SUBMIT" VALUE="Search">-->
+
+<!--    </form>-->
+
+
+    <!--Create the next and previous arrows-->
+
+
+    <nav aria-label="Page navigation" style="margin: 0 auto;text-align: center;">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <button onclick="OnclickPrevious()" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&laquo;</span>
+                </button>
+            </li>
+            <li class="page-item"><p id="Cur_pageNum" class="page-link"></p></li>
+
+            <li class="page-item">
+                <button onclick="OnclickNext()" class="page-link" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+
+
+
+    <!--</form>-->
+    <!-- Load jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Load our own JS file -->
+    <!-- The path is relative to checkout.html, since these two files are in the same directory -->
+    <!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
+         otherwise the url is relative to the root path-->
+    <script src="MovieList.js"></script>
+
 </div>
-<h1>Movies Page</h1>
-
-
-
-<div style="width: 50%;float: right">
-    <a href="logout" class="btn btn-primary" role="button">Logout</a>
-</div>
-
-
-<!-- Id "star_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
-<table id=top20_table class="table table-striped">
-    <!-- Create a table header -->
-    <thead>
-    <tr>
-        <!-- Titles of each column-->
-        <th>Title</th>
-        <th>Year</th>
-        <th>Director</th>
-        <th>Rating</th>
-        <th>Star(s)</th>
-        <th>Genre(s)</th>
-        <th>Cart Button</th>
-    </tr>
-    </thead>
-    <!-- Table body is left empty here, will be populated with the data retrieved with checkout.js -->
-    <!-- Again, id "star_table_body" is useful for jQuery to find this html element -->
-    <tbody id=top20_table_body></tbody>
-</table>
-
-<form id="search_form" ACTION="MovieList.html" METHOD="GET">
-    <label>Title:</label>
-    <input id="title_field" TYPE="TEXT">
-    <label>Year:</label>
-    <input id="year_field" TYPE="TEXT">
-    <label>Director:</label>
-    <input id="director_field" TYPE="TEXT">
-    <label>Star Name:</label>
-    <input id="star_name_field" TYPE="TEXT">
-
-    <input TYPE="SUBMIT" VALUE="Search">
-
-</form>
-
-<!--Test drop down for sorting-->
-<!--<form id="dropdown_form" METHOD="GET">-->
-<label for="sort_dd">Select a Sorting Option: </label>
-<select id="sort_dd" name="tt" onchange="handleSortOption()">
-    <option value="title_a_a">Title Asc,Rating Asc</option>
-    <option value="title_a_d">Title Asc,Rating Desc</option>
-    <option value="title_d_a">Title Desc,Rating Asc</option>
-    <option value="title_d_d">Title Desc,Rating Desc</option>
-    <option value="rating_a_a">Rating Asc,Title Asc</option>
-    <option value="rating_a_d">Rating Asc,Title Desc</option>
-    <option value="rating_d_a">Rating Desc,Title Asc</option>
-    <option value="rating_d_d">Rating Desc,Title Desc</option>
-
-</select>
-
-<br>
-<!--num limit form for 10,25,50,100-->
-<label for="itemlimit_dd">Select a Items Limit Option: </label>
-<select id="itemlimit_dd" onchange="handleItemLimitOption()">
-    <option value="10" >10</option>
-    <option value="25" >25</option>
-    <option value="50" >50</option>
-    <option value="100" >100</option>
-</select>
-<br>
-<!--Create the next and previous arrows-->
-<div>
-<!--    The previous button-->
-    <button onclick="OnclickPrevious()">Prevous Page</button>
-    <button onclick="OnclickNext()">Next Page</button>
-</div>
-
-
-
-
-<!--</form>-->
-<!-- Load jQuery and Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-<!-- Load our own JS file -->
-<!-- The path is relative to checkout.html, since these two files are in the same directory -->
-<!-- Note the url does not contain a "/" in the beginning, which means the url is relative to current path
-     otherwise the url is relative to the root path-->
-<script src="MovieList.js"></script>
 </body>
 
 

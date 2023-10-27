@@ -110,7 +110,7 @@ function handleResult(resultData) {
     movieDetailStr += "<td>";
     let movieId = getParameterByName('id');
     let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" " +
-        "id=\""+movieId+"\" data-movtitle=\""+resultData["title"]+"\">Add to Cart</button>\n";
+        "class='btn btn-danger' id=\""+movieId+"\" data-movtitle=\""+resultData["title"]+"\">Add to Cart</button>\n";
     //atempt to bind
     movieDetailStr += AddtoCartPost;
     movieDetailStr += "</td>";

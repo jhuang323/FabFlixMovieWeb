@@ -15,6 +15,7 @@
  */
 
 let TheSearchformElem = $("#search_form");
+let PageNumElem = $("#Cur_pageNum");
 
 function getParameterByName(target) {
     // Get request URL
@@ -110,7 +111,7 @@ function handleMovieListResult(resultData) {
 
         let theMovid = resultData[i].id;
 
-        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\">Add to Cart</button>\n";
+        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" class='btn btn-danger' id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\">Add to Cart</button>\n";
 
         //atempt to bind
 
@@ -326,6 +327,7 @@ function InitSetButtonsAndBox(){
  */
 
 const queryString = window.location.search;
+const urlParams = new URLSearchParams(window.location.search);
 console.log(queryString);
 console.log("hello")
 
@@ -340,6 +342,9 @@ jQuery.ajax({
     success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
 
+
+//set current page num
+PageNumElem.text(urlParams.get("page"));
 
 
 

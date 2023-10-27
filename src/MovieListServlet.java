@@ -151,6 +151,7 @@ public class MovieListServlet extends HttpServlet {
 
         //checking
         String isChecking = request.getParameter("checking");
+
         if(isChecking == null){
             isChecking="false";
         }
@@ -174,10 +175,13 @@ public class MovieListServlet extends HttpServlet {
             //Declare the prepare statement
             PreparedStatement MainPrepStatement = null;
 
+            boolean top20Choice = false;
 
             if(genreNameParam == null && chr == null && star_name == null && title == null && director == null && year == null){
                 //do something that shows you didnt input anything
                 //should not be possible??? maybe since we control the api calls from front end
+
+                top20Choice = true;
 
                 Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                         "FROM movies as m \n" +
@@ -367,7 +371,7 @@ public class MovieListServlet extends HttpServlet {
             JsonObject retJsonObjChecking = new JsonObject();
 
             if(isChecking.equals("true")){
-                if(resultSet.next() == false){
+                if(top20Choice || resultSet.next() == false){
                     //is empty
                     retJsonObjChecking.addProperty("empty",true);
                 }
