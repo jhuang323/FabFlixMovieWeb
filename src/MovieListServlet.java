@@ -38,28 +38,38 @@ public class MovieListServlet extends HttpServlet {
     }
 
 //    my sorting string constructing helper funct
-    private String createSortingString(String afirstparam,String atypeparam){
+    private String createSortingString(String afirstparam,String atypeparamone,String atypeparamtwo){
         String retSortsqlQuery = "";
         if(afirstparam != null){
             //replace the atypeparam with ASC OR DESC
-            String OrderSqlString = "";
-            if(atypeparam.equals("a")){
-                OrderSqlString = "ASC";
+            String OrderSqlString1 = "";
+            String OrderSqlString2 = "";
+
+            if(atypeparamone.equals("a")){
+                OrderSqlString1 = "ASC";
             }
             else{
-                OrderSqlString = "DESC";
+                OrderSqlString1 = "DESC";
+            }
+
+            //for the second type param
+            if(atypeparamtwo.equals("a")){
+                OrderSqlString2 = "ASC";
+            }
+            else{
+                OrderSqlString2 = "DESC";
             }
 
             //check if first is title
             if(afirstparam.equals("title")){
                 //by title first
-                retSortsqlQuery = afirstparam + " " + OrderSqlString;
-                retSortsqlQuery += ", rating " + OrderSqlString;
+                retSortsqlQuery = afirstparam + " " + OrderSqlString1;
+                retSortsqlQuery += ", rating " + OrderSqlString2;
             }
             else{
                 //by rating first
-                retSortsqlQuery = afirstparam + " " + OrderSqlString;
-                retSortsqlQuery += ", title " + OrderSqlString;
+                retSortsqlQuery = afirstparam + " " + OrderSqlString1;
+                retSortsqlQuery += ", title " + OrderSqlString2;
             }
         }
 
@@ -126,8 +136,9 @@ public class MovieListServlet extends HttpServlet {
         //get the sortfirst param
         String sortFirstParam = request.getParameter("sortfirst");
 
-        //get the sorttype param
-        String sortTypeParam = request.getParameter("sorttype");
+        //get the sorttype param 1 and 2
+        String sortTypeParamFirst = request.getParameter("sorttype1");
+        String sortTypeParamSecond = request.getParameter("sorttype2");
 
         //Pagination section
         //get the page param
@@ -255,7 +266,7 @@ public class MovieListServlet extends HttpServlet {
 
                 //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
 
                 //add the limits
                 Mainquery += "\nLIMIT " + CalcnumlimitParam;
@@ -280,7 +291,7 @@ public class MovieListServlet extends HttpServlet {
 
                     //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+                    Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
 
                     //add the limits
                     Mainquery += "\nLIMIT " + CalcnumlimitParam;
@@ -298,7 +309,7 @@ public class MovieListServlet extends HttpServlet {
 
                         //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
 
                         //add the limits
                         Mainquery += "\nLIMIT " + CalcnumlimitParam;
@@ -313,7 +324,7 @@ public class MovieListServlet extends HttpServlet {
 
                         //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParam);
+                        Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
 
                         //add the limits
                         Mainquery += "\nLIMIT " + CalcnumlimitParam;

@@ -129,7 +129,7 @@ function handleMovieListResult(resultData) {
     }
 }
 
-function handleSortInfo(SubmitEvent){
+function handleSearchInfo(SubmitEvent){
     console.log("handling Browse event")
     SubmitEvent.preventDefault();
 
@@ -191,7 +191,8 @@ function handleSortOption(cartEvent){
 
     //change query param
     urlParams.set("sortfirst",DropdownValSelectedArray[0]);
-    urlParams.set("sorttype",DropdownValSelectedArray[1]);
+    urlParams.set("sorttype1",DropdownValSelectedArray[1]);
+    urlParams.set("sorttype2",DropdownValSelectedArray[2]);
 
     //update the query param in browser
     window.location.search = urlParams.toString();
@@ -302,8 +303,8 @@ function InitSetButtonsAndBox(){
 
 
 // change sort dropdown to what ever is url
-    if(urlParams.has("sortfirst") && urlParams.has("sorttype")){
-        let ValStr = urlParams.get("sortfirst") + "_" + urlParams.get("sorttype");
+    if(urlParams.has("sortfirst") && urlParams.has("sorttype1") && urlParams.has("sorttype2")){
+        let ValStr = urlParams.get("sortfirst") + "_" + urlParams.get("sorttype1") + "_" + urlParams.get("sorttype2");
         console.log("setting: " + ValStr);
         $("#sort_dd").val(ValStr);
         $('#sort_dd').select;
@@ -345,4 +346,4 @@ jQuery.ajax({
 
 
 //bind the submit
-TheSearchformElem.submit(handleSortInfo);
+TheSearchformElem.submit(handleSearchInfo);
