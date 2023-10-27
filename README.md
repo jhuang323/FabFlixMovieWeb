@@ -5,8 +5,8 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: 
-URL for video: 
+URL for Website on AWS: http://54.177.22.169:8080/cs122b-project2/login.html
+URL for video: https://youtu.be/hRRWhkoKOaY
 
 ## Design Choices for Searching
 ### Searching
