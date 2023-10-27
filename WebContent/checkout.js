@@ -86,6 +86,42 @@ function handleCheckoutInfo(cartEvent) {
     // clear input form
     cart[0].reset();
 }
+function  handlenavsearch(aparam){
+    // Define the default parameters for movielist page
+    const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10";
+    aparam.preventDefault();
+
+    let title = $("#title_field").val();
+    let year = $("#year_field").val();
+    let director = $("#director_field").val();
+    let starname = $("#star_name_field").val();
+
+
+
+
+    const urlParams = new URLSearchParams();
+
+
+
+    if(title !== ""){
+        urlParams.set("title",title);
+    }
+    if(year !== ""){
+        urlParams.set("year",year);
+    }
+    if(director !== ""){
+        urlParams.set("director",director);
+    }
+    if(starname !== ""){
+        urlParams.set("starname",starname);
+    }
+
+
+
+
+    window.location.href="MovieList.html?"+ urlParams.toString() + "&" + DefaultQueryParams;
+}
+
 
 //on load get the total
 $.ajax({
@@ -97,3 +133,6 @@ $.ajax({
 
 // Bind the submit action of the form to a event handler function
 CheckoutForm.submit(handleCheckoutInfo);
+
+//binding
+$("#nav_search").submit(handlenavsearch)

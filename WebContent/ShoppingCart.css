@@ -1,10 +1,3 @@
-
-h2 {
-    color: #4F564F;
-}
-
-
-
 body{
     background-color: #cbfdc9;
 
@@ -15,28 +8,29 @@ body{
 }
 
 
-/* Style the links inside the navigation bar */
-#nav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-}
 
-/* Change the color of links on hover */
-#nav a:hover {
-    background-color: #ddd;
-    color: black;
-}
 
-/* Add a color to the active/current link */
-#nav a.active {
-    background-color: #04AA6D;
-    color: white;
-}
+/*!* Style the links inside the navigation bar *!*/
+/*#custnav a {*/
+/*    float: left;*/
+/*    color: #f2f2f2;*/
+/*    text-align: center;*/
+/*    padding: 14px 16px;*/
+/*    text-decoration: none;*/
+/*    font-size: 17px;*/
+/*}*/
 
+/*!* Change the color of links on hover *!*/
+/*#nav a:hover {*/
+/*    background-color: #ddd;*/
+/*    color: black;*/
+/*}*/
+
+/*!* Add a color to the active/current link *!*/
+/*#nav a.active {*/
+/*    background-color: #04AA6D;*/
+/*    color: white;*/
+/*}*/
 /*Adds color changing effect to "Single Star Page" header*/
 h1{
     color: #4F564F;
@@ -67,26 +61,20 @@ h1{
     }
 }
 
+/*Change color of star info text*/
+#star_info{
+    color: #4F564F;
+    font-size: 21px;
+}
+
+/*Change table header row to beige*/
 thead{
     background-color: #F1E5C6;
     color: #4F564F;
 }
 
-#movie_table_detail{
+/*Change table body background to lighter grey*/
+#top20_table_body{
     background-color: #e9eef5;
-
 }
 
-
-/*For the stars list section*/
-#starsList-div{
-    width: 50%;
-    float: left;
-}
-
-/*For the return to the top20 movielist section*/
-#ButtonTop20ML-div{
-    width: 50%;
-    float: right;
-    text-align: center;
-}

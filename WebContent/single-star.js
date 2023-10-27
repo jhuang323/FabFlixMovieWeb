@@ -77,6 +77,42 @@ function handleResult(resultData) {
     })
     console.log("handleResult: successful population of star table from resultData.movies");
 }
+function  handlenavsearch(aparam){
+    // Define the default parameters for movielist page
+    const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10";
+    aparam.preventDefault();
+
+    let title = $("#title_field").val();
+    let year = $("#year_field").val();
+    let director = $("#director_field").val();
+    let starname = $("#star_name_field").val();
+
+
+
+
+    const urlParams = new URLSearchParams();
+
+
+
+    if(title !== ""){
+        urlParams.set("title",title);
+    }
+    if(year !== ""){
+        urlParams.set("year",year);
+    }
+    if(director !== ""){
+        urlParams.set("director",director);
+    }
+    if(starname !== ""){
+        urlParams.set("starname",starname);
+    }
+
+
+
+
+    window.location.href="MovieList.html?"+ urlParams.toString() + "&" + DefaultQueryParams;
+}
+
 
 /**
  * Once this .js is loaded, following scripts will be executed by the browser\
@@ -92,3 +128,6 @@ jQuery.ajax({
     url: "api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
+
+//binding
+$("#nav_search").submit(handlenavsearch)

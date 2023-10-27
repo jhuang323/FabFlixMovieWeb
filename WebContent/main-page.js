@@ -20,7 +20,7 @@ let MPSearchform = $("#search_form");
 
 
 // Define the default parameters for movielist page
-const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10"
+const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10";
 
 function getParameterByName(target) {
     // Get request URL

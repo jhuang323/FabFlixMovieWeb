@@ -58,6 +58,42 @@ function handleDecrementtoCart(movieId){
     });
 }
 
+function  handlenavsearch(aparam){
+    // Define the default parameters for movielist page
+    const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10";
+    aparam.preventDefault();
+
+    let title = $("#title_field").val();
+    let year = $("#year_field").val();
+    let director = $("#director_field").val();
+    let starname = $("#star_name_field").val();
+
+
+
+
+    const urlParams = new URLSearchParams();
+
+
+
+    if(title !== ""){
+        urlParams.set("title",title);
+    }
+    if(year !== ""){
+        urlParams.set("year",year);
+    }
+    if(director !== ""){
+        urlParams.set("director",director);
+    }
+    if(starname !== ""){
+        urlParams.set("starname",starname);
+    }
+
+
+
+
+    window.location.href="MovieList.html?"+ urlParams.toString() + "&" + DefaultQueryParams;
+}
+
 function handleDeletetoCart(movieId){
     //prevent default
 
@@ -151,3 +187,6 @@ jQuery.ajax({
     url: "api/shopping-cart?action=view", // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultArray) => handleCartArray(resultArray) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
+
+//binding
+$("#nav_search").submit(handlenavsearch)

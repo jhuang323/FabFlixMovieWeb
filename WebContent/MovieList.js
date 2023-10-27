@@ -86,13 +86,13 @@ function handleMovieListResult(resultData) {
         rowHTML += "<td>"+ resultData[i].director +"</td>";
         rowHTML += "<td>"+ resultData[i].rating +"</td>";
         rowHTML += "<td>";
-        rowHTML += "<ul>";
+        rowHTML += "<ol>";
         for(let j = 0; j < resultData[i].star.length; j++){
             rowHTML += "<li>" +
                 '<a href="single-star.html?id=' + resultData[i].star[j].id + '">' +
                 resultData[i].star[j].name + "</li>";
         }
-        rowHTML += "</ul>";
+        rowHTML += "</ol>";
         rowHTML += "</td>";
         rowHTML += "<td>";
         rowHTML += "<ul>";
