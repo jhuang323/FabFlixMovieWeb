@@ -1,4 +1,5 @@
 let CheckoutForm = $("#checkout-form");
+let totalNumElement = $("#total_num");
 
 /**
  * Handle the data returned by IndexServlet
@@ -53,6 +54,14 @@ function handleCheckoutResponse(ajsonobj){
     }
 }
 
+function handleTotalInfo(aJsonStr){
+    console.log("in handle total info")
+
+    //populate total
+    totalNumElement.text("Number of Items: " + aJsonStr.numofitems + " Total: $" + aJsonStr.total);
+
+}
+
 /**
  * Submit form content with POST method
  * @param cartEvent
@@ -77,6 +86,53 @@ function handleCheckoutInfo(cartEvent) {
     // clear input form
     cart[0].reset();
 }
+function  handlenavsearch(aparam){
+    // Define the default parameters for movielist page
+    const DefaultQueryParams = "sortfirst=title&sorttype1=a&sorttype2=a&page=1&numlimit=10";
+    aparam.preventDefault();
+
+    let title = $("#title_field").val();
+    let year = $("#year_field").val();
+    let director = $("#director_field").val();
+    let starname = $("#star_name_field").val();
+
+
+
+
+    const urlParams = new URLSearchParams();
+
+
+
+    if(title !== ""){
+        urlParams.set("title",title);
+    }
+    if(year !== ""){
+        urlParams.set("year",year);
+    }
+    if(director !== ""){
+        urlParams.set("director",director);
+    }
+    if(starname !== ""){
+        urlParams.set("starname",starname);
+    }
+
+
+
+
+    window.location.href="MovieList.html?"+ urlParams.toString() + "&" + DefaultQueryParams;
+}
+
+
+//on load get the total
+$.ajax({
+    dataType: "json", // Setting return data type
+    method: "GET", // Setting request method
+    url: "api/shopping-cart?action=total", // Setting request url, which is mapped by MovieListServlet
+    success: (resultData) => handleTotalInfo(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
+})
 
 // Bind the submit action of the form to a event handler function
 CheckoutForm.submit(handleCheckoutInfo);
+
+//binding
+$("#nav_search").submit(handlenavsearch)

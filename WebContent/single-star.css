@@ -1,10 +1,10 @@
 body{
     background-color: #cbfdc9;
-    margin: 1%;
+
 }
-#nav {
-    background-color: #333;
-    overflow: hidden;
+
+#super_div{
+    margin: 1%;
 }
 
 /* Style the links inside the navigation bar */

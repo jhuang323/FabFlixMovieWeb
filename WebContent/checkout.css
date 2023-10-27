@@ -1,6 +1,10 @@
 body{
     background-color: #cbfdc9;
-    margin: 10%;
+
+}
+
+#super_div{
+    margin: 1%;
 }
 
 /*Adds color changing effect to "Single Star Page" header*/

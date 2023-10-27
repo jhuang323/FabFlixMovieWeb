@@ -36,7 +36,26 @@
     </div>
 </div>
 
+<!--The table that shows the item you bought-->
+
+<table id="moviesInCart" class="table table-striped">
+    <!-- Create a table header -->
+    <thead>
+    <tr>
+        <!-- Titles of each column-->
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <!-- Table body is left empty here, will be populated with the data retrieved with ShoppingCart.js -->
+    <!-- Again, id "shoppingCartTable" is useful for jQuery to find this html element -->
+    <tbody id="shoppingCartTable"></tbody>
+</table>
+
 <!-- include your own JS file -->
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+<script type='text/javascript' src='paymentsuccess.js'></script>
 </body>
 </html>

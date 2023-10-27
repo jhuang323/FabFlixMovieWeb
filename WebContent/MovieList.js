@@ -15,6 +15,7 @@
  */
 
 let TheSearchformElem = $("#search_form");
+let PageNumElem = $("#Cur_pageNum");
 
 function getParameterByName(target) {
     // Get request URL
@@ -85,13 +86,13 @@ function handleMovieListResult(resultData) {
         rowHTML += "<td>"+ resultData[i].director +"</td>";
         rowHTML += "<td>"+ resultData[i].rating +"</td>";
         rowHTML += "<td>";
-        rowHTML += "<ul>";
+        rowHTML += "<ol>";
         for(let j = 0; j < resultData[i].star.length; j++){
             rowHTML += "<li>" +
                 '<a href="single-star.html?id=' + resultData[i].star[j].id + '">' +
                 resultData[i].star[j].name + "</li>";
         }
-        rowHTML += "</ul>";
+        rowHTML += "</ol>";
         rowHTML += "</td>";
         rowHTML += "<td>";
         rowHTML += "<ul>";
@@ -110,7 +111,7 @@ function handleMovieListResult(resultData) {
 
         let theMovid = resultData[i].id;
 
-        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\">Add to Cart</button>\n";
+        let AddtoCartPost = "<button onclick=\"handleAddtoCart(this.id)\" class='btn btn-danger' id=\""+theMovid+"\" data-movtitle=\""+resultData[i].title+"\">Add to Cart</button>\n";
 
         //atempt to bind
 
@@ -129,7 +130,7 @@ function handleMovieListResult(resultData) {
     }
 }
 
-function handleSortInfo(SubmitEvent){
+function handleSearchInfo(SubmitEvent){
     console.log("handling Browse event")
     SubmitEvent.preventDefault();
 
@@ -191,7 +192,8 @@ function handleSortOption(cartEvent){
 
     //change query param
     urlParams.set("sortfirst",DropdownValSelectedArray[0]);
-    urlParams.set("sorttype",DropdownValSelectedArray[1]);
+    urlParams.set("sorttype1",DropdownValSelectedArray[1]);
+    urlParams.set("sorttype2",DropdownValSelectedArray[2]);
 
     //update the query param in browser
     window.location.search = urlParams.toString();
@@ -302,8 +304,8 @@ function InitSetButtonsAndBox(){
 
 
 // change sort dropdown to what ever is url
-    if(urlParams.has("sortfirst") && urlParams.has("sorttype")){
-        let ValStr = urlParams.get("sortfirst") + "_" + urlParams.get("sorttype");
+    if(urlParams.has("sortfirst") && urlParams.has("sorttype1") && urlParams.has("sorttype2")){
+        let ValStr = urlParams.get("sortfirst") + "_" + urlParams.get("sorttype1") + "_" + urlParams.get("sorttype2");
         console.log("setting: " + ValStr);
         $("#sort_dd").val(ValStr);
         $('#sort_dd').select;
@@ -325,6 +327,7 @@ function InitSetButtonsAndBox(){
  */
 
 const queryString = window.location.search;
+const urlParams = new URLSearchParams(window.location.search);
 console.log(queryString);
 console.log("hello")
 
@@ -340,9 +343,12 @@ jQuery.ajax({
 });
 
 
+//set current page num
+PageNumElem.text(urlParams.get("page"));
+
 
 
 
 
 //bind the submit
-TheSearchformElem.submit(handleSortInfo);
+TheSearchformElem.submit(handleSearchInfo);

@@ -17,53 +17,107 @@
 </head>
 <body>
 
-<div class="container my-5 py-5">
-    <div class="row d-flex justify-content-center py-5">
-        <div class="col-md-10 col-lg-8 col-xl-5">
-            <div class="card" style="border-radius: 15px;">
-                <div class="card-body p-4">
-                    <div class="text-center mb-4">
-                        <h3>Payment</h3>
-                    </div>
+<!--The nav bar-->
 
-                    <form ACTION="#" id="checkout-form" METHOD="post">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="user_fname">First Name</label>
-                                <input name="First_name" id="user_fname" class="form-control" required="required" type="text">
-                            </div>
+<nav id="custnav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-success" href="main-page.html">Fabflix</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-                            <div class="form-group col-md-6">
-                                <label for="user_lname">Last Name</label>
-                                <input name="Last_name" id="user_lname" class="form-control" required="required" type="text">
-                            </div>
-                        </div>
-                    <!--    <label>First Name</label>-->
-                    <!--    <label>-->
-                    <!--        <input name="First_name" required="required" type="text">-->
-                    <!--    </label>-->
-                    <!--    </div>-->
-                    <!--    <div>-->
-                    <!--    <label>Last Name</label>-->
-                    <!--    <label>-->
-                    <!--        <input name="Last_name" required="required" type="text">-->
-                    <!--    </label>-->
-                    <!--    </div>-->
-                        <div class="form-group">
-                            <label for="cc_num">Credit Card Number</label>
-                            <input name="CreditCard_number" id="cc_num" class="form-control" required="required" type="text">
-                        </div>
-                        <div class="form-group">
-                            <label for="cc_expire">Expiration Date</label>
-                            <input name="Expiration_date" id="cc_expire" class="form-control" required="required" type="date">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbaracctDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbaracctDropdown">
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Search
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <form id="nav_search" class="px-4 py-3" ACTION="#" METHOD="GET">
+                        <label>Title:</label>
+                        <input id="title_field" TYPE="TEXT">
+                        <label>Year:</label>
+                        <input id="year_field" TYPE="TEXT">
+                        <label>Director:</label>
+                        <input id="director_field" TYPE="TEXT">
+                        <label>Star Name:</label>
+                        <input id="star_name_field" TYPE="TEXT">
+
+                        <input TYPE="SUBMIT" VALUE="Search">
+
                     </form>
+                </div>
+            </li>
+        </ul>
+
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="window.location.href='ShoppingCart.html'">My Cart</button>
+
+    </div>
+</nav>
+
+
+<div id="super_div">
+
+
+    <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center py-5">
+            <div class="col-md-10 col-lg-8 col-xl-5">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <h3>Payment</h3>
+                        </div>
+
+                        <form ACTION="#" id="checkout-form" METHOD="post">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="user_fname">First Name</label>
+                                    <input name="First_name" id="user_fname" class="form-control" required="required" type="text">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="user_lname">Last Name</label>
+                                    <input name="Last_name" id="user_lname" class="form-control" required="required" type="text">
+                                </div>
+                            </div>
+                        <!--    <label>First Name</label>-->
+                        <!--    <label>-->
+                        <!--        <input name="First_name" required="required" type="text">-->
+                        <!--    </label>-->
+                        <!--    </div>-->
+                        <!--    <div>-->
+                        <!--    <label>Last Name</label>-->
+                        <!--    <label>-->
+                        <!--        <input name="Last_name" required="required" type="text">-->
+                        <!--    </label>-->
+                        <!--    </div>-->
+                            <div class="form-group">
+                                <label for="cc_num">Credit Card Number</label>
+                                <input name="CreditCard_number" id="cc_num" class="form-control" required="required" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="cc_expire">Expiration Date</label>
+                                <input name="Expiration_date" id="cc_expire" class="form-control" required="required" type="date">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                        <div id="total_num"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
 
 <!-- include your own JS file -->
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>

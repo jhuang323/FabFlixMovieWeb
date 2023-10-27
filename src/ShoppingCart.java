@@ -175,6 +175,11 @@ public class ShoppingCart extends HttpServlet {
                     cart.remove(movieId);
                 }
                 break;
+            case "clearcart":
+//                clear the Usercart
+                synchronized (cart) {
+                    cart.clear();
+                }
             default:
                 //Perform view
 

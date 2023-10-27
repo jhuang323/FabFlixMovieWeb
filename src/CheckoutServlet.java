@@ -122,6 +122,9 @@ public class CheckoutServlet extends HttpServlet {
         String creditCardNumber = request.getParameter("CreditCard_number");
         String expirationDate = request.getParameter("Expiration_date");
 
+
+
+
         HttpSession session = request.getSession();
         HashMap<String, MoviePrice> Usercart = (HashMap<String, MoviePrice>) session.getAttribute("Cart");
         User UserObj = (User) session.getAttribute("user");
@@ -168,10 +171,6 @@ public class CheckoutServlet extends HttpServlet {
                 //record the items in session
                 recordTransactions(Usercart,UserObj);
 
-                //clear the Usercart
-                synchronized (Usercart) {
-                    Usercart.clear();
-                }
 
                 //store hashmap back in session
                 session.setAttribute("Cart",Usercart);
