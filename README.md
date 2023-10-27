@@ -8,6 +8,12 @@ Members:
 URL for Website on AWS: 
 URL for video: 
 
+## Design Choices for Searching
+### Searching
+%AN% We used the %SearchQuery% for searching because it is substring matching so it matches the query anywhere in the string. We used the lower() and LIKE for sql so it is case insensitive.
+### Browsing
+ACharacter% We used the percent after the character since according to the requirements it should begin with the Character to be matched. We also used the lower() and LIKE for sql so it is case insensitive.
+
 ## Contributions:
 Jose:
 1. Created Servlet for Single Star Page
