@@ -1,4 +1,5 @@
 let CheckoutForm = $("#checkout-form");
+let totalNumElement = $("#total_num");
 
 /**
  * Handle the data returned by IndexServlet
@@ -53,6 +54,14 @@ function handleCheckoutResponse(ajsonobj){
     }
 }
 
+function handleTotalInfo(aJsonStr){
+    console.log("in handle total info")
+
+    //populate total
+    totalNumElement.text("Number of Items: " + aJsonStr.numofitems + " Total: $" + aJsonStr.total);
+
+}
+
 /**
  * Submit form content with POST method
  * @param cartEvent
@@ -77,6 +86,14 @@ function handleCheckoutInfo(cartEvent) {
     // clear input form
     cart[0].reset();
 }
+
+//on load get the total
+$.ajax({
+    dataType: "json", // Setting return data type
+    method: "GET", // Setting request method
+    url: "api/shopping-cart?action=total", // Setting request url, which is mapped by MovieListServlet
+    success: (resultData) => handleTotalInfo(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
+})
 
 // Bind the submit action of the form to a event handler function
 CheckoutForm.submit(handleCheckoutInfo);
