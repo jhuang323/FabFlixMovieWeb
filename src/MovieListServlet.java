@@ -171,7 +171,7 @@ public class MovieListServlet extends HttpServlet {
             //Declare the main query
             String Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                     "FROM movies as m\n" +
-                    "JOIN ratings rtng ON m.id=rtng.movieId\n";
+                    "LEFT JOIN ratings rtng ON m.id=rtng.movieId\n";
             //Declare the prepare statement
             PreparedStatement MainPrepStatement = null;
 
