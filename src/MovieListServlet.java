@@ -171,7 +171,7 @@ public class MovieListServlet extends HttpServlet {
             //Declare the main query
             String Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +
                     "FROM movies as m\n" +
-                    "JOIN ratings rtng ON m.id=rtng.movieId\n";
+                    "LEFT JOIN ratings rtng ON m.id=rtng.movieId\n";
             //Declare the prepare statement
             PreparedStatement MainPrepStatement = null;
 
@@ -458,7 +458,14 @@ public class MovieListServlet extends HttpServlet {
                     SingleMovieJsonObj.add("star",InnerStarArry);
 
                     //rating portion
-                    SingleMovieJsonObj.addProperty("rating",resultSet.getString("rating"));
+                    String ratingStr = resultSet.getString("rating");
+                    if(resultSet.wasNull()){
+                        SingleMovieJsonObj.addProperty("rating","N/A");
+                    }
+                    else {
+                        SingleMovieJsonObj.addProperty("rating",ratingStr);
+                    }
+
 
 
                     //append json obj to array
