@@ -458,7 +458,14 @@ public class MovieListServlet extends HttpServlet {
                     SingleMovieJsonObj.add("star",InnerStarArry);
 
                     //rating portion
-                    SingleMovieJsonObj.addProperty("rating",resultSet.getString("rating"));
+                    String ratingStr = resultSet.getString("rating");
+                    if(resultSet.wasNull()){
+                        SingleMovieJsonObj.addProperty("rating","N/A");
+                    }
+                    else {
+                        SingleMovieJsonObj.addProperty("rating",ratingStr);
+                    }
+
 
 
                     //append json obj to array
