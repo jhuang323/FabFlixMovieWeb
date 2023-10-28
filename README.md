@@ -5,8 +5,10 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: http://54.177.22.169:8080/cs122b-project2/login.html
-URL for video: https://youtu.be/hRRWhkoKOaY
+URL for Website on AWS: http://54.153.3.240:8080/cs122b-project2/login.html
+URL for video: https://youtu.be/2u8kmoC3tes
+
+Note: To connect you must be on UCI VPN FULL!
 
 ## Design Choices for Searching
 ### Searching
