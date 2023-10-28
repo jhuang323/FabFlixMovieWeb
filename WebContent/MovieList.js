@@ -16,6 +16,7 @@
 
 let TheSearchformElem = $("#search_form");
 let PageNumElem = $("#Cur_pageNum");
+let CurrSearchTypeElem=$("#currsearchtype");
 
 function getParameterByName(target) {
     // Get request URL
@@ -31,6 +32,66 @@ function getParameterByName(target) {
 
     // Return the decoded parameter value
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+function runCurrsearchType(){
+    const urlParams = new URLSearchParams(window.location.search);
+
+
+    //set current page num
+    PageNumElem.text(urlParams.get("page"));
+
+    console.log("the title: " + urlParams.get("title"));
+
+    //set the top search type Text
+    let title = urlParams.get("title");
+    let year = urlParams.get("year");
+    let director = urlParams.get("director");
+    let starnme = urlParams.get("star_name");
+    let genre = urlParams.get("genre");
+    let char = urlParams.get("char");
+
+
+    if(title == null && year == null &&
+        director == null && starnme == null &&
+        genre == null && char == null){
+
+        CurrSearchTypeElem.text("Top20 Movie")
+
+    }
+    else if(genre == null && char == null){
+        let searchStr = "";
+
+        if(title != null){
+            searchStr = " title: " + title;
+        }
+        if(year != null){
+            searchStr = " year: " + year;
+        }
+        if(director != null){
+            searchStr = " director: " + director;
+        }
+        if(starnme != null){
+            searchStr = " star name: " + starnme;
+        }
+
+
+        CurrSearchTypeElem.text("Search:" + searchStr);
+    }
+    else {
+        let browsestr = "";
+        if(genre != null){
+            browsestr = " genre: " + genre;
+        }
+        if(char != null){
+            browsestr = " single char: " + char;
+        }
+
+
+        CurrSearchTypeElem.text("Browse:" + browsestr);
+    }
+
+
 }
 
 function handleAddtoCart(amovieId){
@@ -327,12 +388,14 @@ function InitSetButtonsAndBox(){
  */
 
 const queryString = window.location.search;
-const urlParams = new URLSearchParams(window.location.search);
 console.log(queryString);
 console.log("hello")
 
 //initialize textbox and buttons to the text in  url params
 InitSetButtonsAndBox();
+
+//set the page num and title
+runCurrsearchType();
 
 // Makes the HTTP GET request and registers on success callback function handleMovieListResult
 jQuery.ajax({
@@ -341,10 +404,6 @@ jQuery.ajax({
     url: "api/movie-list" + queryString, // Setting request url, which is mapped by MovieListServlet
     success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the StarsServlet
 });
-
-
-//set current page num
-PageNumElem.text(urlParams.get("page"));
 
 
 
