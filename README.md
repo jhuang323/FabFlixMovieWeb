@@ -6,7 +6,7 @@ Members:
 
 ## URLS:
 URL for Website on AWS: http://54.153.3.240:8080/cs122b-project2/login.html
-URL for video: https://youtu.be/2u8kmoC3tes
+URL for video: https://youtu.be/H5DDC10yM30
 
 Note: To connect you must be on UCI VPN FULL!
 
