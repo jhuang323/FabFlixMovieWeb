@@ -380,7 +380,17 @@ public class MovieListServlet extends HttpServlet {
                 }
             }
             else{
+
+
+
                 //            //queryFirstThreeGenres and queryFirstThreeStars
+                // Declare our FirstThreeGenres statement
+                PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
+
+                // Declare our FirstThreeGenres statement
+                PreparedStatement statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
+
+
                 while (resultSet.next()){
                     //get movie id
                     String currentMovId = resultSet.getString("id");
@@ -398,8 +408,7 @@ public class MovieListServlet extends HttpServlet {
 
 //                System.out.println("the movie id: " + currentMovId + " title: " + resultSet.getString("title"));
                     //call the get movie The three genres portion
-                    // Declare our FirstThreeGenres statement
-                    PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
+
 //
 //                // Set the parameter represented by "?" in the query to the movie id from top20,
 //                // num 1 indicates the first "?" in the query
@@ -421,14 +430,13 @@ public class MovieListServlet extends HttpServlet {
 
                     //closing genres
                     resultSetFirstThreeGenres.close();
-                    statementFirstThreeGenres.close();
+
 
                     //append inner array
                     SingleMovieJsonObj.add("genre",InnerGenreArry);
 
                     //Getting the three stars portion
-                    // Declare our FirstThreeGenres statement
-                    PreparedStatement statementFirstThreeStars = conn.prepareStatement(queryFirstThreeStars);
+
 //
 //                // Set the parameter represented by "?" in the query to the movie id from top20,
 //                // num 1 indicates the first "?" in the query
@@ -452,7 +460,6 @@ public class MovieListServlet extends HttpServlet {
 
                     //closing stars
                     resultSetFirstThreeStars.close();
-                    statementFirstThreeStars.close();
 
                     //append inner array
                     SingleMovieJsonObj.add("star",InnerStarArry);
@@ -473,6 +480,12 @@ public class MovieListServlet extends HttpServlet {
 
 //
                 }
+                //close prepare statements
+                //first 3 genres
+                statementFirstThreeGenres.close();
+                //stars prepare statement
+                statementFirstThreeStars.close();
+
             }
 
 
