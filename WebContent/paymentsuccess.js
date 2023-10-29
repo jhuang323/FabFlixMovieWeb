@@ -3,15 +3,15 @@ function handleTotal(resultObj){
     shoppingCartTable.append("<tr><td>" + "Total Amount: $" + resultObj.total + "</td></tr>")
 
     //clear the cart
-    // $.ajax(
-    //     "api/shopping-cart", {
-    //         method: "POST",
-    //         // Serialize the login form to the data sent by POST request
-    //         data: {
-    //             action:"clearcart"
-    //         }
-    //     }
-    // );
+    $.ajax(
+        "api/shopping-cart", {
+            method: "POST",
+            // Serialize the login form to the data sent by POST request
+            data: {
+                action:"clearcart"
+            }
+        }
+    );
 
 }
 
