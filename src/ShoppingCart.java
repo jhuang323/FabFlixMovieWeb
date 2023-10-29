@@ -78,6 +78,7 @@ public class ShoppingCart extends HttpServlet {
             //build json obj
             JsonObject aMovieJsonobj = new JsonObject();
             aMovieJsonobj.addProperty("MovieID", ahashmapEntry.getValue().getMovieId());
+            aMovieJsonobj.addProperty("SalesID", ahashmapEntry.getValue().getSalesId());
             aMovieJsonobj.addProperty("MovieTitle", ahashmapEntry.getValue().getMovieTitle());
             aMovieJsonobj.addProperty("MoviePrice",ahashmapEntry.getValue().getMoviePrice());
             aMovieJsonobj.addProperty("MovieQuantity",ahashmapEntry.getValue().getMovieCount());

@@ -3,15 +3,15 @@ function handleTotal(resultObj){
     shoppingCartTable.append("<tr><td>" + "Total Amount: $" + resultObj.total + "</td></tr>")
 
     //clear the cart
-    $.ajax(
-        "api/shopping-cart", {
-            method: "POST",
-            // Serialize the login form to the data sent by POST request
-            data: {
-                action:"clearcart"
-            }
-        }
-    );
+    // $.ajax(
+    //     "api/shopping-cart", {
+    //         method: "POST",
+    //         // Serialize the login form to the data sent by POST request
+    //         data: {
+    //             action:"clearcart"
+    //         }
+    //     }
+    // );
 
 }
 
@@ -24,6 +24,11 @@ function handleCartArray(resultArray) {
     for (let i = 0; i < resultArray.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
+
+        rowHTML += "<td>";
+        rowHTML += resultArray[i].SalesID;
+        rowHTML += "</td>";
+
 
         rowHTML += "<td>";
         rowHTML += resultArray[i].MovieTitle;

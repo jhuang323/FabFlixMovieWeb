@@ -74,8 +74,41 @@ public class CheckoutServlet extends HttpServlet {
         SimpleDateFormat curDateMysqlFormat = new SimpleDateFormat("yyyy-MM-dd");
         String curdateStr = curDateMysqlFormat.format(curdate);
 
-        String insertSalesUpdate = "INSERT INTO sales(customerId,movieId,saleDate,quantity)\n" +
+        String insertSalesUpdate = "INSERT INTO sales(id,customerId,movieId,saleDate,quantity)\n" +
                 "VALUES\n";
+        String queryMSalesId = "select MAX(id) as mid from sales";
+
+        int MaxId = 0;
+
+        //get the max sales id first
+        try (Connection conn = dataSource.getConnection()) {
+
+            Statement qMaxSalesStatement = conn.createStatement();
+
+            ResultSet MaxidRS =  qMaxSalesStatement.executeQuery(queryMSalesId);
+
+            MaxidRS.next();
+
+            //get the max id
+            MaxId = MaxidRS.getInt("mid");
+
+
+            //close statements and rs
+            qMaxSalesStatement.close();
+            MaxidRS.close();
+
+
+        } catch (Exception e) {
+            // Write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+
+
+        }
+
+        //test execute update
+
+
 
         //insert format: (961,'tt0399582','2023-10-26',10)
 
@@ -83,7 +116,13 @@ public class CheckoutServlet extends HttpServlet {
         //iter over hashmap
         int count = 0;
         for(Map.Entry<String,MoviePrice> ahashmapEntry: ahashMap.entrySet()){
-            String aSingleInsertData = "("+curUserId + "," + "'" + ahashmapEntry.getValue().getMovieId() + "','" + curdateStr + "'," + ahashmapEntry.getValue().getMovieCount() + ")";
+            MaxId++;
+            String aSingleInsertData = "("+ MaxId + "," +curUserId + "," + "'" + ahashmapEntry.getValue().getMovieId() + "','" + curdateStr + "'," + ahashmapEntry.getValue().getMovieCount() + ")";
+
+            //update the hashmap sid
+            ahashmapEntry.getValue().setSalesId(MaxId);
+
+
             count++;
             if(count == ahashMap.size()){
                 insertSalesUpdate += aSingleInsertData;
@@ -102,6 +141,9 @@ public class CheckoutServlet extends HttpServlet {
 
             insertSalesStatement.executeUpdate(insertSalesUpdate);
 
+            //close statements
+            insertSalesStatement.close();
+
         } catch (Exception e) {
         // Write error message JSON object to output
         JsonObject jsonObject = new JsonObject();
@@ -109,6 +151,8 @@ public class CheckoutServlet extends HttpServlet {
 
 
         }
+
+
 
 
     }

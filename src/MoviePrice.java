@@ -10,6 +10,8 @@ public class MoviePrice {
     private String movieTitle;
     private String movieId;
 
+    private int SalesId;
+
     public MoviePrice(String aMovId, String amovTitle, float price) {
 
         this.movieId = aMovId;
@@ -17,6 +19,7 @@ public class MoviePrice {
 
         this.count = 0;
         this.price = price;
+        this.SalesId = -1;
     }
 
     public String getMovieId(){
@@ -36,6 +39,13 @@ public class MoviePrice {
     }
     public void setMovieCount(int count){
         this.count += count;
+    }
+
+    public void setSalesId(int aSid){
+        this.SalesId = aSid;
+    }
+    public int getSalesId(){
+        return this.SalesId;
     }
 
 }
