@@ -38,6 +38,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+
+
 
         /* This example only allows username/password to be test/test
         /  in the real project, you should talk to the database to verify username/password
@@ -61,6 +65,9 @@ public class LoginServlet extends HttpServlet {
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
+
+
+
 
         try (Connection conn = dataSource.getConnection()) {
 
@@ -134,6 +141,17 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("message", "success");
 
             }
+
+            // Verify reCAPTCHA
+            try {
+                RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+            } catch (Exception e) {
+                responseJsonObject.addProperty("status", "fail");
+                responseJsonObject.addProperty("message", "Recaptcha FAILED");
+            }
+
+
+
             //check for null
 
             resultUserInput.close();
