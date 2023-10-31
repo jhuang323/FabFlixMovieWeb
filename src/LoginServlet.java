@@ -16,6 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
@@ -49,19 +51,10 @@ public class LoginServlet extends HttpServlet {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Construct a query with parameter represented by "?" where it returns the users info if it exists in the customer table
-        String queryUserInput = "SELECT *" +
-                " FROM customers" +
-                " WHERE customers.email = ?" +
-                " AND customers.password = ?;";
 
-        String queryUserEmail = "SELECT email" +
+        String queryUserEmail = "SELECT email, password, id" +
                 " FROM customers" +
                 " WHERE customers.email = ?";
-
-
-
-        
-
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
@@ -72,73 +65,39 @@ public class LoginServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             JsonObject responseJsonObject = new JsonObject();
-            // Declare our email and password statement
-            PreparedStatement statementUserInput = conn.prepareStatement(queryUserInput);
+            PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
+            statementUserEmailInput.setString(1, username);
+            ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
 
-            // Set the parameter represented by "?" in the query to the username and password we get from the form,
-            // num 1 indicates the first "?" in the query
-            statementUserInput.setString(1, username);
-            statementUserInput.setString(2, password);
+            if(resultUserEmailInput.next() != false){
 
-            // Perform the query
-            ResultSet resultUserInput = statementUserInput.executeQuery();
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                int inputID = resultUserEmailInput.getInt("id");
+                String queryEmail = resultUserEmailInput.getString("email");
+                String queryPassword = resultUserEmailInput.getString("password");
+                boolean success = false;
+                success = new StrongPasswordEncryptor().checkPassword(password, queryPassword);
+                if(success){
+                    // set this user into the session
+                    request.getSession().setAttribute("user", new User(username,inputID));
+                    //set empty Cart for User
+                    request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
 
-
-
-            if(resultUserInput.next() == false){
-                // Login fail
-                responseJsonObject.addProperty("status", "fail");
-                // Log to localhost log
-                request.getServletContext().log("Login failed");
-
-                //Verify that email exists
-                // Declare our email and password statement
-                PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
-
-                // Set the parameter represented by "?" in the query to the username and password we get from the form,
-                // num 1 indicates the first "?" in the query
-                statementUserEmailInput.setString(1, username);
-
-
-                // Perform the query
-                ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
-
-                if(resultUserEmailInput.next() == false){
-                    //email problem
-                    responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
+                    responseJsonObject.addProperty("status", "success");
+                    responseJsonObject.addProperty("message", "success");
                 }
                 else{
                     responseJsonObject.addProperty("message", "Incorrect password");
-
                 }
+
                 resultUserEmailInput.close();
                 statementUserEmailInput.close();
-                // sample error messages. in practice, it is not a good idea to tell user which one is incorrect/not exist.
-//                if (inputEmail==null) {
-//                    responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
-//                } else {
-//                    responseJsonObject.addProperty("message", "Incorrect password");
-//
-//                }
+
+
             }
             else{
-
-                String inputEmail = resultUserInput.getString("email");
-                String inputPassword = resultUserInput.getString("password");
-                int inputID = resultUserInput.getInt("id");
-
-                // Login success:
-
-
-
-                // set this user into the session
-                request.getSession().setAttribute("user", new User(username,inputID));
-                //set empty Cart for User
-                request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
-
-                responseJsonObject.addProperty("status", "success");
-                responseJsonObject.addProperty("message", "success");
+                responseJsonObject.addProperty("status", "fail");
+                request.getServletContext().log("Login failed");
+                responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
 
             }
 
@@ -150,12 +109,6 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("message", "Recaptcha FAILED");
             }
 
-
-
-            //check for null
-
-            resultUserInput.close();
-            statementUserInput.close();
             out.write(responseJsonObject.toString());
 
         } catch (Exception e) {
