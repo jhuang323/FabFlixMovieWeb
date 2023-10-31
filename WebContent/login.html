@@ -13,6 +13,9 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="login.css">
 
+<!--    recaptcha script source-->
+    <script src='https://www.google.com/recaptcha/api.js' type="text/javascript"></script>
+
 
     <title>Login to Fablix</title>
 </head>
@@ -42,7 +45,9 @@
                                 <input name="password" class="form-control form-control-lg" placeholder="Enter Password" type="password">
                             </label>
                             <br>
+                            <div class="g-recaptcha" data-sitekey="6LcjseEoAAAAAAyeKNuLUg2dxu-maI_ExtwOSj7-"></div>
                             <input type="submit" class="btn btn-outline-light btn-lg px-5" value="Login">
+
                         </form>
 
                         <div id="login_error_message" class="text-warning"></div>
@@ -54,6 +59,7 @@
         </div>
     </div>
 </div>
+
 
 
 
