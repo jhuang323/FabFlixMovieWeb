@@ -147,7 +147,7 @@ public class LoginServlet extends HttpServlet {
                 RecaptchaVerifyUtils.verify(gRecaptchaResponse);
             } catch (Exception e) {
                 responseJsonObject.addProperty("status", "fail");
-                responseJsonObject.addProperty("message", e.getMessage());
+                responseJsonObject.addProperty("message", "Recaptcha FAILED");
             }
 
 
