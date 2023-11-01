@@ -69,41 +69,44 @@ public class LoginServlet extends HttpServlet {
             statementUserEmailInput.setString(1, username);
             ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
 
-            if(resultUserEmailInput.next() != false){
 
-                int inputID = resultUserEmailInput.getInt("id");
-                String queryEmail = resultUserEmailInput.getString("email");
-                String queryPassword = resultUserEmailInput.getString("password");
-                boolean success = false;
-                success = new StrongPasswordEncryptor().checkPassword(password, queryPassword);
-                if(success){
-                    // set this user into the session
-                    request.getSession().setAttribute("user", new User(username,inputID));
-                    //set empty Cart for User
-                    request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
-
-                    responseJsonObject.addProperty("status", "success");
-                    responseJsonObject.addProperty("message", "success");
-                }
-                else{
-                    responseJsonObject.addProperty("message", "Incorrect password");
-                }
-
-                resultUserEmailInput.close();
-                statementUserEmailInput.close();
-
-
-            }
-            else{
-                responseJsonObject.addProperty("status", "fail");
-                request.getServletContext().log("Login failed");
-                responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
-
-            }
 
             // Verify reCAPTCHA
             try {
                 RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+
+                if(resultUserEmailInput.next() != false){
+
+                    int inputID = resultUserEmailInput.getInt("id");
+                    String queryEmail = resultUserEmailInput.getString("email");
+                    String queryPassword = resultUserEmailInput.getString("password");
+                    boolean success = false;
+                    success = new StrongPasswordEncryptor().checkPassword(password, queryPassword);
+                    if(success){
+                        // set this user into the session
+                        request.getSession().setAttribute("user", new User(username,inputID));
+                        //set empty Cart for User
+                        request.getSession().setAttribute("Cart", new HashMap<String, MoviePrice>());
+
+                        responseJsonObject.addProperty("status", "success");
+                        responseJsonObject.addProperty("message", "success");
+                    }
+                    else{
+                        responseJsonObject.addProperty("message", "Incorrect password");
+                    }
+
+                    resultUserEmailInput.close();
+                    statementUserEmailInput.close();
+
+
+                }
+                else{
+                    responseJsonObject.addProperty("status", "fail");
+                    request.getServletContext().log("Login failed");
+                    responseJsonObject.addProperty("message", "Email " + username + " doesn't exist");
+
+                }
+
             } catch (Exception e) {
                 responseJsonObject.addProperty("status", "fail");
                 responseJsonObject.addProperty("message", "Recaptcha FAILED");
