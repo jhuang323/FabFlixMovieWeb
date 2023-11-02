@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
 
-@WebServlet(name = "EmployeeDashServlet", urlPatterns = "/_dashboard/api/employee-dash")
+@WebServlet(name = "EmployeeDashServlet", urlPatterns = "/_dashboard/api/EmployeeDash")
 public class EmployeeDashServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
     private DataSource dataSource;
