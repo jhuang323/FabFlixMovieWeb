@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+    private final ArrayList<String> allowedURIsEmployee = new ArrayList<>();
 
     /**
      * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -29,12 +30,32 @@ public class LoginFilter implements Filter {
             return;
         }
 
-        // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect("login.html");
-        } else {
-            chain.doFilter(request, response);
+        System.out.println(httpRequest.getRequestURI() + " " + this.isUrlEmployeeSection(httpRequest.getRequestURI()));
+
+        if(this.isUrlEmployeeSection(httpRequest.getRequestURI())){
+            //the employee section
+
+            //check if employee object exists
+            if(httpRequest.getSession().getAttribute("employee") == null){
+                //redirect to employee login
+                httpResponse.sendRedirect("login.html");
+
+            }
+            else {
+                chain.doFilter(request, response);
+            }
+
         }
+        else{
+            // Redirect to login page if the "user" attribute doesn't exist in session
+            if (httpRequest.getSession().getAttribute("user") == null) {
+                httpResponse.sendRedirect("login.html");
+            } else {
+                chain.doFilter(request, response);
+            }
+        }
+
+
     }
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
@@ -46,11 +67,30 @@ public class LoginFilter implements Filter {
         return allowedURIs.stream().anyMatch(requestURI.toLowerCase()::endsWith);
     }
 
+    private boolean isUrlEmployeeSection(String requestURI) {
+        /*
+         Setup your own rules here to allow accessing some resources without logging in
+         Always allow your own login related requests(html, js, servlet, etc..)
+         You might also want to allow some CSS files, etc..
+         */
+        return allowedURIsEmployee.stream().anyMatch(requestURI.toLowerCase()::contains);
+    }
+
     public void init(FilterConfig fConfig) {
         //whitelist of urls that allows for no login
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
+        allowedURIs.add("login.css");
         allowedURIs.add("api/login");
+
+        //dashboard allowed urls
+        allowedURIs.add("_dashboard/login.html");
+        allowedURIs.add("_dashboard/login.js");
+        allowedURIs.add("_dashboard/login.css");
+
+
+        //add urls that are part of employee section
+        allowedURIsEmployee.add("_dashboard");
     }
 
     public void destroy() {
