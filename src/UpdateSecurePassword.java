@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+//Note to run do
+//mvn compile
+//mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass="UpdateSecurePassword"
+
 public class UpdateSecurePassword {
 
     /*
