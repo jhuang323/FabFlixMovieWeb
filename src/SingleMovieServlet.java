@@ -194,10 +194,11 @@ public class SingleMovieServlet extends HttpServlet {
             ResultSet ratingResultSet = ratingStatement.executeQuery();
 
             ratingResultSet.next();
-
-            System.out.println("rating:" + ratingResultSet.getString("rating"));
-
-            String TheRating = ratingResultSet.getString("rating");
+            String TheRating = "N/A";
+            if(! ratingResultSet.wasNull()){
+                TheRating = ratingResultSet.getString("rating");
+            }
+            System.out.println("rating:" + TheRating);
 
             //add to main json obj
             jsonObject.addProperty("rating",TheRating);

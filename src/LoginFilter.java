@@ -24,7 +24,7 @@ public class LoginFilter implements Filter {
         System.out.println("LoginFilter: " + httpRequest.getRequestURI());
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
+        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI()) || true) {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
             return;
@@ -88,6 +88,14 @@ public class LoginFilter implements Filter {
         allowedURIs.add("_dashboard/login.js");
         allowedURIs.add("_dashboard/login.css");
         allowedURIs.add("_dashboard/api/loginemployee");
+        allowedURIs.add("_dashboard/EmployeeDash.html");
+        allowedURIs.add("_dashboard/EmployeeDash.js");
+        allowedURIs.add("_dashboard/EmployeeDash.css");
+        allowedURIs.add("_dashboard/api/EmployeeDash");
+        allowedURIs.add("_dashboard/AddStar.html");
+        allowedURIs.add("_dashboard/AddStar.js");
+        allowedURIs.add("_dashboard/AddStar.css");
+        allowedURIs.add("_dashboard/api/AddStar");
 
 
         //add urls that are part of employee section

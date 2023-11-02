@@ -1,5 +1,5 @@
 <!-- This page will be seen if you logged in -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -10,12 +10,12 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="checkout.css">
+    <link rel="stylesheet" href="AddStar.css">
 
-
-    <title>Fablix Checkout</title>
+    <title>Add Star</title>
 </head>
 <body>
+
 
 <!--The nav bar-->
 
@@ -63,53 +63,51 @@
     </div>
 </nav>
 
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
 
-<div id="super_div">
+                    <div class="mb-md-5 mt-md-4 pb-5">
 
+                        <h2 class="fw-bold mb-2 text-uppercase">Add Star</h2>
+                        <p class="text-white-50 mb-5">Please enter Star Info</p>
 
-    <div class="container my-5 py-5">
-        <div class="row d-flex justify-content-center py-5">
-            <div class="col-md-10 col-lg-8 col-xl-5">
-                <div class="card" style="border-radius: 15px;">
-                    <div class="card-body p-4">
-                        <div class="text-center mb-4">
-                            <h3>Payment</h3>
-                        </div>
+                        <form id="add_star_form" class="form-outline form-white mb-4" method="post"
+                              action="#">
+                            <label><b>Full Name</b></label>
+                            <label>
+                                <input name="fullName" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="text">
+                            </label>
+                            <br>
+                            <label><b>Birth Year</b></label>
+                            <label>
+                                <input name="birthYear" class="form-control form-control-lg"
+                                       placeholder="Enter Birth Year" type="text">
+                            </label>
+                            <br>
+                            <input type="submit" class="btn btn-outline-light btn-lg px-5"
+                                   value="Add">
 
-                        <form ACTION="#" id="checkout-form" METHOD="post">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="user_fname">First Name</label>
-                                    <input name="First_name" id="user_fname" class="form-control" required="required" type="text">
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    <label for="user_lname">Last Name</label>
-                                    <input name="Last_name" id="user_lname" class="form-control" required="required" type="text">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cc_num">Credit Card Number</label>
-                                <input name="CreditCard_number" id="cc_num" class="form-control" required="required" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="cc_expire">Expiration Date</label>
-                                <input name="Expiration_date" id="cc_expire" class="form-control" required="required" type="date">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         </form>
-                        <div id="total_num"></div>
+
+                        <div id="add_star_error_message" class="text-warning"></div>
+
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-
 <!-- include your own JS file -->
-<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-<script type='text/javascript' src='checkout.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type='text/javascript' src='AddStar.js'></script>
 </body>
 </html>
