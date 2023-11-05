@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -41,6 +42,9 @@ public class AddStarServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
 
             JsonObject responseJsonObject = new JsonObject();
+
+            CallableStatement insertStarsCS = conn.prepareCall("{call }")
+
 //            PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
 //            statementUserEmailInput.setString(1, username);
 //            ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
