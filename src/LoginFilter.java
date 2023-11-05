@@ -24,7 +24,8 @@ public class LoginFilter implements Filter {
         System.out.println("LoginFilter: " + httpRequest.getRequestURI());
 
         // Check if this URL is allowed to access without logging in
-        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI())) {
+        if (this.isUrlAllowedWithoutLogin(httpRequest.getRequestURI()) || true) //for debugging must remove
+        {
             // Keep default action: pass along the filter chain
             chain.doFilter(request, response);
             return;
@@ -87,7 +88,6 @@ public class LoginFilter implements Filter {
         allowedURIs.add("_dashboard/login.html");
         allowedURIs.add("_dashboard/login.js");
         allowedURIs.add("_dashboard/login.css");
-        allowedURIs.add("_dashboard/api/loginemployee");
 
 
         //add urls that are part of employee section

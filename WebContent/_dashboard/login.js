@@ -14,7 +14,7 @@ function handleLoginResult(resultDataString) {
     // If login succeeds, it will redirect the user to checkout.html
     if (resultDataJson["status"] === "success") {
 
-        window.location.replace("main-page.html");
+        window.location.replace("EmployeeDash.html");
 
     } else {
         // If login fails, the web page will display 
