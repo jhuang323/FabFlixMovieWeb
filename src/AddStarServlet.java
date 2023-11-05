@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.CallableStatement;
+import java.sql.Types;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -36,14 +37,59 @@ public class AddStarServlet extends HttpServlet {
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String star_name = request.getParameter("fullName");
-        String star_year = request.getParameter("birthYear");
+
+        int star_year = 0;
+
+        if(!request.getParameter("birthYear").isEmpty())
+        {
+            star_year = Integer.parseInt(request.getParameter("birthYear"));
+        }
+
+
 
         PrintWriter out = response.getWriter();
         try (Connection conn = dataSource.getConnection()) {
 
             JsonObject responseJsonObject = new JsonObject();
 
-            CallableStatement insertStarsCS = conn.prepareCall("{call }")
+            CallableStatement insertStarsCS = conn.prepareCall("{call add_star(?, ?, ?, ?)}");
+
+            //set in param
+            insertStarsCS.setString(1,star_name);
+
+            if(star_year == 0){
+                insertStarsCS.setNull(2,Types.INTEGER);
+            }
+            else{
+                insertStarsCS.setInt(2,star_year);
+            }
+
+
+            //set out param register them
+            insertStarsCS.registerOutParameter(3,Types.INTEGER);
+            insertStarsCS.registerOutParameter(4,Types.VARCHAR);
+
+            //exec statement
+            insertStarsCS.executeUpdate();
+
+            //retrieve return
+            int rsuccess = insertStarsCS.getInt(3);
+            String rstarID = insertStarsCS.getString(4);
+
+            responseJsonObject.addProperty("status",rsuccess);
+
+            if (rsuccess == 1){
+                responseJsonObject.addProperty("message","Successfully added" +
+                        " star ID: " + rstarID
+                );
+            }
+            else {
+                responseJsonObject.addProperty("message","Failed to " +
+                        "add New Star"
+                );
+            }
+
+
 
 //            PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
 //            statementUserEmailInput.setString(1, username);

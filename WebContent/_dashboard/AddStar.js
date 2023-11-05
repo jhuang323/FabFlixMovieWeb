@@ -1,4 +1,5 @@
 let add_star_form = $("#add_star_form");
+let add_starmeg = $("#add_star_error_message");
 
 /**
  * Handle the data returned by LoginServlet
@@ -20,6 +21,10 @@ function handleAddStarResult(resultDataString) {
         console.log(resultDataJson["message"]);
         $("#add_star_error_message").text(resultDataJson["message"]);
     }
+
+    add_starmeg.text(resultDataJson["message"]);
+
+
 }
 function submitStarForm(formSubmitEvent) {
     console.log("submit info for new Star");
@@ -28,7 +33,7 @@ function submitStarForm(formSubmitEvent) {
         "api/AddStar", {
             method: "POST",
             // Serialize the login form to the data sent by POST request
-            data: login_form.serialize(),
+            data: add_star_form.serialize(),
             success: handleAddStarResult
         }
     );
