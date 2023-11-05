@@ -1,0 +1,142 @@
+<!-- This page will be seen if you logged in -->
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="AddMovie.css">
+
+    <title>Add Movie</title>
+</head>
+<body>
+
+
+<!--The nav bar-->
+
+<nav id="custnav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand text-success" href="main-page.html">Fabflix</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbaracctDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbaracctDropdown">
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-warning" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Search
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <form id="nav_search" class="px-4 py-3" ACTION="#" METHOD="GET">
+                        <label>Title:</label>
+                        <input id="title_field" TYPE="TEXT">
+                        <label>Year:</label>
+                        <input id="year_field" TYPE="TEXT">
+                        <label>Director:</label>
+                        <input id="director_field" TYPE="TEXT">
+                        <label>Star Name:</label>
+                        <input id="star_name_field" TYPE="TEXT">
+
+                        <input TYPE="SUBMIT" VALUE="Search">
+
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="window.location.href='ShoppingCart.html'">My Cart</button>
+
+    </div>
+</nav>
+
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+
+                    <div class="mb-md-5 mt-md-4 pb-5">
+
+                        <h2 class="fw-bold mb-2 text-uppercase">Add Movie</h2>
+                        <p class="text-white-50 mb-5">Please enter Movie Info</p>
+
+                        <form id="add_movie_form" class="form-outline form-white mb-4" method="post"
+                              action="#">
+                            <h3><b>Movie Info</b></h3>
+                            <label><b>Title</b></label>
+                            <br>
+                            <label>
+                                <input name="title" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="text">
+                            </label>
+                            <br>
+                            <label><b>Year</b></label>
+                            <br>
+                            <label>
+                                <input name="year" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="number">
+                            </label>
+                            <br>
+                            <label><b>Director</b></label>
+                            <label>
+                                <input name="director" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="text">
+                            </label>
+                            <br>
+                            <label><b>Genre</b></label>
+                            <br>
+                            <label>
+                                <input name="genre" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="text">
+                            </label>
+                            <br>
+                            <h3><b>Star Info</b></h3>
+                            <label><b>Full Name</b></label>
+                            <label>
+                                <input name="fullName" class="form-control form-control-lg"
+                                       placeholder="Enter Name" type="text">
+                            </label>
+                            <br>
+                            <label><b>Birth Year</b></label>
+                            <label>
+                                <input name="birthYear" class="form-control form-control-lg"
+                                       placeholder="Enter Birth Year" type="number">
+                            </label>
+                            <br>
+                            <input type="submit" class="btn btn-outline-light btn-lg px-5"
+                                   value="Add">
+
+                        </form>
+
+                        <div id="add_movie_error_message" class="text-warning"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- include your own JS file -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type='text/javascript' src='AddMovie.js'></script>
+</body>
+</html>

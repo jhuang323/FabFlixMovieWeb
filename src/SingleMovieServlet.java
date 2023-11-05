@@ -193,9 +193,9 @@ public class SingleMovieServlet extends HttpServlet {
 
             ResultSet ratingResultSet = ratingStatement.executeQuery();
 
-            ratingResultSet.next();
+
             String TheRating = "N/A";
-            if(! ratingResultSet.wasNull()){
+            if(ratingResultSet.next()){
                 TheRating = ratingResultSet.getString("rating");
             }
             System.out.println("rating:" + TheRating);
