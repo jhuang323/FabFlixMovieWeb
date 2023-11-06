@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.List;
 
 public class Film {
@@ -40,5 +41,22 @@ public class Film {
     public Cat latestCategory(){
         int latestCatIndex = catList.size() - 1;
         return catList.get(latestCatIndex);
+    }
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        if(catList != null) {
+            sb.append("Number of Cats for Film: " + catList.size() + "\n");
+            sb.append("Film Title: " + title + ", ID: " + filmID + ", Year: " + year + "\n");
+
+            Iterator<Cat> it = catList.iterator();
+            while (it.hasNext()) {
+                sb.append(it.next().toString());
+            }
+            sb.append("\n");
+        }
+        else{
+            sb.append("No categories found \n");
+        }
+        return sb.toString();
     }
 }

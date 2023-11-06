@@ -54,6 +54,7 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("scfi", "Science Fiction");
         genres.put("kinky", "Kinky");
         genres.put("advt", "Adventure");
+        genres.put("horr", "Horror");
 
     }
 
@@ -86,8 +87,11 @@ public class SAXParserServletMain extends DefaultHandler {
         System.out.println("No of Directors Films '" + movie.getDirectorFilmsList().size() + "'.");
 
         Iterator<DirectorFilms> it = movie.getDirectorFilmsList().iterator();
+        int c = 1;
         while (it.hasNext()) {
             System.out.println(it.next().toString());
+            System.out.println(c);
+            c+=1;
         }
         System.out.println(genres.toString());
     }
@@ -114,21 +118,23 @@ public class SAXParserServletMain extends DefaultHandler {
         } else if (qName.equalsIgnoreCase(CATS)) {
             latestFilm().setCatList(new ArrayList<Cat>());
         }else if (qName.equalsIgnoreCase(CAT)) {
-            latestFilm().addCatList(new Cat());
+            if(latestFilm().getCatList() != null){
+                latestFilm().addCatList(new Cat());
+            }
         }
     }
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
         if (qName.equalsIgnoreCase(DIRID)) {
-            latestDirectorFilm().getDirector().setDirectorID(element.toString());
+            latestDirectorFilm().getDirector().setDirectorID(element.toString().trim());
         } else if (qName.equalsIgnoreCase(DIRNAME)) {
-            latestDirectorFilm().getDirector().setDirectorName(element.toString());
+            latestDirectorFilm().getDirector().setDirectorName(element.toString().trim());
         } else if (qName.equalsIgnoreCase(FID)) {
-            latestFilm().setFilmID(element.toString());
+            latestFilm().setFilmID(element.toString().trim());
         }else if (qName.equalsIgnoreCase(TITLE)) {
-            latestFilm().setTitle(element.toString());
+            latestFilm().setTitle(element.toString().trim());
         }else if (qName.equalsIgnoreCase(YEAR)) {
-            latestFilm().setYear(element.toString());
+            latestFilm().setYear(element.toString().trim());
         }else if (qName.equalsIgnoreCase(CAT)) {
             String lowered = (element.toString()).trim().toLowerCase();
             if(genres.containsKey(lowered)){
@@ -138,8 +144,6 @@ public class SAXParserServletMain extends DefaultHandler {
                 genres.put(lowered, lowered);
                 latestFilm().latestCategory().setGenreName(lowered);
             }
-            //latestFilm().latestCategory().setGenreName(element.toString());
-            //System.out.println(element.toString());
         }
 
     }
