@@ -8,6 +8,9 @@ public class Film {
     public List<Cat> getCatList(){
         return this.catList;
     }
+    public void setCatList(List<Cat> catList){
+        this.catList = catList;
+    }
     public void addCatList(Cat category){
         this.catList.add(category);
     }
@@ -33,5 +36,9 @@ public class Film {
 
     public void setYear(String year) {
         this.year = year;
+    }
+    public Cat latestCategory(){
+        int latestCatIndex = catList.size() - 1;
+        return catList.get(latestCatIndex);
     }
 }
