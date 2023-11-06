@@ -23,18 +23,18 @@ Jose:
 3. Completed Shopping Cart
 4. Added navbar
 5. Completed Search
-6. Extended Single Casts and Star
-Justin:
-1. Created Servlet for Single Casts Page
-2. Completed Front and Back end of Single Casts Page along with color and css for the extra credit
+6. Extended Single Movie and Star
+   Justin:
+1. Created Servlet for Single Movie Page
+2. Completed Front and Back end of Single Movie Page along with color and css for the extra credit
 3. Beautified the website
 4. Completed task 1
 5. Compelted Browse
 6. Pagination and Sorting
-Jose/Justin:
-1. Created Servlet for Casts List Page
-2. Completed Front and Back end of Casts List Page along with color and css for the extra credit
-3. Completed Casts List updates
+   Jose/Justin:
+1. Created Servlet for Movie List Page
+2. Completed Front and Back end of Movie List Page along with color and css for the extra credit
+3. Completed Movie List updates
 4. Completed Shopping Cart front and back
 
 

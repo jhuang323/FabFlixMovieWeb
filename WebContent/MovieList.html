@@ -18,7 +18,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="MovieList.css">
 
-    <title>Casts List</title>
+    <title>Movie List</title>
 </head>
 
 <body>
@@ -52,7 +52,7 @@
                         <input id="title_field" TYPE="TEXT">
                         <label>Year:</label>
                         <input id="year_field" TYPE="TEXT">
-                        <label>Director_Casts:</label>
+                        <label>Director:</label>
                         <input id="director_field" TYPE="TEXT">
                         <label>Star Name:</label>
                         <input id="star_name_field" TYPE="TEXT">
@@ -89,31 +89,31 @@
 
 
     <div>
-    <!--Test drop down for sorting-->
-    <!--<form id="dropdown_form" METHOD="GET">-->
-    <label for="sort_dd">Select a Sorting Option: </label>
-    <select id="sort_dd" name="tt" onchange="handleSortOption()">
-        <option value="title_a_a">Title Asc,Rating Asc</option>
-        <option value="title_a_d">Title Asc,Rating Desc</option>
-        <option value="title_d_a">Title Desc,Rating Asc</option>
-        <option value="title_d_d">Title Desc,Rating Desc</option>
-        <option value="rating_a_a">Rating Asc,Title Asc</option>
-        <option value="rating_a_d">Rating Asc,Title Desc</option>
-        <option value="rating_d_a">Rating Desc,Title Asc</option>
-        <option value="rating_d_d">Rating Desc,Title Desc</option>
+        <!--Test drop down for sorting-->
+        <!--<form id="dropdown_form" METHOD="GET">-->
+        <label for="sort_dd">Select a Sorting Option: </label>
+        <select id="sort_dd" name="tt" onchange="handleSortOption()">
+            <option value="title_a_a">Title Asc,Rating Asc</option>
+            <option value="title_a_d">Title Asc,Rating Desc</option>
+            <option value="title_d_a">Title Desc,Rating Asc</option>
+            <option value="title_d_d">Title Desc,Rating Desc</option>
+            <option value="rating_a_a">Rating Asc,Title Asc</option>
+            <option value="rating_a_d">Rating Asc,Title Desc</option>
+            <option value="rating_d_a">Rating Desc,Title Asc</option>
+            <option value="rating_d_d">Rating Desc,Title Desc</option>
 
-    </select>
+        </select>
 
 
-    <!--num limit form for 10,25,50,100-->
-    <label for="itemlimit_dd">Select a Items Limit Option: </label>
-    <select id="itemlimit_dd" onchange="handleItemLimitOption()">
-        <option value="10" >10</option>
-        <option value="25" >25</option>
-        <option value="50" >50</option>
-        <option value="100" >100</option>
-    </select>
-    <br>
+        <!--num limit form for 10,25,50,100-->
+        <label for="itemlimit_dd">Select a Items Limit Option: </label>
+        <select id="itemlimit_dd" onchange="handleItemLimitOption()">
+            <option value="10" >10</option>
+            <option value="25" >25</option>
+            <option value="50" >50</option>
+            <option value="100" >100</option>
+        </select>
+        <br>
     </div>
 
 
@@ -125,7 +125,7 @@
             <!-- Titles of each column-->
             <th>Title</th>
             <th>Year</th>
-            <th>Director_Casts</th>
+            <th>Director</th>
             <th>Rating</th>
             <th>Star(s)</th>
             <th>Genre(s)</th>
@@ -137,19 +137,19 @@
         <tbody id=top20_table_body></tbody>
     </table>
 
-<!--    <form id="search_form" ACTION="MovieList.html" METHOD="GET">-->
-<!--        <label>Title:</label>-->
-<!--        <input id="title_field" TYPE="TEXT">-->
-<!--        <label>Year:</label>-->
-<!--        <input id="year_field" TYPE="TEXT">-->
-<!--        <label>Director_Casts:</label>-->
-<!--        <input id="director_field" TYPE="TEXT">-->
-<!--        <label>Star Name:</label>-->
-<!--        <input id="star_name_field" TYPE="TEXT">-->
+    <!--    <form id="search_form" ACTION="MovieList.html" METHOD="GET">-->
+    <!--        <label>Title:</label>-->
+    <!--        <input id="title_field" TYPE="TEXT">-->
+    <!--        <label>Year:</label>-->
+    <!--        <input id="year_field" TYPE="TEXT">-->
+    <!--        <label>Director:</label>-->
+    <!--        <input id="director_field" TYPE="TEXT">-->
+    <!--        <label>Star Name:</label>-->
+    <!--        <input id="star_name_field" TYPE="TEXT">-->
 
-<!--        <input TYPE="SUBMIT" VALUE="Search">-->
+    <!--        <input TYPE="SUBMIT" VALUE="Search">-->
 
-<!--    </form>-->
+    <!--    </form>-->
 
 
     <!--Create the next and previous arrows-->
@@ -166,7 +166,7 @@
 
             <li class="page-item">
                 <button onclick="OnclickNext()" class="page-link" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
+                    <span aria-hidden="true">&raquo;</span>
                 </button>
             </li>
         </ul>
