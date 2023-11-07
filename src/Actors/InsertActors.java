@@ -55,13 +55,4 @@ public class InsertActors extends HttpServlet {
 
         }
     }
-    public void insert(SAXParserServletActors spe){
-        run(spe);
-    }
-    public static void main(String[] args) {
-        SAXParserServletActors spe = new SAXParserServletActors();
-        spe.runExample();
-        insert(spe);
-    }
-
 }
