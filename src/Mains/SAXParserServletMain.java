@@ -31,12 +31,16 @@ public class SAXParserServletMain extends DefaultHandler {
     private Movie movie;
     private String element;
     private HashMap<String, String> genres;
+    private int directorFilmListSize;
+    private int filmListSize;
 
     public SAXParserServletMain() {
 
         movie = new Movie();
+        directorFilmListSize = 0;
         genres = new HashMap<String, String>();
         genres.put("dram", "Drama");
+        genres.put("draam", "Drama");
         genres.put("susp", "Suspense");
         genres.put("romt", "Romance");
         genres.put("myst", "Mystery");
@@ -56,6 +60,12 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("kinky", "Kinky");
         genres.put("advt", "Adventure");
         genres.put("horr", "Horror");
+        genres.put("surr", "Surreal");
+        genres.put("road", "Road");
+        genres.put("noir", "Noir");
+        genres.put("porn", "Porn");
+        genres.put("porb", "Porn");
+        genres.put("cult", "Cult");
 
     }
 
@@ -78,11 +88,6 @@ public class SAXParserServletMain extends DefaultHandler {
             ie.printStackTrace();
         }
     }
-
-    /**
-     * Iterate through the list and print
-     * the contents
-     */
     private void printData() {
 
         System.out.println("No of Directors Films '" + movie.getDirectorFilmsList().size() + "'.");
@@ -110,12 +115,15 @@ public class SAXParserServletMain extends DefaultHandler {
             movie.setDirectorFilmsList(new ArrayList<DirectorFilms>());
         } else if (qName.equalsIgnoreCase(DIRECTOR_FILMS)) {
             movie.addDirectorFilm(new DirectorFilms());
+            directorFilmListSize++;
         } else if (qName.equalsIgnoreCase(DIRECTOR)) {
             latestDirectorFilm().setDirector(new Director());
         } else if (qName.equalsIgnoreCase(FILMS)) {
             latestDirectorFilm().setFilmList(new ArrayList<Film>());
+            filmListSize = 0;
         } else if (qName.equalsIgnoreCase(FILM)) {
             latestDirectorFilm().addFilm(new Film());
+            filmListSize++;
         } else if (qName.equalsIgnoreCase(CATS)) {
             latestFilm().setCatList(new ArrayList<Cat>());
         }else if (qName.equalsIgnoreCase(CAT)) {
@@ -151,12 +159,12 @@ public class SAXParserServletMain extends DefaultHandler {
 
     private DirectorFilms latestDirectorFilm() {
         List<DirectorFilms> directorFilmsList = movie.getDirectorFilmsList();
-        int latestDirectorFilmIndex = directorFilmsList.size() - 1;
+        int latestDirectorFilmIndex = directorFilmListSize - 1;
         return directorFilmsList.get(latestDirectorFilmIndex);
     }
     private Film latestFilm() {
         List<Film> filmList = latestDirectorFilm().getFilmList();
-        int latestFilmIndex = filmList.size() - 1;
+        int latestFilmIndex = filmListSize - 1;
         return filmList.get(latestFilmIndex);
     }
 

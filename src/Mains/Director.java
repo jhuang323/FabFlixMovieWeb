@@ -18,14 +18,4 @@ public class Director {
     public void setDirectorID(String id){
         this.name = id;
     }
-//    public String toString() {
-//        StringBuffer sb = new StringBuffer();
-//        sb.append("Director Details - ");
-//        sb.append("Name:" + name);
-//        sb.append(",");
-//        sb.append("ID:" + id);
-//        sb.append(".");
-//
-//        return sb.toString();
-//    }
 }

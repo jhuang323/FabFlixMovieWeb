@@ -2,6 +2,7 @@ package Casts;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,11 +27,13 @@ public class SAXParserServletCasts extends DefaultHandler {
     private static final String STARNAME = "a";
     private Casts cast;
     private String element;
+    private int directorFilmsListSize;
+    private int latestMovieListSize;
+
 
     public SAXParserServletCasts() {
-
         cast = new Casts();
-
+        directorFilmsListSize = 0;
     }
 
     public void runExample() {
@@ -81,12 +84,15 @@ public class SAXParserServletCasts extends DefaultHandler {
             cast.setDirectorFilmsList(new ArrayList<DirectorFilms_Casts>());
         } else if (qName.equalsIgnoreCase(DIRECTOR_FILMS)) {
             cast.addDirectorFilm(new DirectorFilms_Casts());
+            directorFilmsListSize++;
             latestDirectorFilm().setDirector(new Director_Casts());
         }else if (qName.equalsIgnoreCase(FILMC)) {
             latestDirectorFilm().setMovieList(new ArrayList<Movie_Casts>());
+            latestMovieListSize = 0;
         } else if (qName.equalsIgnoreCase(MOVIE)) {
             if(latestDirectorFilm().getMovieList() != null){
                 latestDirectorFilm().addMovie(new Movie_Casts());
+                latestMovieListSize++;
             }
         }
     }
@@ -106,12 +112,12 @@ public class SAXParserServletCasts extends DefaultHandler {
     }
     private DirectorFilms_Casts latestDirectorFilm() {
         List<DirectorFilms_Casts> directorFilmsList = cast.getDirectorFilmsList();
-        int latestDirectorFilmIndex = directorFilmsList.size() - 1;
+        int latestDirectorFilmIndex = directorFilmsListSize - 1;
         return directorFilmsList.get(latestDirectorFilmIndex);
     }
     private Movie_Casts latestMovie() {
         List<Movie_Casts> movieList = latestDirectorFilm().getMovieList();
-        int latestFilmIndex = movieList.size() - 1;
+        int latestFilmIndex = latestMovieListSize- 1;
         return movieList.get(latestFilmIndex);
     }
     public static void main(String[] args) {
