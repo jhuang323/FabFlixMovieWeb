@@ -1,3 +1,5 @@
+package Mains;
+
 import java.util.Iterator;
 
 public class Cat {

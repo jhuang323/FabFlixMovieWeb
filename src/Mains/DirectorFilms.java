@@ -1,6 +1,10 @@
+package Mains;
+
+import Mains.Film;
+
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+
 public class DirectorFilms {
     private Director director;
     private List<Film> filmList;
