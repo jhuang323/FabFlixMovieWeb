@@ -2,6 +2,8 @@ import Actors.InsertActors;
 import Actors.SAXParserServletActors;
 import Casts.SAXParserServletCasts;
 import Mains.SAXParserServletMain;
+import test.SAXParserServletCastsJustin;
+
 public class Parser {
     public static void main(String[] args) throws Exception{
 //        final long startTime = System.currentTimeMillis();
@@ -13,7 +15,7 @@ public class Parser {
 //        System.out.println("Total execution time: " + (endTime - startTime));
 
         final long startTimeSecond = System.currentTimeMillis();
-        SAXParserServletCasts spc = new SAXParserServletCasts();
+        SAXParserServletCastsJustin spc = new SAXParserServletCastsJustin();
         spc.runExample();
         SAXParserServletMain spm = new SAXParserServletMain();
         spm.runExample();

@@ -129,6 +129,8 @@ public class SAXParserServletActors extends DefaultHandler {
     public static void main(String[] args) {
         SAXParserServletActors spe = new SAXParserServletActors();
         spe.runExample();
+
+        System.out.println("");
     }
 
 }

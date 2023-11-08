@@ -9,8 +9,14 @@ public class MappedMovie {
     private String directorName;
     private List<Cat> genreList;
 
+    private List<String> starsList;
+
     public List<Cat> getGenreList() {
         return genreList;
+    }
+
+    public void setstarsList(List<String> astrlist) {
+        this.starsList = astrlist;
     }
 
     public void setGenreList(List<Cat> genreList) {
