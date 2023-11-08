@@ -37,7 +37,7 @@ public class InsertMainsAndCasts {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
 
         try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
-            CallableStatement insertMoviesCS = conn.prepareCall("{call add_movie(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            CallableStatement insertMoviesCS = conn.prepareCall("{call add_moviept6(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
 
             movieIDMap = new HashMap<String, MappedMovie>();
             Iterator<DirectorFilms> it =
@@ -67,10 +67,12 @@ public class InsertMainsAndCasts {
                 DirectorFilms_Casts dirFilm = dirFilmsCastsIterator.next();
                 //Director_Casts currentDirector = dirFilm.getDirector();
 
+
                 Iterator<Movie_Casts> movieCastsIteratorIterator = dirFilm.getMovieList().iterator();
                 while(movieCastsIteratorIterator.hasNext()){
                     Movie_Casts currentMovie = movieCastsIteratorIterator.next();
                     MappedMovie currentMapMovie = movieIDMap.get(currentMovie.getMovieID());
+//                    System.out.println("the current movie id " + currentMovie.getMovieID());
                     if(currentMapMovie != null){
                         insertMoviesCS.setString(1,currentMapMovie.getMovieTitle());
                         try {
@@ -95,13 +97,15 @@ public class InsertMainsAndCasts {
                             String rstarID = insertMoviesCS.getString(9);
                             int rgenreID = insertMoviesCS.getInt(10);
 
+
+
                             if (rsuccess == 1) {
-                                System.out.println("Successfully added" +
+                                System.out.println("Successfully added 1" +
                                         " movie ID: " + rmovieID + " star ID: " + rstarID + "" +
                                         " genre ID: " + rgenreID
                                 );
                             } else {
-                                System.out.println("Failed to " +
+                                System.out.println("Failed top 1 " +
                                         "add New Movie"
                                 );
                             }
@@ -123,21 +127,27 @@ public class InsertMainsAndCasts {
                                 int rgenreID = insertMoviesCS.getInt(10);
 
                                 if (rsuccess == 1) {
-                                    System.out.println("Successfully added" +
+                                    System.out.println("Successfully added 2" +
                                             " movie ID: " + rmovieID + " star ID: " + rstarID + "" +
                                             " genre ID: " + rgenreID
                                     );
                                 } else {
-                                    System.out.println("Failed to " +
+                                    System.out.println("Failed to  2" +
                                             "add New Movie"
                                     );
                                 }
                             }
                         }
 
+//                        System.out.println("Adding " + currentMapMovie.getMovieTitle() + " year " + currentMapMovie.getMovieYear() + " director "
+//                                + currentMapMovie.getDirectorName() + " genre " + currentMapMovie.getGenreList());
+
                     }
-                    //ignore any movie here that
                 }
+
+
+                    //ignore any movie here that
+
             }
 
 

@@ -82,7 +82,6 @@ public class SAXParserServletCasts extends DefaultHandler {
             cast.addDirectorFilm(new DirectorFilms_Casts());
             directorFilmsListSize++;
             latestDirectorFilm().setDirector(new Director_Casts());
-        }else if (qName.equalsIgnoreCase(FILMC)) {
             latestDirectorFilm().setMovieList(new ArrayList<Movie_Casts>());
             latestMovieListSize = 0;
         } else if (qName.equalsIgnoreCase(MOVIE)) {
@@ -122,6 +121,8 @@ public class SAXParserServletCasts extends DefaultHandler {
     public static void main(String[] args) {
         SAXParserServletCasts spe = new SAXParserServletCasts();
         spe.runExample();
+
+        System.out.println("");
     }
 
 }
