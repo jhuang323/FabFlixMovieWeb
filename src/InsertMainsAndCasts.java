@@ -34,6 +34,9 @@ public class InsertMainsAndCasts {
 
         Class.forName("com.mysql.jdbc.Driver").newInstance();
 
+        String qmaxMovID = "select SUBSTRING(max(id),3) as mmid from movies";
+        String qmaxgenreID = "select max(id) as mgid from genres";
+
         String insertmovieSQL = "INSERT INTO movies (id,title,year,director)\n" +
                 "VALUES\n" +
                 "(?, ?, ?, ?)";
@@ -42,6 +45,27 @@ public class InsertMainsAndCasts {
             CallableStatement insertMoviesCS = conn.prepareCall("{call add_moviept6(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             CallableStatement insertsingleMoviesCS = conn.prepareCall("{call add_singlemoviept6(?, ?, ?, ?, ?)}");
             PreparedStatement prepmoviestatement = conn.prepareStatement(insertmovieSQL);
+
+            int curMovieID = 0;
+            int curGenreID = 0;
+
+            //create statement
+            Statement maxmidstatement = conn.createStatement();
+            //create statement
+            Statement maxgidstatement = conn.createStatement();
+
+            ResultSet rsmmid = maxmidstatement.executeQuery(qmaxMovID);
+            rsmmid.next();
+
+            curMovieID = Integer.parseInt(rsmmid.getString("mmid"));
+
+            rsmmid.close();
+            maxmidstatement.close();
+
+//            ResultSet rsmgid =
+
+
+
 
             HashMap<String, Movie_Casts> theCastMvMap = castParser.getCast().getMovieMap();
 
@@ -105,8 +129,8 @@ public class InsertMainsAndCasts {
 //                else{
 //                    prepmoviestatement.setString(1,amapmov.getMovieID());
 //                }
-
-                prepmoviestatement.setString(1,"zid"+countid);
+                curMovieID++;
+                prepmoviestatement.setString(1,"zz"+curMovieID);
                 countid++;
 
 
@@ -114,17 +138,14 @@ public class InsertMainsAndCasts {
                 prepmoviestatement.setInt(3, Integer.parseInt(amapmov.getMovieYear()));
                 prepmoviestatement.setString(4,amapmov.getDirectorName());
 
-                prepmoviestatement.addBatch();
-                prepmoviestatement.clearParameters();
-                btcounter ++;
+                prepmoviestatement.executeUpdate();
 
-                if (btcounter >= 100){
-//                    prepmoviestatement.executeBatch();
-                    btcounter = 0;
-                }
+
 
             }
-            prepmoviestatement.executeBatch();
+
+            // import genre and genre in movies
+
 
 
 
