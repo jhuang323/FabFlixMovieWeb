@@ -8,11 +8,12 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.Types;
 import java.util.Iterator;
 import java.util.List;
 
-public class InsertActors extends HttpServlet {
+public class InsertActors {
     private DataSource dataSource;
     public void init(ServletConfig config) {
         try {
@@ -22,9 +23,17 @@ public class InsertActors extends HttpServlet {
         }
     }
 
-    public void run(SAXParserServletActors spe) {
+    public void run(SAXParserServletActors spe) throws Exception{
+        // Change this to your own mysql username and password
+        String loginUser = "mytestuser";
+        String loginPasswd = "My6$Password";
+        String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
+
         System.out.println("Here");
-        try (Connection conn = dataSource.getConnection()) {
+
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+
+        try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
             System.out.println("Starting procedure");
             CallableStatement insertStarsCS = conn.prepareCall("{call add_star(?, ?, ?, ?)}");
 
@@ -33,11 +42,12 @@ public class InsertActors extends HttpServlet {
                 Actor actor = it.next();
                 insertStarsCS.setString(1, actor.getStarName());
                 String year = actor.getBirthYear();
-                if(year.equals("")){
-                    insertStarsCS.setNull(2, Types.INTEGER);
-                }
-                else{
+
+                try{
                     insertStarsCS.setInt(2,Integer.parseInt(year));
+                }
+                catch (NumberFormatException e){
+                    insertStarsCS.setNull(2, Types.INTEGER);
                 }
                 insertStarsCS.registerOutParameter(3,Types.INTEGER);
                 insertStarsCS.registerOutParameter(4,Types.VARCHAR);
@@ -52,6 +62,9 @@ public class InsertActors extends HttpServlet {
                 }
             }
         } catch (Exception e) {
+
+            System.out.println("an exception accoured");
+            e.printStackTrace();
 
         }
     }
