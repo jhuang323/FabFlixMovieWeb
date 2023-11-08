@@ -56,10 +56,6 @@ public class SAXParserServletCasts extends DefaultHandler {
         }
     }
 
-    /**
-     * Iterate through the list and print
-     * the contents
-     */
     private void printData() {
 
         System.out.println("No of Directors Films '" + cast.getDirectorFilmsList().size() + "'.");
@@ -119,6 +115,9 @@ public class SAXParserServletCasts extends DefaultHandler {
         List<Movie_Casts> movieList = latestDirectorFilm().getMovieList();
         int latestFilmIndex = latestMovieListSize- 1;
         return movieList.get(latestFilmIndex);
+    }
+    public Casts getCast(){
+        return cast;
     }
     public static void main(String[] args) {
         SAXParserServletCasts spe = new SAXParserServletCasts();

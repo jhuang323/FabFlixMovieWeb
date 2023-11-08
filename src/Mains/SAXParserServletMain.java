@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import Casts.Casts;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -168,6 +169,9 @@ public class SAXParserServletMain extends DefaultHandler {
         return filmList.get(latestFilmIndex);
     }
 
+    public Movie getMovie(){
+        return movie;
+    }
     public static void main(String[] args) {
         SAXParserServletMain spe = new SAXParserServletMain();
         spe.runExample();
