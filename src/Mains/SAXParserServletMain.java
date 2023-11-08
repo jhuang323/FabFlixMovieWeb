@@ -145,14 +145,34 @@ public class SAXParserServletMain extends DefaultHandler {
             latestFilm().setTitle(element.toString().trim());
         }else if (qName.equalsIgnoreCase(YEAR)) {
             latestFilm().setYear(element.toString().trim());
-        }else if (qName.equalsIgnoreCase(CAT)) {
-            String lowered = (element.toString()).trim().toLowerCase();
-            if(genres.containsKey(lowered)){
-                latestFilm().latestCategory().setGenreName(genres.get(lowered));
+        }
+//        else if (qName.equalsIgnoreCase(CATS)) {
+//            //latestFilm().setYear(element.toString().trim());
+//            if(latestFilm().getCatList() == null){
+//
+//            }
+//        }
+        else if (qName.equalsIgnoreCase(CAT)) {
+            if(latestFilm().getFilmYear() != null){
+                try{
+                    int yearInt = Integer.parseInt(latestFilm().getFilmYear());
+                    String lowered = (element.toString()).trim().toLowerCase();
+                    if(genres.containsKey(lowered)){
+                        latestFilm().latestCategory().setGenreName(genres.get(lowered));
+                    }
+                    else{
+                        genres.put(lowered, lowered);
+                        latestFilm().latestCategory().setGenreName(lowered);
+                    }
+                }
+                catch(NumberFormatException e){
+                    latestDirectorFilm().getFilmList().remove(filmListSize-1);
+                    filmListSize--;
+                }
             }
             else{
-                genres.put(lowered, lowered);
-                latestFilm().latestCategory().setGenreName(lowered);
+                latestDirectorFilm().getFilmList().remove(filmListSize-1);
+                filmListSize--;
             }
         }
 

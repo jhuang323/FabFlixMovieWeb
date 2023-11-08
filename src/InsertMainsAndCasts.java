@@ -1,10 +1,8 @@
 import Casts.DirectorFilms_Casts;
-import Casts.Director_Casts;
 import Casts.Movie_Casts;
 import Casts.SAXParserServletCasts;
 import Mains.*;
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServlet;
 
 import java.sql.Types;
 import java.util.HashMap;
@@ -84,32 +82,56 @@ public class InsertMainsAndCasts {
                         insertMoviesCS.setString(3,currentMapMovie.getDirectorName());
                         insertMoviesCS.setString(4,currentMovie.getStarName());
                         insertMoviesCS.setNull(5,Types.INTEGER);
-
-                        Iterator<Cat> genreIterator = currentMapMovie.getGenreList().iterator();
-                        while(genreIterator.hasNext()){
-                            Cat genre = genreIterator.next();
-                            insertMoviesCS.setString(6, genre.getGenreName());
-
-                            insertMoviesCS.registerOutParameter(7,Types.INTEGER);
-                            insertMoviesCS.registerOutParameter(8,Types.VARCHAR);
-                            insertMoviesCS.registerOutParameter(9,Types.VARCHAR);
-                            insertMoviesCS.registerOutParameter(10,Types.INTEGER);
+//                        System.out.println(currentMapMovie.getMovieTitle());
+//                        System.out.println(currentMapMovie.getMovieID());
+                        if(currentMapMovie.getGenreList() == null){
+                            insertMoviesCS.registerOutParameter(7, Types.INTEGER);
+                            insertMoviesCS.registerOutParameter(8, Types.VARCHAR);
+                            insertMoviesCS.registerOutParameter(9, Types.VARCHAR);
+                            insertMoviesCS.registerOutParameter(10, Types.INTEGER);
                             insertMoviesCS.executeUpdate();
                             int rsuccess = insertMoviesCS.getInt(7);
                             String rmovieID = insertMoviesCS.getString(8);
                             String rstarID = insertMoviesCS.getString(9);
                             int rgenreID = insertMoviesCS.getInt(10);
 
-                            if (rsuccess == 1){
+                            if (rsuccess == 1) {
                                 System.out.println("Successfully added" +
                                         " movie ID: " + rmovieID + " star ID: " + rstarID + "" +
                                         " genre ID: " + rgenreID
                                 );
-                            }
-                            else {
+                            } else {
                                 System.out.println("Failed to " +
                                         "add New Movie"
                                 );
+                            }
+                        }
+                        else {
+                            Iterator<Cat> genreIterator = currentMapMovie.getGenreList().iterator();
+                            while (genreIterator.hasNext()) {
+                                Cat genre = genreIterator.next();
+                                insertMoviesCS.setString(6, genre.getGenreName());
+
+                                insertMoviesCS.registerOutParameter(7, Types.INTEGER);
+                                insertMoviesCS.registerOutParameter(8, Types.VARCHAR);
+                                insertMoviesCS.registerOutParameter(9, Types.VARCHAR);
+                                insertMoviesCS.registerOutParameter(10, Types.INTEGER);
+                                insertMoviesCS.executeUpdate();
+                                int rsuccess = insertMoviesCS.getInt(7);
+                                String rmovieID = insertMoviesCS.getString(8);
+                                String rstarID = insertMoviesCS.getString(9);
+                                int rgenreID = insertMoviesCS.getInt(10);
+
+                                if (rsuccess == 1) {
+                                    System.out.println("Successfully added" +
+                                            " movie ID: " + rmovieID + " star ID: " + rstarID + "" +
+                                            " genre ID: " + rgenreID
+                                    );
+                                } else {
+                                    System.out.println("Failed to " +
+                                            "add New Movie"
+                                    );
+                                }
                             }
                         }
 

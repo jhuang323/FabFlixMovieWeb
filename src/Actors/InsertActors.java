@@ -1,7 +1,6 @@
 package Actors;
 
 import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServlet;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -11,8 +10,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Types;
 import java.util.Iterator;
-import java.util.List;
-
 public class InsertActors {
     private DataSource dataSource;
     public void init(ServletConfig config) {
@@ -54,12 +51,12 @@ public class InsertActors {
                 insertStarsCS.executeUpdate();
                 int rsuccess = insertStarsCS.getInt(3);
                 String rstarID = insertStarsCS.getString(4);
-                if (rsuccess == 1){
-                    System.out.println("Successfully added" + " star ID: " + rstarID);
-                }
-                else {
-                    System.out.println("Failed to " + "add New Star");
-                }
+//                if (rsuccess == 1){
+//                    System.out.println("Successfully added" + " star ID: " + rstarID);
+//                }
+//                else {
+//                    System.out.println("Failed to " + "add New Star");
+//                }
             }
         } catch (Exception e) {
 
