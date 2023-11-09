@@ -19,7 +19,7 @@ public class InsertMainsAndCasts {
     public void init(ServletConfig config) {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
-                    "/moviedb");
+                    "/moviedb?rewriteBatchedStatements=true");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -143,7 +143,14 @@ public class InsertMainsAndCasts {
             }
             System.out.println("test");
 
+
+            //inserting portion
+
+            int batchcounter = 0;
+
             for(MappedMovie amapmov: movieIDMap.values()){
+                batchcounter++;
+
                 try{
                     Integer.parseInt(amapmov.getMovieYear());
                 }
@@ -158,7 +165,9 @@ public class InsertMainsAndCasts {
                 prepmoviestatement.setString(2,amapmov.getMovieTitle());
                 prepmoviestatement.setInt(3, Integer.parseInt(amapmov.getMovieYear()));
                 prepmoviestatement.setString(4,amapmov.getDirectorName());
-                prepmoviestatement.executeUpdate();
+                prepmoviestatement.addBatch();
+
+
                 //insert the genre list
                 int targenreid = 0;
                 if(amapmov.getGenreList() != null){
@@ -170,7 +179,7 @@ public class InsertMainsAndCasts {
                             curGenreID++;
                             prepgenrestatement.setInt(1,targenreid);
                             prepgenrestatement.setString(2,agenreStr);
-                            prepgenrestatement.executeUpdate();
+                            prepgenrestatement.addBatch();
                             //put into genre map
                             insertedGenreMap.put(agenreStr,targenreid);
                         }
@@ -181,7 +190,7 @@ public class InsertMainsAndCasts {
                         //for genres in movies
                         prepgimstatement.setInt(1,targenreid);
                         prepgimstatement.setString(2,tarMovieID);
-                        prepgimstatement.executeUpdate();
+                        prepgimstatement.addBatch();
                     }
                 }
                 String targetstarID;
@@ -200,7 +209,7 @@ public class InsertMainsAndCasts {
                         catch (Exception e){
                             prepstarstatement.setNull(3,Types.VARCHAR);
                         }
-                        prepstarstatement.executeUpdate();
+                        prepstarstatement.addBatch();
                         //add to insert starmap
                         insertedStarMap.put(astarname,targetstarID);
                     }
@@ -210,9 +219,29 @@ public class InsertMainsAndCasts {
                     //insert into the sim table
                     prepsimstatement.setString(1,targetstarID);
                     prepsimstatement.setString(2,tarMovieID);
-                    prepsimstatement.executeUpdate();
+                    prepsimstatement.addBatch();
                 }
+
+                //batch insert
+                if((batchcounter % 100) == 0){
+                    //call bathch exec
+                    prepmoviestatement.executeBatch();
+                    prepgenrestatement.executeBatch();
+                    prepgimstatement.executeBatch();
+                    prepstarstatement.executeBatch();
+                    prepsimstatement.executeBatch();
+
+                }
+
             }
+
+//            prepmoviestatement.executeBatch();
+//            prepgenrestatement.executeBatch();
+//            prepgimstatement.executeBatch();
+//            prepstarstatement.executeBatch();
+//            prepsimstatement.executeBatch();
+
+
         } catch (Exception e) {
             System.out.println("an exception accoured");
             e.printStackTrace();
