@@ -61,6 +61,49 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("porb", "Porn");
         genres.put("cult", "Cult");
 
+        genres.put("ctxx", "Uncategorized");
+        genres.put("actn", "Violence");
+        genres.put("advt", "Adventure");
+        genres.put("avga", "Avantgarde");
+        genres.put("camp", "Now-camp");
+        genres.put("cart", "Cartoon");
+        genres.put("cnr", "Copsandrobbers");
+        genres.put("comd", "Comedy");
+        genres.put("disa", "Disaster");
+        genres.put("docu", "Documentary");
+        genres.put("dram", "Drama");
+        genres.put("epic", "Epic");
+        genres.put("faml", "Family");
+        genres.put("hist", "History");
+        genres.put("horr", "Horror");
+        genres.put("musc", "Musical");
+        genres.put("myst", "Mystery");
+        genres.put("noir", "Black");
+        genres.put("porn", "Pornography");
+        genres.put("romt", "Romantic");
+        genres.put("scfi", "Sciencefiction");
+        genres.put("surl", "Sureal");
+        genres.put("susp", "Thriller");
+        genres.put("west", "Western");
+
+
+        genres.put("susp", "Thriller");
+        genres.put("cnr", "Cops and robbers");
+        genres.put("sram", "Drama");
+        genres.put("west", "Western");
+        genres.put("myst", "Mystery");
+        genres.put("s.f.", "Science Fiction");
+        genres.put("advt", "Adventure");
+        genres.put("horr", "Horror");
+        genres.put("romt", "Romantic");
+        genres.put("comd", "Comedy");
+        genres.put("musc", "Musical");
+        genres.put("docu", "Documentary");
+        genres.put("biop", "Biographical picture");
+        genres.put("tv", "TV Show");
+        genres.put("tvs", "TV Series");
+        genres.put("tvm", "TV Miniseries");
+
     }
     public void parseDocument() {
         SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -107,11 +150,11 @@ public class SAXParserServletMain extends DefaultHandler {
             tempMovie.setMovieYear(element.toString().trim());
         } else if (qName.equalsIgnoreCase(CAT)) {
             if(tempMovie.getCat() != null){
-                if(genres.get(element.toString().trim()) == null){
+                if(genres.get(element.toString().trim().toLowerCase()) == null){
                     tempMovie.getCat().addGenre(element.toString().trim());
                 }
                 else{
-                    tempMovie.getCat().addGenre(genres.get(element.toString().trim()));
+                    tempMovie.getCat().addGenre(genres.get(element.toString().trim().toLowerCase()));
                 }
             }
         }else if(qName.equalsIgnoreCase(FILMS)){
