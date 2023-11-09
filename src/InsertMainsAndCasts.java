@@ -7,10 +7,7 @@ import test.Movie_Casts;
 import test.SAXParserServletCastsJustin;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -115,11 +112,13 @@ public class InsertMainsAndCasts {
             HashMap<String, Movie_Casts> theCastMvMap = castParser.getCast().getMovieMap();
 
             movieIDMap = new HashMap<String, MappedMovie>();
-            Iterator<DirectorFilms> it =
-                    mainParser.getMovie().getDirectorFilmsList().iterator();
+            Iterator it =
+                    mainParser.getMovieMap().entrySet().iterator();
 
             int count = 0;
             while (it.hasNext()) {
+                Map.Entry mapElement = (Map.Entry)it.next();
+
                 DirectorFilms dirFilm = it.next();
                 Director currentDirector = dirFilm.getDirector();
 
