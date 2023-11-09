@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 public class InsertMainsAndCasts {
     private DataSource dataSource;
     private HashMap<String, MappedMovie> movieIDMap;
+    private Set<String> movieFields = new HashSet<String>();
     public void init(ServletConfig config) {
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
@@ -58,8 +59,6 @@ public class InsertMainsAndCasts {
                 "(?, ?)";
 
         try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
-            CallableStatement insertMoviesCS = conn.prepareCall("{call add_moviept6(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-            CallableStatement insertsingleMoviesCS = conn.prepareCall("{call add_singlemoviept6(?, ?, ?, ?, ?)}");
             PreparedStatement prepmoviestatement = conn.prepareStatement(insertmovieSQL);
             PreparedStatement prepgenrestatement = conn.prepareStatement(insertgenreSQL);
             PreparedStatement prepgimstatement = conn.prepareStatement(insertgimSQL);
@@ -112,6 +111,14 @@ public class InsertMainsAndCasts {
 
                 String MmelemKey = (String) MoviemapElement.getKey();
                 Movie MmelemVal = (Movie) MoviemapElement.getValue();
+                String allMovieFields =
+                        (MmelemVal.getMovieTitle() + MmelemVal.getDirectorName() + MmelemVal.getDirectorName()).toLowerCase();
+                if(movieFields.contains(allMovieFields)){
+                    continue;
+                }
+                else{
+                    movieFields.add(allMovieFields);
+                }
                 MappedMovie newMovie = new MappedMovie();
                 newMovie.setDirectorName(MmelemVal.getDirectorName());
                 newMovie.setMovieID(MmelemVal.getMovieID());
