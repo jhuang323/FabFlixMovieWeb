@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -34,25 +35,50 @@ public class InsertMainsAndCasts {
 
         Class.forName("com.mysql.jdbc.Driver").newInstance();
 
+        HashMap<String,Integer> insertedGenreMap = new HashMap<>();
+        HashMap<String,String> insertedStarMap = new HashMap<>();
+
         String qmaxMovID = "select SUBSTRING(max(id),3) as mmid from movies";
+        String qmaxStarID = "select substring(max(id),3) as msid from stars;";
         String qmaxgenreID = "select max(id) as mgid from genres";
 
         String insertmovieSQL = "INSERT INTO movies (id,title,year,director)\n" +
                 "VALUES\n" +
                 "(?, ?, ?, ?)";
 
+        String insertgenreSQL = "INSERT INTO genres (id,name)\n" +
+                "VALUES\n" +
+                "(?, ?)";
+        String insertgimSQL = "INSERT INTO genres_in_movies (genreId,movieId)\n" +
+                "VALUES\n" +
+                "(?, ?)";
+
+        String insertstarSQL = "INSERT INTO stars (id,name,birthYear)\n" +
+                "VALUES\n" +
+                "(?, ?, ?)";
+        String insertsimSQL = "INSERT INTO stars_in_movies (starId,movieId)\n" +
+                "VALUES\n" +
+                "(?, ?)";
+
         try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
             CallableStatement insertMoviesCS = conn.prepareCall("{call add_moviept6(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
             CallableStatement insertsingleMoviesCS = conn.prepareCall("{call add_singlemoviept6(?, ?, ?, ?, ?)}");
             PreparedStatement prepmoviestatement = conn.prepareStatement(insertmovieSQL);
+            PreparedStatement prepgenrestatement = conn.prepareStatement(insertgenreSQL);
+            PreparedStatement prepgimstatement = conn.prepareStatement(insertgimSQL);
+            PreparedStatement prepstarstatement = conn.prepareStatement(insertstarSQL);
+            PreparedStatement prepsimstatement = conn.prepareStatement(insertsimSQL);
 
             int curMovieID = 0;
             int curGenreID = 0;
+            int curStarID = 0;
 
             //create statement
             Statement maxmidstatement = conn.createStatement();
             //create statement
             Statement maxgidstatement = conn.createStatement();
+            //create statement
+            Statement maxsidstatement = conn.createStatement();
 
             ResultSet rsmmid = maxmidstatement.executeQuery(qmaxMovID);
             rsmmid.next();
@@ -62,7 +88,26 @@ public class InsertMainsAndCasts {
             rsmmid.close();
             maxmidstatement.close();
 
-//            ResultSet rsmgid =
+            ResultSet rsmgid = maxgidstatement.executeQuery(qmaxgenreID);
+
+            rsmgid.next();
+
+            curGenreID = Integer.parseInt(rsmgid.getString("mgid"));
+
+            rsmgid.close();
+            maxgidstatement.close();
+
+            ResultSet rsmsid = maxsidstatement.executeQuery(qmaxStarID);
+            rsmsid.next();
+
+            curStarID = Integer.parseInt(rsmsid.getString("msid"));
+
+            rsmsid.close();
+            maxgidstatement.close();
+
+
+
+
 
 
 
@@ -108,7 +153,7 @@ public class InsertMainsAndCasts {
 
 
             //just add movie only
-            int countid = 99;
+
 
             int btcounter = 0;
 
@@ -130,8 +175,9 @@ public class InsertMainsAndCasts {
 //                    prepmoviestatement.setString(1,amapmov.getMovieID());
 //                }
                 curMovieID++;
-                prepmoviestatement.setString(1,"zz"+curMovieID);
-                countid++;
+                String tarMovieID = "zz"+curMovieID;
+                prepmoviestatement.setString(1,tarMovieID);
+
 
 
                 prepmoviestatement.setString(2,amapmov.getMovieTitle());
@@ -139,6 +185,87 @@ public class InsertMainsAndCasts {
                 prepmoviestatement.setString(4,amapmov.getDirectorName());
 
                 prepmoviestatement.executeUpdate();
+
+
+                //insert the genre list
+                int targenreid = 0;
+
+
+
+                if(amapmov.getGenreList() != null){
+                    for(Cat agenreCat: amapmov.getGenreList()){
+                        System.out.println("genre"+ agenreCat.getGenreName());
+
+                        if(!insertedGenreMap.containsKey(agenreCat.getGenreName())){
+                            //insert into genre
+                            targenreid = curGenreID + 1;
+                            curGenreID++;
+
+                            prepgenrestatement.setInt(1,targenreid);
+                            prepgenrestatement.setString(2,agenreCat.getGenreName());
+
+                            prepgenrestatement.executeUpdate();
+
+                            //put into genre map
+                            insertedGenreMap.put(agenreCat.getGenreName(),targenreid);
+                        }
+                        else{
+                            //get the id and set
+                            targenreid = insertedGenreMap.get(agenreCat.getGenreName());
+
+                        }
+
+
+
+
+                        //for genres in movies
+                        prepgimstatement.setInt(1,targenreid);
+                        prepgimstatement.setString(2,tarMovieID);
+
+                        prepgimstatement.executeUpdate();
+                    }
+                }
+
+                String targetstarID;
+
+
+                //the stars portion
+                for(String astarname:amapmov.getstarsList()){
+                    System.out.println("star name" + astarname);
+
+                    if(!insertedStarMap.containsKey(astarname)){
+                        targetstarID ="zm" + curStarID + 1;
+                        curStarID++;
+
+                        prepstarstatement.setString(1,targetstarID);
+                        prepstarstatement.setString(2,astarname);
+                        prepstarstatement.setNull(3,Types.VARCHAR);
+
+                        prepstarstatement.executeUpdate();
+
+                        //add to insert starmap
+                        insertedStarMap.put(astarname,targetstarID);
+                    }
+                    else{
+                        targetstarID = insertedStarMap.get(astarname);
+                    }
+
+
+
+
+                    //insert into the sim table
+
+                    prepsimstatement.setString(1,targetstarID);
+                    prepsimstatement.setString(2,tarMovieID);
+
+                    prepsimstatement.executeUpdate();
+
+
+
+
+                }
+
+
 
 
 

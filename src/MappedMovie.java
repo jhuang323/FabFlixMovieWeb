@@ -19,6 +19,11 @@ public class MappedMovie {
         this.starsList = astrlist;
     }
 
+    public List<String> getstarsList() {
+        return this.starsList;
+    }
+
+
     public void setGenreList(List<Cat> genreList) {
         this.genreList = genreList;
     }
