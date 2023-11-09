@@ -1,12 +1,13 @@
 package Actors;
 import java.io.IOException;
+import java.util.*;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
 
 public class SAXParserServletActors extends DefaultHandler {
     private static final String ACTOR = "actor";
@@ -14,17 +15,13 @@ public class SAXParserServletActors extends DefaultHandler {
     private static final String BIRTHYEAR = "dob";
     private String element;
     private HashMap<String, Actor> actorsMap;
+    private List<String> errorMessages;
 
     public SAXParserServletActors() {
         actorsMap = new HashMap<String, Actor>();
+        errorMessages = new ArrayList<String>();
     }
-
-    public void runExample() {
-        parseDocument();
-        printData();
-    }
-
-    private void parseDocument() {
+    public void parseDocument() {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         try {
             SAXParser sp = spf.newSAXParser();
@@ -74,14 +71,21 @@ public class SAXParserServletActors extends DefaultHandler {
             if(actorsMap.get(nameAndYear) == null){
                 actorsMap.put(nameAndYear, tempActor);
             }
+            else{
+                errorMessages.add("Following star is a duplicate: Name: " + tempActor.getStarName()
+                        + " BirthYear: " + tempActor.getBirthYear());
+            }
         }
     }
     public HashMap<String, Actor> getActorsMap(){
         return actorsMap;
     }
+    public List<String> getErrorMessages() {
+        return errorMessages;
+    }
     public static void main(String[] args) {
         SAXParserServletActors spa = new SAXParserServletActors();
-        spa.runExample();
+        spa.parseDocument();
     }
 
 }

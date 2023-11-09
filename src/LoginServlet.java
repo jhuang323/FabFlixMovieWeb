@@ -41,26 +41,12 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-//        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
-
-
-
-        /* This example only allows username/password to be test/test
-        /  in the real project, you should talk to the database to verify username/password
-        */
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Construct a query with parameter represented by "?" where it returns the users info if it exists in the customer table
-
         String queryUserEmail = "SELECT email, password, id" +
                 " FROM customers" +
                 " WHERE customers.email = ?";
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-
-
-
 
         try (Connection conn = dataSource.getConnection()) {
 
@@ -69,9 +55,6 @@ public class LoginServlet extends HttpServlet {
             statementUserEmailInput.setString(1, username);
             ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
 
-
-
-            // Verify reCAPTCHA
             try {
                 RecaptchaVerifyUtils.verify(gRecaptchaResponse);
 

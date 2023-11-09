@@ -1,9 +1,10 @@
 import Actors.Actor;
 import Actors.SAXParserServletActors;
-import Mains.*;
+import Casts.Movie_Casts;
+import Casts.SAXParserServletCasts;
+import Mains.Movie;
+import Mains.SAXParserServletMain;
 import jakarta.servlet.ServletConfig;
-import test.Movie_Casts;
-import test.SAXParserServletCastsJustin;
 
 import java.sql.*;
 import java.util.*;
@@ -25,7 +26,7 @@ public class InsertMainsAndCasts {
         }
     }
 
-    public void insert(SAXParserServletMain mainParser, SAXParserServletCastsJustin castParser, SAXParserServletActors actorParser) throws Exception{
+    public void insert(SAXParserServletMain mainParser, SAXParserServletCasts castParser, SAXParserServletActors actorParser) throws Exception{
         String loginUser = "mytestuser";
         String loginPasswd = "My6$Password";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
