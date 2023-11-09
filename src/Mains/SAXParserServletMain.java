@@ -17,28 +17,21 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class SAXParserServletMain extends DefaultHandler {
-    private static final String MOVIES = "movies";
-    private static final String DIRECTOR_FILMS = "directorfilms";
-    private static final String DIRECTOR = "director";
     private static final String FILMS = "films";
     private static final String FILM = "film";
     private static final String CATS = "cats";
     private static final String CAT = "cat";
-    private static final String DIRID = "dirid";
     private static final String DIRNAME = "dirname";
     private static final String FID = "fid";
     private static final String TITLE = "t";
     private static final String YEAR = "year";
-    private Movie movie;
     private String element;
     private HashMap<String, String> genres;
-    private int directorFilmListSize;
-    private int filmListSize;
+    private HashMap<String, Movie> movieMap;
 
     public SAXParserServletMain() {
 
-        movie = new Movie();
-        directorFilmListSize = 0;
+        movieMap = new HashMap<String, Movie>();
         genres = new HashMap<String, String>();
         genres.put("dram", "Drama");
         genres.put("draam", "Drama");
@@ -69,12 +62,6 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("cult", "Cult");
 
     }
-
-    public void runExample() {
-        parseDocument();
-        printData();
-    }
-
     private void parseDocument() {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         try {
@@ -89,112 +76,62 @@ public class SAXParserServletMain extends DefaultHandler {
             ie.printStackTrace();
         }
     }
-    private void printData() {
-
-        System.out.println("No of Directors Films '" + movie.getDirectorFilmsList().size() + "'.");
-
-        Iterator<DirectorFilms> it = movie.getDirectorFilmsList().iterator();
-        int c = 1;
-        while (it.hasNext()) {
-            System.out.println(it.next().toString());
-            System.out.println(c);
-            c+=1;
-        }
-        System.out.println(genres.toString());
-    }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         element = new String(ch, start, length);
     }
-
+    String tempDirectorName;
+    Movie tempMovie;
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         //reset
         element = "";
-        if (qName.equalsIgnoreCase(MOVIES)) {
-            //add it to the list
-            movie.setDirectorFilmsList(new ArrayList<DirectorFilms>());
-        } else if (qName.equalsIgnoreCase(DIRECTOR_FILMS)) {
-            movie.addDirectorFilm(new DirectorFilms());
-            directorFilmListSize++;
-        } else if (qName.equalsIgnoreCase(DIRECTOR)) {
-            latestDirectorFilm().setDirector(new Director());
-        } else if (qName.equalsIgnoreCase(FILMS)) {
-            latestDirectorFilm().setFilmList(new ArrayList<Film>());
-            filmListSize = 0;
-        } else if (qName.equalsIgnoreCase(FILM)) {
-            latestDirectorFilm().addFilm(new Film());
-            filmListSize++;
+        if (qName.equalsIgnoreCase(FILM)) {
+            tempMovie = new Movie();
         } else if (qName.equalsIgnoreCase(CATS)) {
-            latestFilm().setCatList(new ArrayList<Cat>());
-        }else if (qName.equalsIgnoreCase(CAT)) {
-            if(latestFilm().getCatList() != null){
-                latestFilm().addCatList(new Cat());
-            }
+            tempMovie.setCat(new Cat());
+            tempMovie.getCat().setGenreNames(new ArrayList<String>());
         }
     }
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
-        if (qName.equalsIgnoreCase(DIRID)) {
-            latestDirectorFilm().getDirector().setDirectorID(element.toString().trim());
-        } else if (qName.equalsIgnoreCase(DIRNAME)) {
-            latestDirectorFilm().getDirector().setDirectorName(element.toString().trim());
+        if (qName.equalsIgnoreCase(DIRNAME)) {
+            tempDirectorName = (element.toString().trim());
         } else if (qName.equalsIgnoreCase(FID)) {
-            latestFilm().setFilmID(element.toString().trim());
+            tempMovie.setMovieID(element.toString().trim());
+            movieMap.put(element.toString().trim(), tempMovie);
         }else if (qName.equalsIgnoreCase(TITLE)) {
-            latestFilm().setTitle(element.toString().trim());
+            tempMovie.setMovieTitle(element.toString().trim());
         }else if (qName.equalsIgnoreCase(YEAR)) {
-            latestFilm().setYear(element.toString().trim());
-        }
-//        else if (qName.equalsIgnoreCase(CATS)) {
-//            //latestFilm().setYear(element.toString().trim());
-//            if(latestFilm().getCatList() == null){
-//
-//            }
-//        }
-        else if (qName.equalsIgnoreCase(CAT)) {
-            if(latestFilm().getFilmYear() != null){
-                try{
-                    int yearInt = Integer.parseInt(latestFilm().getFilmYear());
-                    String lowered = (element.toString()).trim().toLowerCase();
-                    if(genres.containsKey(lowered)){
-                        latestFilm().latestCategory().setGenreName(genres.get(lowered));
-                    }
-                    else{
-                        genres.put(lowered, lowered);
-                        latestFilm().latestCategory().setGenreName(lowered);
-                    }
+            tempMovie.setMovieYear(element.toString().trim());
+        } else if (qName.equalsIgnoreCase(CAT)) {
+            if(tempMovie.getCat() != null){
+                if(genres.get(element.toString().trim()) == null){
+                    tempMovie.getCat().addGenre(element.toString().trim());
                 }
-                catch(NumberFormatException e){
-                    latestDirectorFilm().getFilmList().remove(filmListSize-1);
-                    filmListSize--;
+                else{
+                    tempMovie.getCat().addGenre(genres.get(element.toString().trim()));
                 }
             }
-            else{
-                latestDirectorFilm().getFilmList().remove(filmListSize-1);
-                filmListSize--;
+        }else if(qName.equalsIgnoreCase(FILMS)){
+            if(movieMap.get(tempMovie.getMovieID()) != null){
+                if(tempMovie.getMovieTitle() == null){
+                    movieMap.remove(tempMovie.getMovieID());
+                }
+                else if(tempMovie.getMovieYear() == null){
+                    movieMap.remove(tempMovie.getMovieID());
+                }
             }
         }
 
     }
 
-    private DirectorFilms latestDirectorFilm() {
-        List<DirectorFilms> directorFilmsList = movie.getDirectorFilmsList();
-        int latestDirectorFilmIndex = directorFilmListSize - 1;
-        return directorFilmsList.get(latestDirectorFilmIndex);
-    }
-    private Film latestFilm() {
-        List<Film> filmList = latestDirectorFilm().getFilmList();
-        int latestFilmIndex = filmListSize - 1;
-        return filmList.get(latestFilmIndex);
-    }
-
-    public Movie getMovie(){
-        return movie;
+    public HashMap<String, Movie> getMovieMap(){
+        return movieMap;
     }
     public static void main(String[] args) {
         SAXParserServletMain spe = new SAXParserServletMain();
-        spe.runExample();
+        spe.parseDocument();
     }
 
 }

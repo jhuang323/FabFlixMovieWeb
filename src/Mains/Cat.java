@@ -1,19 +1,19 @@
 package Mains;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class Cat {
 
-    private String name;
-    public String getGenreName(){
-        return this.name;
+    private List<String> genreNames;
+    public List<String> getGenreNames(){
+        return this.genreNames;
     }
-    public void setGenreName(String name){
-        this.name = name;
+    public void setGenreNames(List<String> genreNames){
+        this.genreNames = genreNames;
     }
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Cat Name: " + name + "\n");
-        return sb.toString();
+    public void addGenre(String genre){
+        genreNames.add(genre);
     }
+
 }
