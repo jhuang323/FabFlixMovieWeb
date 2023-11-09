@@ -1,26 +1,22 @@
 package Actors;
-
+import java.io.IOException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SAXParserServletActors extends DefaultHandler {
     private static final String ACTOR = "actor";
     private static final String NAME = "stagename";
     private static final String BIRTHYEAR = "dob";
-    private List<Actor> actorList;
     private String element;
+    private HashMap<String, Actor> actorsMap;
 
     public SAXParserServletActors() {
-        actorList = new ArrayList<Actor>();
+        actorsMap = new HashMap<String, Actor>();
     }
 
     public void runExample() {
@@ -44,12 +40,13 @@ public class SAXParserServletActors extends DefaultHandler {
     }
     private void printData() {
 
-        System.out.println("No of Actors" + actorList.size() + "'.");
+        System.out.println("No of Actors" + actorsMap.size() + "'.");
 
-        Iterator<Actor> it = actorList.iterator();
+        Iterator actorsIterator = actorsMap.entrySet().iterator();
         int c = 1;
-        while (it.hasNext()) {
-            System.out.println(it.next().toString());
+        while (actorsIterator.hasNext()) {
+            Map.Entry mapElement = (Map.Entry)actorsIterator.next();
+            System.out.println(mapElement.getValue().toString());
             System.out.println(c);
             c+=1;
         }
@@ -58,29 +55,33 @@ public class SAXParserServletActors extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         element = new String(ch, start, length);
     }
+    Actor tempActor;
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         //reset
         element = "";
         if (qName.equalsIgnoreCase(ACTOR)) {
-            actorList.add(new Actor());
+            tempActor = new Actor();
         }
     }
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
         if (qName.equalsIgnoreCase(NAME)) {
-            latestMovie().setStarName(element.toString().trim());
+            tempActor.setStarName(element.toString().trim());
         } else if (qName.equalsIgnoreCase(BIRTHYEAR)) {
-            latestMovie().setBirthYear(element.toString().trim());
+            tempActor.setBirthYear(element.toString().trim());
+            String nameAndYear = tempActor.getStarName();
+            if(actorsMap.get(nameAndYear) == null){
+                actorsMap.put(nameAndYear, tempActor);
+            }
         }
     }
-    private Actor latestMovie() {
-        int latestActorIndex = actorList.size() - 1;
-        return actorList.get(latestActorIndex);
+    public HashMap<String, Actor> getActorsMap(){
+        return actorsMap;
     }
     public static void main(String[] args) {
-        SAXParserServletActors spe = new SAXParserServletActors();
-        spe.runExample();
+        SAXParserServletActors spa = new SAXParserServletActors();
+        spa.runExample();
     }
 
 }

@@ -1,4 +1,4 @@
-package Casts;
+package test;
 
 import java.util.List;
 public class Casts {
