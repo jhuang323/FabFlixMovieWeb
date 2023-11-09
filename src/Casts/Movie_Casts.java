@@ -1,12 +1,25 @@
 package Casts;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Movie_Casts {
     private String movieID;
     private String movieTitle;
-    private String starName;
+    private String Director;
+    private ArrayList<String> starName;
+
+    public Movie_Casts(){
+        this.starName = new ArrayList<String>();
+    }
+
+    public ArrayList<String> getstarlist(){
+        return this.starName;
+    }
+
+    public void setDirector(String adir) {
+        this.Director = adir;
+    }
+
     public String getMovieID() {
         return movieID;
     }
@@ -15,7 +28,7 @@ public class Movie_Casts {
         return movieTitle;
     }
 
-    public String getStarName() {
+    public ArrayList<String> getStarName() {
         return starName;
     }
 
@@ -28,7 +41,7 @@ public class Movie_Casts {
     }
 
     public void setStarName(String starName) {
-        this.starName = starName;
+        this.starName.add(starName);
     }
     public String toString() {
         StringBuffer sb = new StringBuffer();
