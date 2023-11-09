@@ -1,0 +1,26 @@
+Following movie does not have <Cats> tag: AHb20
+Following movie does not have <Cats> tag: AdS10
+Following star is a duplicate: Name: Kenneth Branagh BirthYear: 
+Following star is a duplicate: Name: Wilford Brimley BirthYear: 
+Following star is a duplicate: Name: Colin Campbell BirthYear: 1937
+Following star is a duplicate: Name: William Devane BirthYear: 
+Following star is a duplicate: Name: Derek Farr BirthYear: 
+Following star is a duplicate: Name: Charles Farrell BirthYear: 1901
+Following star is a duplicate: Name: Frances Fisher BirthYear: 
+Following star is a duplicate: Name: Peter Graves BirthYear: 1911
+Following star is a duplicate: Name: Laurence Harvey BirthYear: 1928
+Following star is a duplicate: Name: Nicky Henson BirthYear: 1945
+Following star is a duplicate: Name: William Holden BirthYear: 1918
+Following star is a duplicate: Name: Rex Ingram BirthYear: 1895
+Following star is a duplicate: Name: Charles King BirthYear: 1899
+Following star is a duplicate: Name: Jack Lambert BirthYear: 1920
+Following star is a duplicate: Name: Jane March BirthYear: 1973
+Following star is a duplicate: Name: Spanky McFarland BirthYear: 
+Following star is a duplicate: Name: Mary Morris BirthYear: 1915
+Following star is a duplicate: Name: Jennifer ONeill BirthYear: 1947
+Following star is a duplicate: Name: Raymond Pellegrin BirthYear: 
+Following star is a duplicate: Name: Harvey Stephens BirthYear: 1970
+Following star is a duplicate: Name: Sting BirthYear: n.a.
+Following star is a duplicate: Name: Ann Todd BirthYear: 1932
+Following star is a duplicate: Name: Beverly Tyler BirthYear: 1924
+Following star is a duplicate: Name: Vanessa Williams BirthYear: 1963

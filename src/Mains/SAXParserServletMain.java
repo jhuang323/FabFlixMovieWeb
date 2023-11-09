@@ -3,6 +3,7 @@ package Mains;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -24,11 +25,13 @@ public class SAXParserServletMain extends DefaultHandler {
     private String element;
     private HashMap<String, String> genres;
     private HashMap<String, Movie> movieMap;
+    private List<String> errorMessages;
 
     public SAXParserServletMain() {
 
         movieMap = new HashMap<String, Movie>();
         genres = new HashMap<String, String>();
+        errorMessages = new ArrayList<String>();
         genres.put("dram", "Drama");
         genres.put("draam", "Drama");
         genres.put("susp", "Suspense");
@@ -110,13 +113,20 @@ public class SAXParserServletMain extends DefaultHandler {
                     tempMovie.getCat().addGenre(genres.get(element.toString().trim()));
                 }
             }
+
         }else if(qName.equalsIgnoreCase(FILMS)){
+            if(tempMovie.getCat() == null){
+                errorMessages.add("Following movie does not have <Cats> tag: " + tempMovie
+                        .getMovieID());
+            }
             if(movieMap.get(tempMovie.getMovieID()) != null){
                 if(tempMovie.getMovieTitle() == null){
                     movieMap.remove(tempMovie.getMovieID());
+                    errorMessages.add("Following movie does not have movie title: " + tempMovie.getMovieID());
                 }
                 else if(tempMovie.getMovieYear() == null){
                     movieMap.remove(tempMovie.getMovieID());
+                    errorMessages.add("Following movie does not have movie year: " + tempMovie.getMovieID());
                 }
             }
         }
@@ -125,6 +135,9 @@ public class SAXParserServletMain extends DefaultHandler {
 
     public HashMap<String, Movie> getMovieMap(){
         return movieMap;
+    }
+    public List<String> getErrorMessages() {
+        return errorMessages;
     }
     public static void main(String[] args) {
         SAXParserServletMain spe = new SAXParserServletMain();
