@@ -1,8 +1,4 @@
 package Mains;
-
-import Mains.DirectorFilms;
-
-import java.util.List;
 public class Movie {
 
     private String movieID;
