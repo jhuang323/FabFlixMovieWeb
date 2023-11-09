@@ -1,3 +1,5 @@
+import Actors.Actor;
+import Actors.SAXParserServletActors;
 import Casts.DirectorFilms_Casts;
 import Casts.SAXParserServletCasts;
 import Mains.*;
@@ -25,7 +27,7 @@ public class InsertMainsAndCasts {
         }
     }
 
-    public void insert(SAXParserServletMain mainParser, SAXParserServletCastsJustin castParser) throws Exception{
+    public void insert(SAXParserServletMain mainParser, SAXParserServletCastsJustin castParser, SAXParserServletActors actorParser) throws Exception{
         String loginUser = "mytestuser";
         String loginPasswd = "My6$Password";
         String loginUrl = "jdbc:mysql://localhost:3306/moviedb";
@@ -34,6 +36,7 @@ public class InsertMainsAndCasts {
 
         HashMap<String,Integer> insertedGenreMap = new HashMap<>();
         HashMap<String,String> insertedStarMap = new HashMap<>();
+        HashMap<String, Actor> actorbirthyearMap = actorParser.getActorsMap();
 
         String qmaxMovID = "select SUBSTRING(max(id),3) as mmid from movies";
         String qmaxStarID = "select substring(max(id),3) as msid from stars;";
@@ -241,7 +244,16 @@ public class InsertMainsAndCasts {
 
                         prepstarstatement.setString(1,targetstarID);
                         prepstarstatement.setString(2,astarname);
-                        prepstarstatement.setNull(3,Types.VARCHAR);
+
+                        try{
+                            System.out.println("the birth year" + Integer.parseInt(actorbirthyearMap.get(astarname).getBirthYear()));
+                            prepstarstatement.setInt(3,Integer.parseInt(actorbirthyearMap.get(astarname).getBirthYear()));
+                        }
+                        catch (Exception e){
+                            prepstarstatement.setNull(3,Types.VARCHAR);
+                        }
+
+
 
                         prepstarstatement.executeUpdate();
 

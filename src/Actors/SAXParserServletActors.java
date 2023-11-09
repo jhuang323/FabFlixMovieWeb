@@ -56,6 +56,7 @@ public class SAXParserServletActors extends DefaultHandler {
         element = new String(ch, start, length);
     }
     Actor tempActor;
+
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         //reset
         element = "";
@@ -69,7 +70,7 @@ public class SAXParserServletActors extends DefaultHandler {
             tempActor.setStarName(element.toString().trim());
         } else if (qName.equalsIgnoreCase(BIRTHYEAR)) {
             tempActor.setBirthYear(element.toString().trim());
-            String nameAndYear = tempActor.getStarName() + tempActor.getBirthYear();
+            String nameAndYear = tempActor.getStarName();
             if(actorsMap.get(nameAndYear) == null){
                 actorsMap.put(nameAndYear, tempActor);
             }

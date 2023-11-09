@@ -19,8 +19,11 @@ public class Parser {
         spc.runExample();
         SAXParserServletMain spm = new SAXParserServletMain();
         spm.parseDocument();
+        SAXParserServletActors spa = new SAXParserServletActors();
+        spa.runExample();
+
         InsertMainsAndCasts imc = new InsertMainsAndCasts();
-        imc.insert(spm, spc);
+        imc.insert(spm, spc, spa);
         final long endTimeSecond = System.currentTimeMillis();
         System.out.println("Total execution time: " + (endTimeSecond - startTimeSecond));
     }
