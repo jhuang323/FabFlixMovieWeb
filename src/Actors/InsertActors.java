@@ -30,39 +30,39 @@ public class InsertActors {
 
         Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-        try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
-            System.out.println("Starting procedure");
-            CallableStatement insertStarsCS = conn.prepareCall("{call add_star(?, ?, ?, ?)}");
-
-            Iterator<Actor> it = spe.getActorList().iterator();
-            while (it.hasNext()) {
-                Actor actor = it.next();
-                insertStarsCS.setString(1, actor.getStarName());
-                String year = actor.getBirthYear();
-
-                try{
-                    insertStarsCS.setInt(2,Integer.parseInt(year));
-                }
-                catch (NumberFormatException e){
-                    insertStarsCS.setNull(2, Types.INTEGER);
-                }
-                insertStarsCS.registerOutParameter(3,Types.INTEGER);
-                insertStarsCS.registerOutParameter(4,Types.VARCHAR);
-                insertStarsCS.executeUpdate();
-                int rsuccess = insertStarsCS.getInt(3);
-                String rstarID = insertStarsCS.getString(4);
-//                if (rsuccess == 1){
-//                    System.out.println("Successfully added" + " star ID: " + rstarID);
+//        try (Connection conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd)) {
+//            System.out.println("Starting procedure");
+//            CallableStatement insertStarsCS = conn.prepareCall("{call add_star(?, ?, ?, ?)}");
+//
+//            Iterator<Actor> it = spe.getActorList().iterator();
+//            while (it.hasNext()) {
+//                Actor actor = it.next();
+//                insertStarsCS.setString(1, actor.getStarName());
+//                String year = actor.getBirthYear();
+//
+//                try{
+//                    insertStarsCS.setInt(2,Integer.parseInt(year));
 //                }
-//                else {
-//                    System.out.println("Failed to " + "add New Star");
+//                catch (NumberFormatException e){
+//                    insertStarsCS.setNull(2, Types.INTEGER);
 //                }
-            }
-        } catch (Exception e) {
-
-            System.out.println("an exception accoured");
-            e.printStackTrace();
-
-        }
+//                insertStarsCS.registerOutParameter(3,Types.INTEGER);
+//                insertStarsCS.registerOutParameter(4,Types.VARCHAR);
+//                insertStarsCS.executeUpdate();
+//                int rsuccess = insertStarsCS.getInt(3);
+//                String rstarID = insertStarsCS.getString(4);
+////                if (rsuccess == 1){
+////                    System.out.println("Successfully added" + " star ID: " + rstarID);
+////                }
+////                else {
+////                    System.out.println("Failed to " + "add New Star");
+////                }
+//            }
+//        } catch (Exception e) {
+//
+//            System.out.println("an exception accoured");
+//            e.printStackTrace();
+//
+//        }
     }
 }

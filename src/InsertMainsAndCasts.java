@@ -117,35 +117,38 @@ public class InsertMainsAndCasts {
 
             int count = 0;
             while (it.hasNext()) {
-                Map.Entry mapElement = (Map.Entry)it.next();
+                Map.Entry MoviemapElement = (Map.Entry)it.next();
 
-                DirectorFilms dirFilm = it.next();
-                Director currentDirector = dirFilm.getDirector();
+                String MmelemKey = (String) MoviemapElement.getKey();
+                Movie MmelemVal = (Movie) MoviemapElement.getValue();
 
-                Iterator<Film> filmIterator = dirFilm.getFilmList().iterator();
-                while(filmIterator.hasNext()){
-                    count++;
-                    System.out.println(count);
-                    Film currentFilm = filmIterator.next();
+                MappedMovie newMovie = new MappedMovie();
+                newMovie.setDirectorName(MmelemVal.getDirectorName());
+                newMovie.setMovieID(MmelemVal.getMovieID());
+                newMovie.setMovieTitle(MmelemVal.getMovieTitle());
+                newMovie.setMovieYear(MmelemVal.getMovieYear());
 
-                    MappedMovie newMovie = new MappedMovie();
-                    newMovie.setDirectorName(currentDirector.getDirectorName());
-                    newMovie.setMovieID(currentFilm.getFilmID());
-                    newMovie.setMovieTitle(currentFilm.getFilmTitle());
-                    newMovie.setMovieYear(currentFilm.getFilmYear());
-                    newMovie.setGenreList(currentFilm.getCatList());
-                    System.out.println("fid" + currentFilm.getFilmID());
-                    System.out.println("star" + theCastMvMap.get(currentFilm.getFilmID()));
-                    if(theCastMvMap.get(currentFilm.getFilmID()) == null){
-                        newMovie.setstarsList(new ArrayList<String>());
-                    }
-                    else{
-                        newMovie.setstarsList(theCastMvMap.get(currentFilm.getFilmID()).getstarlist());
-                    }
+                if(!(MmelemVal.getCat() == null)){
+                    newMovie.setGenreList(MmelemVal.getCat().getGenreNames());
+                }
+                else{
+                    newMovie.setGenreList(new ArrayList<String>());
+                }
+
+
+                System.out.println("fid" + MmelemVal.getMovieID());
+                System.out.println("star" + theCastMvMap.get(MmelemVal.getMovieID()));
+                if(theCastMvMap.get(MmelemVal.getMovieID()) == null){
+                    newMovie.setstarsList(new ArrayList<String>());
+                }
+                else{
+                    newMovie.setstarsList(theCastMvMap.get(MmelemVal.getMovieID()).getstarlist());
+                }
 //                    newMovie.setstarsList(theCastMvMap.get(currentFilm.getFilmID()).getstarlist());
 
-                    movieIDMap.put(newMovie.getMovieID(), newMovie);
-                }
+                movieIDMap.put(newMovie.getMovieID(), newMovie);
+
+
             }
             System.out.println("test");
             //System.out.println(movieIDMap.toString());
@@ -154,7 +157,7 @@ public class InsertMainsAndCasts {
             //just add movie only
 
 
-            int btcounter = 0;
+
 
             for(MappedMovie amapmov: movieIDMap.values()){
                 try{
@@ -192,25 +195,25 @@ public class InsertMainsAndCasts {
 
 
                 if(amapmov.getGenreList() != null){
-                    for(Cat agenreCat: amapmov.getGenreList()){
-                        System.out.println("genre"+ agenreCat.getGenreName());
+                    for(String agenreStr: amapmov.getGenreList()){
+                        System.out.println("genre"+ agenreStr);
 
-                        if(!insertedGenreMap.containsKey(agenreCat.getGenreName())){
+                        if(!insertedGenreMap.containsKey(agenreStr)){
                             //insert into genre
                             targenreid = curGenreID + 1;
                             curGenreID++;
 
                             prepgenrestatement.setInt(1,targenreid);
-                            prepgenrestatement.setString(2,agenreCat.getGenreName());
+                            prepgenrestatement.setString(2,agenreStr);
 
                             prepgenrestatement.executeUpdate();
 
                             //put into genre map
-                            insertedGenreMap.put(agenreCat.getGenreName(),targenreid);
+                            insertedGenreMap.put(agenreStr,targenreid);
                         }
                         else{
                             //get the id and set
-                            targenreid = insertedGenreMap.get(agenreCat.getGenreName());
+                            targenreid = insertedGenreMap.get(agenreStr);
 
                         }
 

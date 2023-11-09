@@ -7,11 +7,11 @@ public class MappedMovie {
     private String movieTitle;
     private String movieYear;
     private String directorName;
-    private List<Cat> genreList;
+    private List<String> genreList;
 
     private List<String> starsList;
 
-    public List<Cat> getGenreList() {
+    public List<String> getGenreList() {
         return genreList;
     }
 
@@ -24,7 +24,7 @@ public class MappedMovie {
     }
 
 
-    public void setGenreList(List<Cat> genreList) {
+    public void setGenreList(List<String> genreList) {
         this.genreList = genreList;
     }
     public String getMovieID() {

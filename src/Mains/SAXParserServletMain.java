@@ -62,7 +62,7 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("cult", "Cult");
 
     }
-    private void parseDocument() {
+    public void parseDocument() {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         try {
             SAXParser sp = spf.newSAXParser();
@@ -99,6 +99,7 @@ public class SAXParserServletMain extends DefaultHandler {
             tempDirectorName = (element.toString().trim());
         } else if (qName.equalsIgnoreCase(FID)) {
             tempMovie.setMovieID(element.toString().trim());
+            tempMovie.setDirectorName(tempDirectorName);
             movieMap.put(element.toString().trim(), tempMovie);
         }else if (qName.equalsIgnoreCase(TITLE)) {
             tempMovie.setMovieTitle(element.toString().trim());

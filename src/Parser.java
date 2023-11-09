@@ -18,7 +18,7 @@ public class Parser {
         SAXParserServletCastsJustin spc = new SAXParserServletCastsJustin();
         spc.runExample();
         SAXParserServletMain spm = new SAXParserServletMain();
-        spm.runExample();
+        spm.parseDocument();
         InsertMainsAndCasts imc = new InsertMainsAndCasts();
         imc.insert(spm, spc);
         final long endTimeSecond = System.currentTimeMillis();
