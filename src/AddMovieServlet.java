@@ -81,10 +81,6 @@ public class AddMovieServlet extends HttpServlet {
 
             insertMoviesCS.setString(6,movie_genre);
 
-
-
-
-            //set out param register them
             insertMoviesCS.registerOutParameter(7,Types.INTEGER);
             insertMoviesCS.registerOutParameter(8,Types.VARCHAR);
             insertMoviesCS.registerOutParameter(9,Types.VARCHAR);
@@ -114,29 +110,6 @@ public class AddMovieServlet extends HttpServlet {
                         "add New Movie"
                 );
             }
-
-
-
-//            PreparedStatement statementUserEmailInput = conn.prepareStatement(queryUserEmail);
-//            statementUserEmailInput.setString(1, username);
-//            ResultSet resultUserEmailInput = statementUserEmailInput.executeQuery();
-
-//            if(resultUserEmailInput.next()){
-//                String queryEmail = resultUserEmailInput.getString("email");
-//                String queryPassword = resultUserEmailInput.getString("password");
-//                request.getSession().setAttribute("employee", new Employee(username));
-//                responseJsonObject.addProperty("status", "success");
-//                responseJsonObject.addProperty("message", "success");
-
-//                resultUserEmailInput.close();
-//                statementUserEmailInput.close();
-//            }
-//            else{
-//                responseJsonObject.addProperty("status", "fail");
-//                request.getServletContext().log("Login failed");
-//                responseJsonObject.addProperty("message", "Error occured while adding Star");
-//            }
-
             out.write(responseJsonObject.toString());
 
         } catch (Exception e) {

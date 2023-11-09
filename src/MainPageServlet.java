@@ -9,11 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -56,24 +54,15 @@ public class MainPageServlet extends HttpServlet {
                     "FROM genres as grne\n" +
                     "ORDER BY grne.name;\n";
 
-            //create the strings for the mysql query
-            // Declare our statement
-//            PreparedStatement statement = conn.prepareStatement(query);
-
-            //movie table section
 
             //create statement
             Statement qGerneNameStatement = conn.createStatement();
-
-            // Perform the query
-//            ResultSet rs = statement.executeQuery();
 
             ResultSet genreNameRS = qGerneNameStatement.executeQuery(querygenreName);
             while(genreNameRS.next()){
                 //add each genre name to json array
                 RetJsonArray.add(genreNameRS.getString("name"));
             }
-
             //close genre things
             genreNameRS.close();
             qGerneNameStatement.close();
@@ -96,7 +85,6 @@ public class MainPageServlet extends HttpServlet {
         } finally {
             out.close();
         }
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
 
     }
 
