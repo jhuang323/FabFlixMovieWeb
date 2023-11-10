@@ -83,9 +83,9 @@ public class CheckoutServlet extends HttpServlet {
         //get the max sales id first
         try (Connection conn = dataSource.getConnection()) {
 
-            Statement qMaxSalesStatement = conn.createStatement();
+            PreparedStatement qMaxSalesStatement = conn.prepareStatement(queryMSalesId);
 
-            ResultSet MaxidRS =  qMaxSalesStatement.executeQuery(queryMSalesId);
+            ResultSet MaxidRS =  qMaxSalesStatement.executeQuery();
 
             MaxidRS.next();
 
@@ -137,9 +137,9 @@ public class CheckoutServlet extends HttpServlet {
         //test execute update
         try (Connection conn = dataSource.getConnection()) {
 
-            Statement insertSalesStatement = conn.createStatement();
+            PreparedStatement insertSalesStatement = conn.prepareStatement(insertSalesUpdate);
 
-            insertSalesStatement.executeUpdate(insertSalesUpdate);
+            insertSalesStatement.executeUpdate();
 
             //close statements
             insertSalesStatement.close();

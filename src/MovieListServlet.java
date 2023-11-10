@@ -16,7 +16,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -165,8 +164,8 @@ public class MovieListServlet extends HttpServlet {
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
-            // Declare our statement
-            Statement statementTop20 = conn.createStatement();
+
+
 
             //Declare the main query
             String Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating\n" +

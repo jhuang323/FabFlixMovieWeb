@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 // Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
 @WebServlet(name = "MainPageServlet", urlPatterns = "/api/main-page")
@@ -56,9 +56,9 @@ public class MainPageServlet extends HttpServlet {
 
 
             //create statement
-            Statement qGerneNameStatement = conn.createStatement();
+            PreparedStatement qGerneNameStatement = conn.prepareStatement(querygenreName);
 
-            ResultSet genreNameRS = qGerneNameStatement.executeQuery(querygenreName);
+            ResultSet genreNameRS = qGerneNameStatement.executeQuery();
             while(genreNameRS.next()){
                 //add each genre name to json array
                 RetJsonArray.add(genreNameRS.getString("name"));

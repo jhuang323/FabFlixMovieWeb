@@ -71,13 +71,13 @@ public class InsertMainsAndCasts {
             int curStarID = 0;
 
             //create statement
-            Statement maxmidstatement = conn.createStatement();
+            PreparedStatement maxmidstatement = conn.prepareStatement(qmaxMovID);
             //create statement
-            Statement maxgidstatement = conn.createStatement();
+            PreparedStatement maxgidstatement = conn.prepareStatement(qmaxgenreID);
             //create statement
-            Statement maxsidstatement = conn.createStatement();
+            PreparedStatement maxsidstatement = conn.prepareStatement(qmaxStarID);
 
-            ResultSet rsmmid = maxmidstatement.executeQuery(qmaxMovID);
+            ResultSet rsmmid = maxmidstatement.executeQuery();
             rsmmid.next();
 
             curMovieID = Integer.parseInt(rsmmid.getString("mmid"));
@@ -85,7 +85,7 @@ public class InsertMainsAndCasts {
             rsmmid.close();
             maxmidstatement.close();
 
-            ResultSet rsmgid = maxgidstatement.executeQuery(qmaxgenreID);
+            ResultSet rsmgid = maxgidstatement.executeQuery();
 
             rsmgid.next();
 
@@ -94,13 +94,13 @@ public class InsertMainsAndCasts {
             rsmgid.close();
             maxgidstatement.close();
 
-            ResultSet rsmsid = maxsidstatement.executeQuery(qmaxStarID);
+            ResultSet rsmsid = maxsidstatement.executeQuery();
             rsmsid.next();
 
             curStarID = Integer.parseInt(rsmsid.getString("msid"));
 
             rsmsid.close();
-            maxgidstatement.close();
+            maxsidstatement.close();
 
             HashMap<String, Movie_Casts> theCastMvMap = castParser.getCast().getMovieMap();
             movieIDMap = new HashMap<String, MappedMovie>();
@@ -216,7 +216,7 @@ public class InsertMainsAndCasts {
                 }
 
                 if((batchcounter % 100) == 0){
-                    //call bathch exec
+                    //call batch exec
                     prepmoviestatement.executeBatch();
                     prepgenrestatement.executeBatch();
                     prepgimstatement.executeBatch();
@@ -226,6 +226,14 @@ public class InsertMainsAndCasts {
                 }
 
             }
+
+            //close statements
+            prepmoviestatement.close();
+            prepgenrestatement.close();
+            prepgimstatement.close();
+            prepstarstatement.close();
+            prepsimstatement.close();
+
         } catch (Exception e) {
             System.out.println("an exception occured");
             e.printStackTrace();
