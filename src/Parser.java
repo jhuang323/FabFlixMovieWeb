@@ -18,8 +18,6 @@ public class Parser {
         spa.parseDocument();
         List<String> mainError = spm.getErrorMessages();
         List<String> actorError = spa.getErrorMessages();
-        System.out.println(mainError.size());
-        System.out.println(actorError.size());
         try {
             FileWriter myWriter = new FileWriter("BadFormat.txt");
             BufferedWriter info = new BufferedWriter(myWriter);

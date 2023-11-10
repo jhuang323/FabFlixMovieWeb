@@ -132,8 +132,6 @@ public class InsertMainsAndCasts {
                 else{
                     newMovie.setGenreList(new ArrayList<String>());
                 }
-                System.out.println("fid" + MmelemVal.getMovieID());
-                System.out.println("star" + theCastMvMap.get(MmelemVal.getMovieID()));
                 if(theCastMvMap.get(MmelemVal.getMovieID()) == null){
                     newMovie.setstarsList(new ArrayList<String>());
                 }
@@ -142,7 +140,6 @@ public class InsertMainsAndCasts {
                 }
                 movieIDMap.put(newMovie.getMovieID(), newMovie);
             }
-            System.out.println("test");
 
 
             //inserting portion
@@ -158,8 +155,6 @@ public class InsertMainsAndCasts {
                 catch (NumberFormatException e){
                     continue;
                 }
-                System.out.println(amapmov.getMovieID()+"title" +amapmov.getMovieTitle()+"year"+amapmov.getMovieYear()
-                +"dirname"+amapmov.getDirectorName());
                 curMovieID++;
                 String tarMovieID = "zz"+curMovieID;
                 prepmoviestatement.setString(1,tarMovieID);
@@ -173,7 +168,6 @@ public class InsertMainsAndCasts {
                 int targenreid = 0;
                 if(amapmov.getGenreList() != null){
                     for(String agenreStr: amapmov.getGenreList()){
-                        System.out.println("genre"+ agenreStr);
                         if(!insertedGenreMap.containsKey(agenreStr)){
                             //insert into genre
                             targenreid = curGenreID + 1;
@@ -197,14 +191,12 @@ public class InsertMainsAndCasts {
                 String targetstarID;
                 //the stars portion
                 for(String astarname:amapmov.getstarsList()){
-                    System.out.println("star name" + astarname);
                     if(!insertedStarMap.containsKey(astarname)){
                         targetstarID ="zm" + curStarID + 1;
                         curStarID++;
                         prepstarstatement.setString(1,targetstarID);
                         prepstarstatement.setString(2,astarname);
                         try{
-                            System.out.println("the birth year" + Integer.parseInt(actorbirthyearMap.get(astarname).getBirthYear()));
                             prepstarstatement.setInt(3,Integer.parseInt(actorbirthyearMap.get(astarname).getBirthYear()));
                         }
                         catch (Exception e){
@@ -223,7 +215,6 @@ public class InsertMainsAndCasts {
                     prepsimstatement.addBatch();
                 }
 
-                //batch insert
                 if((batchcounter % 100) == 0){
                     //call bathch exec
                     prepmoviestatement.executeBatch();
@@ -235,16 +226,8 @@ public class InsertMainsAndCasts {
                 }
 
             }
-
-//            prepmoviestatement.executeBatch();
-//            prepgenrestatement.executeBatch();
-//            prepgimstatement.executeBatch();
-//            prepstarstatement.executeBatch();
-//            prepsimstatement.executeBatch();
-
-
         } catch (Exception e) {
-            System.out.println("an exception accoured");
+            System.out.println("an exception occured");
             e.printStackTrace();
         }
     }
