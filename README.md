@@ -61,6 +61,9 @@ Justin:
 5. Optimized the inserting of data from parse
 6. Set up domain
 
+Inconsistency Report:
+It is generate during parsing and as shown in the video it is a file called BadFormat.txt
+
 
 ## Instructions for Use:
 1. Git clone project
