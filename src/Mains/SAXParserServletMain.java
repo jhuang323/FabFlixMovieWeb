@@ -66,10 +66,9 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("avga", "Avantgarde");
         genres.put("camp", "Now-camp");
         genres.put("cart", "Cartoon");
-        genres.put("cnr", "Copsandrobbers");
+        genres.put("cnr", "CopsAndRobbers");
         genres.put("comd", "Comedy");
         genres.put("disa", "Disaster");
-        genres.put("docu", "Documentary");
         genres.put("dram", "Drama");
         genres.put("epic", "Epic");
         genres.put("faml", "Family");
@@ -80,22 +79,15 @@ public class SAXParserServletMain extends DefaultHandler {
         genres.put("noir", "Black");
         genres.put("porn", "Pornography");
         genres.put("romt", "Romantic");
-        genres.put("scfi", "Sciencefiction");
+        genres.put("scfi", "Science Fiction");
         genres.put("surl", "Sureal");
         genres.put("susp", "Thriller");
         genres.put("west", "Western");
-
-
-        genres.put("susp", "Thriller");
-        genres.put("cnr", "Cops and robbers");
         genres.put("sram", "Drama");
-        genres.put("west", "Western");
         genres.put("myst", "Mystery");
         genres.put("s.f.", "Science Fiction");
         genres.put("advt", "Adventure");
-        genres.put("horr", "Horror");
         genres.put("romt", "Romantic");
-        genres.put("comd", "Comedy");
         genres.put("musc", "Musical");
         genres.put("docu", "Documentary");
         genres.put("biop", "Biographical picture");
