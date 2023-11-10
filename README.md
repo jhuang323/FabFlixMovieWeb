@@ -5,16 +5,22 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: http://54.153.82.70:8080/cs122b-project2/login.html
-URL for video: https://youtu.be/1eo5zKPRlMQ
+URL for Website on AWS: 
+URL for video: 
 
 Note: To connect you must be on UCI VPN FULL!
 
-## Design Choices for Searching
-### Searching
-We used the %SearchQuery% for searching because it is substring matching so it matches the query anywhere in the string. We used the lower() and LIKE for sql so it is case insensitive.
-### Browsing
-ACharacter% We used the percent after the character since according to the requirements it should begin with the Character to be matched. We also used the lower() and LIKE for sql so it is case insensitive.
+## List of Files with Prepared Statements
+1. SingleMovieServlet.java
+2. ShoppingCart.java
+3. MovieListServlet.java
+4. LoginServlet.java
+5. LoginEmployeeServlet.java
+6. InsertMainsAndCasts.java
+7. EmployeeDashServlet.java
+8. CheckoutServlet.java
+9. SingleStarServlet.java
+
 
 ### Files with Prepared Statements
 1. src/SingleStarServlet.java
@@ -38,31 +44,21 @@ ACharacter% We used the percent after the character since according to the requi
 
 ## Contributions:
 Jose:
-1. Created Servlet for Single Star Page
-2. Completed Front and Back end of Single Star Page along with color and css for the extra credit
-3. Completed Shopping Cart
-4. Added navbar
-5. Completed Search
-6. Extended Single Movie and Star
-7. Completed Task 2
-8. Completed Task 4
-9. Completed Extra credit
+1. Wrote and Optimize Main parser
+2. Wrote and Optimize Cast parser
+3. Write and Optimize actor parser
+4. Parsers generate error/inconsistency report
+5. Designed front end for the admin page
+6. Set up HTTPS
 Justin:
-1. Created Servlet for Single Movie Page
-2. Completed Front and Back end of Single Movie Page along with color and css for the extra credit
-3. Beautified the website
-4. Completed task 1
-5. Compelted Browse
-6. Pagination and Sorting
-7. Completed Task 5
-8. Completed Task 1
-9. Completed Task 3
+1.
 Jose/Justin:
-1. Created Servlet for Movie List Page
-2. Completed Front and Back end of Movie List Page along with color and css for the extra credit
-3. Completed Movie List updates
-4. Completed Shopping Cart front and back
-5. Completed Task 6
+1. Wrote stored procedure for add_movie
+2. Implement backend for the admin pages
+3. Switched all Statements over to prepared Statements
+4. Inserted all casts,movies, and genres into tables
+5. Optimized the inserting of data from parse
+6. Set up domain
 
 
 ## Instructions for Use:
