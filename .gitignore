@@ -171,3 +171,5 @@ buildNumber.properties
 
 .idea
 redplu.sh
+.vscode/settings.json
+
