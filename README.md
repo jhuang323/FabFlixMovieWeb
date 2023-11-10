@@ -35,10 +35,11 @@ Note: To connect you must be on UCI VPN FULL!
 
 ### Parsing XML Optimizations:
 1. Utilized executeBatch with our prepared statements to insert multiple entries at a time. 
-   Increases runtime by a 
+   Increases runtime by rewriting the statements into a more efficient form. The run time is now
+   reduced by around 1/4 of original.
 2. Filtered out any malformed objects if missing any crucial info(e.g No movie title, no actor 
    name, etc) before inserting. Increases runtime and memory moderately since we will store less 
-   objects before insertion.
+   objects before insertion. Run time is reduced by 1/2 of original since less things to insert.
 
 ## Inconsistent Data found in BadFormat.txt in the root dir, BadFormat is written to after parsing
 
@@ -50,9 +51,8 @@ Jose:
 4. Parsers generate error/inconsistency report
 5. Designed front end for the admin page
 6. Set up HTTPS
+
 Justin:
-1.
-Jose/Justin:
 1. Wrote stored procedure for add_movie
 2. Implement backend for the admin pages
 3. Switched all Statements over to prepared Statements
