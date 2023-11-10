@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     private final ArrayList<String> allowedURIs = new ArrayList<>();
+
     private final ArrayList<String> allowedURIsEmployee = new ArrayList<>();
 
     /**
@@ -38,8 +39,18 @@ public class LoginFilter implements Filter {
 
             //check if employee object exists
             if(httpRequest.getSession().getAttribute("employee") == null){
-                //redirect to employee login
-                httpResponse.sendRedirect("login.html");
+                if(httpRequest.getRequestURI().endsWith("_dashboard")){
+
+                    httpResponse.sendRedirect("_dashboard/login.html");
+
+                }
+                else{
+
+                    //redirect to employee login
+                    httpResponse.sendRedirect("login.html");
+
+                }
+
 
             }
             else {
@@ -52,12 +63,16 @@ public class LoginFilter implements Filter {
             if (httpRequest.getSession().getAttribute("user") == null) {
                 httpResponse.sendRedirect("login.html");
             } else {
+
                 chain.doFilter(request, response);
+
             }
         }
 
 
     }
+
+
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {
         /*
