@@ -215,7 +215,7 @@ public class InsertMainsAndCasts {
                     prepsimstatement.addBatch();
                 }
 
-                if((batchcounter % 100) == 0){
+                if((batchcounter % 50) == 0){
                     //call batch exec
                     prepmoviestatement.executeBatch();
                     prepgenrestatement.executeBatch();
