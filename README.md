@@ -5,8 +5,8 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: 
-URL for video: 
+URL for Website on AWS: https://cs122bfabflix.mooo.com:8443/cs122b-project3/login.html
+URL for video: https://youtu.be/wukp_2nHN0Q
 
 Note: To connect you must be on UCI VPN FULL!
 
