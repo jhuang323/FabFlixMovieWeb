@@ -88,6 +88,7 @@ public class LoginFilter implements Filter {
         allowedURIs.add("_dashboard/login.html");
         allowedURIs.add("_dashboard/login.js");
         allowedURIs.add("_dashboard/login.css");
+        allowedURIs.add("_dashboard/api/loginemployee");
 
 
         //add urls that are part of employee section
