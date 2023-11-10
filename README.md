@@ -11,15 +11,16 @@ URL for video:
 Note: To connect you must be on UCI VPN FULL!
 
 ## List of Files with Prepared Statements
-1. SingleMovieServlet.java
-2. ShoppingCart.java
-3. MovieListServlet.java
-4. LoginServlet.java
-5. LoginEmployeeServlet.java
-6. InsertMainsAndCasts.java
-7. EmployeeDashServlet.java
-8. CheckoutServlet.java
-9. SingleStarServlet.java
+1. LoginEmployeeServlet.java 
+2. EmployeeDashServlet.java 
+3. SingleMovieServlet.java 
+4. ShoppingCart.java 
+5. MovieListServlet.java 
+6. MainPageServlet.java 
+7. LoginServlet.java 
+8. InsertMainsAndCasts.java 
+9. CheckoutServlet.java 
+10. SingleStarServlet.java
 
 
 ### Files with Prepared Statements
