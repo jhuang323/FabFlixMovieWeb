@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
+import recaptcha.RecaptchaVerifyUtils;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
