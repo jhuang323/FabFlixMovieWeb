@@ -279,6 +279,13 @@ MPFullTextform.autocomplete({
 function handleNormalSearch(query) {
     console.log("doing normal search with query: " + query);
     // TODO: you should do normal search here
+
+    let redirFultextUrl = "MovieList.html?fulltext=true" +
+        "&title=" + escape(query) +
+        "&" + DefaultQueryParams;
+    //redirect
+    window.location.href = redirFultextUrl;
+
 }
 
 

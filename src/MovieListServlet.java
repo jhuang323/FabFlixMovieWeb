@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/MovieList"
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
@@ -76,6 +77,22 @@ public class MovieListServlet extends HttpServlet {
     }
     private int calcPageOffset(int aPageNum,int aNumLimit){
         return (aPageNum-1) * aNumLimit;
+    }
+
+//    the tokenizer function for full text
+    private static String booleanStrtokenizer(String astr){
+        StringTokenizer st1 = new StringTokenizer(astr," ");
+        String outStr = "";
+
+
+        while(st1.hasMoreTokens()){
+            String atoken = st1.nextToken();
+            System.out.println("TOken: " + atoken);
+            outStr += "+" + atoken + "*";
+        }
+
+        return outStr;
+
     }
 
 
@@ -147,6 +164,10 @@ public class MovieListServlet extends HttpServlet {
         int numlimitParam = Integer.parseInt(request.getParameter("numlimit"));
         int CalcnumlimitParam = numlimitParam;
 
+        //Full text section
+        boolean fulltextParam = Boolean.valueOf(request.getParameter("fulltext"));
+
+
 
         //checking
         String isChecking = request.getParameter("checking");
@@ -176,7 +197,8 @@ public class MovieListServlet extends HttpServlet {
 
             boolean top20Choice = false;
 
-            if(genreNameParam == null && chr == null && star_name == null && title == null && director == null && year == null){
+            if(genreNameParam == null && chr == null && star_name == null && title == null && director == null && year == null
+            && fulltextParam == false){
                 //do something that shows you didnt input anything
                 //should not be possible??? maybe since we control the api calls from front end
 
@@ -191,6 +213,29 @@ public class MovieListServlet extends HttpServlet {
 
 
                 MainPrepStatement = conn.prepareStatement(Mainquery);
+            }
+            else if(fulltextParam == true){
+
+                //build Search query
+                Mainquery += "where MATCH (m.title) AGAINST (? in boolean mode)";
+
+
+                //sorting
+//                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
+                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
+
+                //add the limits
+                Mainquery += "\nLIMIT " + CalcnumlimitParam;
+                Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
+
+                //prep statement
+                MainPrepStatement = conn.prepareStatement(Mainquery);
+
+                //tokenize
+                String tokenboolStr = booleanStrtokenizer(title);
+
+                MainPrepStatement.setString(1,tokenboolStr);
             }
             else if(genreNameParam == null && chr == null){
                 //Build Search query
