@@ -208,22 +208,28 @@ public class SingleMovieServlet extends HttpServlet {
             jsonObject.addProperty("movieListUrl", movieListUrlFull);
 
             //Add the url without genre parameter
-            if(movieListUrlFull.contains("genre=")){
-                String[] noGenre = movieListUrlFull.split("genre=");
-                String genreUrl = "";
-                if(noGenre[1].contains("&")){
-                    int index = noGenre[1].indexOf('&');
-                    noGenre[1] = noGenre[1].substring(index+1);
-                    genreUrl += noGenre[0] + noGenre[1];
+            if(movieListUrlFull != null){
+                if(movieListUrlFull.contains("genre=")){
+                    String[] noGenre = movieListUrlFull.split("genre=");
+                    String genreUrl = "";
+                    if(noGenre[1].contains("&")){
+                        int index = noGenre[1].indexOf('&');
+                        noGenre[1] = noGenre[1].substring(index+1);
+                        genreUrl += noGenre[0] + noGenre[1];
+                    }
+                    else{
+                        genreUrl += noGenre[0];
+                    }
+                    jsonObject.addProperty("genreLink", genreUrl);
                 }
                 else{
-                    genreUrl += noGenre[0];
+                    jsonObject.addProperty("genreLink", movieListUrlFull);
                 }
-                jsonObject.addProperty("genreLink", genreUrl);
             }
             else{
-                jsonObject.addProperty("genreLink", movieListUrlFull);
+                jsonObject.addProperty("movieListUrl","main-page.html");
             }
+
 
 
             ratingStatement.close();
