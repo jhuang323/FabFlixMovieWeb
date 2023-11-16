@@ -191,22 +191,34 @@ function handleLookup(query, doneCallback) {
 
     // TODO: if you want to check past query results first, you can do it here
 
-    // sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
-    // with the query data
-    jQuery.ajax({
-        "method": "GET",
-        // generate the request url from the query.
-        // escape the query string to avoid errors caused by special characters
-        "url": "movie-suggestion?query=" + escape(query),
-        "success": function(data) {
-            // pass the data, query, and doneCallback function into the success handler
-            handleLookupAjaxSuccess(data, query, doneCallback)
-        },
-        "error": function(errorData) {
-            console.log("lookup ajax error")
-            console.log(errorData)
-        }
-    })
+    //check the cache
+    if(localStorage.getItem(query) != null){
+        console.log("Cache Hit: Query: " + query);
+        let cacheres = localStorage.getItem(query);
+
+        handleLookupAjaxSuccess(cacheres, query, doneCallback);
+    }
+    else {
+        console.log("Cache Miss: Query Backend: " + query);
+        // sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
+        // with the query data
+        jQuery.ajax({
+            "method": "GET",
+            // generate the request url from the query.
+            // escape the query string to avoid errors caused by special characters
+            "url": "movie-suggestion?query=" + escape(query),
+            "success": function(data) {
+                // pass the data, query, and doneCallback function into the success handler
+                handleLookupAjaxSuccess(data, query, doneCallback)
+            },
+            "error": function(errorData) {
+                console.log("lookup ajax error")
+                console.log(errorData)
+            }
+        })
+    }
+
+
 }
 
 
@@ -226,6 +238,16 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
 
     // TODO: if you want to cache the result into a global variable you can do it here
 
+
+    localStorage.setItem(query,JSON.stringify(jsonData));
+
+    // for(let i = 0; i < jsonData.length; i++){
+    //     console.log("json val: " + jsonData[i]["value"] + " value: " + jsonData[i]["data"]["movieID"]);
+    //     localStorage.setItem(jsonData[i]["value"],jsonData[i]["data"]["movieID"]);
+    // }
+
+
+
     // call the callback function provided by the autocomplete library
     // add "{suggestions: jsonData}" to satisfy the library response format according to
     //   the "Response Format" section in documentation
@@ -243,6 +265,8 @@ function handleSelectSuggestion(suggestion) {
     // TODO: jump to the specific result page based on the selected suggestion
 
     console.log("you select " + suggestion["value"] + " with ID " + suggestion["data"]["movieID"]);
+
+
 
     window.location.href = "single-movie.html?id=" + suggestion["data"]["movieID"];
 }
@@ -270,6 +294,10 @@ MPFullTextform.autocomplete({
     deferRequestBy: 300,
     // there are some other parameters that you might want to use to satisfy all the requirements
     // TODO: add other parameters, such as minimum characters
+
+    //min chars param >= 3
+    minChars: 3
+
 });
 
 

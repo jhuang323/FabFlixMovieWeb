@@ -170,8 +170,6 @@ public class MovieSuggestion extends HttpServlet {
 
 				System.out.println("title " + movieSuggestResultSet.getString("title") + " id " +movieSuggestResultSet.getString("id"));
 
-				jsonTitleIdObj.addProperty("title",movieSuggestResultSet.getString("title"));
-				jsonTitleIdObj.addProperty("id",movieSuggestResultSet.getString("id"));
 
 
 				jsonArray.add(jsonTitleIdObj);
