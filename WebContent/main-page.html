@@ -13,6 +13,8 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -62,6 +64,13 @@
             </li>
         </ul>
 
+<!--            <form class="form-inline my-2 my-lg-0">-->
+<!--                <input type="text" name="hero" id="autocomplete"-->
+<!--                       class="form-control mr-sm-2 autocomplete-searchbox form-control"-->
+<!--                       placeholder="Full Text Search Movies"/>-->
+<!--            </form>-->
+
+
         <button class="btn btn-outline-success my-2 my-sm-0" onclick="window.location.href='ShoppingCart.html'">My Cart</button>
 
     </div>
@@ -69,6 +78,13 @@
 
 <div id="super_div">
     <h1>FabFlix</h1>
+
+    <h2>Full Text Search</h2>
+    <div class="container">
+        <input type="text" name="hero" id="autocomplete"
+               class="autocomplete-searchbox form-control"
+               placeholder="Full Text Search Movies"/>
+    </div>
 
 
     <h2>Search</h2>
@@ -106,6 +122,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- include jquery autocomplete JS  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
 
 <!-- Load our own JS file -->
 <!-- The path is relative to checkout.html, since these two files are in the same directory -->
