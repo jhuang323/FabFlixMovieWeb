@@ -127,9 +127,10 @@ public class MovieSuggestion extends HttpServlet {
 			JsonArray jsonArray = new JsonArray();
 
 			//queries
-			String queryMovSuggest = "SELECT title,id\n" +
+			String queryMovSuggest = "SELECT m.title,m.id,DAMLEVP(m.title, ?) AS EditDist\n" +
 					"FROM movies as m\n" +
-					"WHERE MATCH (m.title) AGAINST (? in boolean mode)" +
+					"WHERE DAMLEVP(m.title, ?)\n" +
+					"ORDER BY EditDist ASC\n" +
 					"LIMIT 10";
 			
 			// get the query string from parameter
@@ -158,7 +159,8 @@ public class MovieSuggestion extends HttpServlet {
 			String tokenizeretStr = booleanStrtokenizer(query);
 
 			//set params
-			movieSuggestStatement.setString(1,tokenizeretStr);
+			movieSuggestStatement.setString(1,query);
+			movieSuggestStatement.setString(2,query);
 
 			//get result set
 			ResultSet movieSuggestResultSet = movieSuggestStatement.executeQuery();

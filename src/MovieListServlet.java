@@ -217,16 +217,22 @@ public class MovieListServlet extends HttpServlet {
             else if(fulltextParam == true){
 
                 //build Search query
-                Mainquery += "where MATCH (m.title) AGAINST (? in boolean mode)";
+                Mainquery = "SELECT m.id,m.title, m.year, m.director, rtng.rating,DAMLEVP(m.title, ?) AS EditDist\n" +
+                        "FROM movies as m\n" +
+                        "LEFT JOIN ratings rtng ON m.id=rtng.movieId\n" +
+                        "WHERE DAMLEVP(m.title, ?)\n" +
+                        "ORDER BY EditDist ASC";
 
 
                 //sorting
 //                System.out.println(createSortingString(sortFirstParam,sortTypeParam));
-                Mainquery += "\nORDER BY " + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
+                Mainquery += "," + createSortingString(sortFirstParam,sortTypeParamFirst,sortTypeParamSecond);
 
                 //add the limits
                 Mainquery += "\nLIMIT " + CalcnumlimitParam;
                 Mainquery += "\nOFFSET " + calcPageOffset(pageParam,numlimitParam);
+
+
 
 
                 //prep statement
@@ -235,7 +241,8 @@ public class MovieListServlet extends HttpServlet {
                 //tokenize
                 String tokenboolStr = booleanStrtokenizer(title);
 
-                MainPrepStatement.setString(1,tokenboolStr);
+                MainPrepStatement.setString(1,title);
+                MainPrepStatement.setString(2,title);
             }
             else if(genreNameParam == null && chr == null){
                 //Build Search query
