@@ -19,6 +19,8 @@ let MPSearchform = $("#search_form");
 
 let MPFullTextform = $("#autocomplete");
 
+let MPFullTextBar = $("#autocompletebar");
+
 
 
 // Define the default parameters for movielist page
@@ -300,6 +302,24 @@ MPFullTextform.autocomplete({
 
 });
 
+MPFullTextBar.autocomplete({
+    // documentation of the lookup function can be found under the "Custom lookup function" section
+    lookup: function (query, doneCallback) {
+        handleLookup(query, doneCallback)
+    },
+    onSelect: function(suggestion) {
+        handleSelectSuggestion(suggestion)
+    },
+    // set delay time
+    deferRequestBy: 300,
+    // there are some other parameters that you might want to use to satisfy all the requirements
+    // TODO: add other parameters, such as minimum characters
+
+    //min chars param >= 3
+    minChars: 3
+
+});
+
 
 /*
  * do normal full text search if no suggestion is selected
@@ -326,6 +346,14 @@ $("#nav_search").submit(handlenavsearch)
 //full text search
 // bind pressing enter key to a handler function
 MPFullTextform.keypress(function(event) {
+    // keyCode 13 is the enter key
+    if (event.keyCode == 13) {
+        // pass the value of the input box to the handler function
+        handleNormalSearch($('#autocomplete').val())
+    }
+})
+
+MPFullTextBar.keypress(function(event) {
     // keyCode 13 is the enter key
     if (event.keyCode == 13) {
         // pass the value of the input box to the handler function
