@@ -5,8 +5,8 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: https://cs122bfabflix.mooo.com:8443/cs122b-project3/login.html
-URL for video: https://youtu.be/wukp_2nHN0Q
+URL for Website on AWS: 
+URL for video: 
 
 Note: To connect you must be on UCI VPN FULL!
 
@@ -52,6 +52,7 @@ Jose:
 4. Parsers generate error/inconsistency report
 5. Designed front end for the admin page
 6. Set up HTTPS
+7. Task 2 developing android app
 
 Justin:
 1. Wrote stored procedure for add_movie
@@ -60,6 +61,7 @@ Justin:
 4. Inserted all casts,movies, and genres into tables
 5. Optimized the inserting of data from parse
 6. Set up domain
+7. Task 1 and fuzzy search
 
 Inconsistency Report:
 It is generate during parsing and as shown in the video it is a file called BadFormat.txt
