@@ -5,8 +5,8 @@ Members:
 2. Jose M Ruvalcaba (jmruval1)
 
 ## URLS:
-URL for Website on AWS: 
-URL for video: 
+URL for Website on AWS: https://cs122bfabflix.mooo.com:8443/cs122b-project4/
+URL for video: https://youtu.be/NZg1Ae8mAjk
 
 Note: To connect you must be on UCI VPN FULL!
 
@@ -25,15 +25,6 @@ We implement the fuzzy search according to specification using the
 flamingo library. We normalized each result so it is a number between 0 and 1.
 
 
-### Parsing XML Optimizations:
-1. Utilized executeBatch with our prepared statements to insert multiple entries at a time. 
-   Increases runtime by rewriting the statements into a more efficient form. The run time is now
-   reduced by around 1/4 of original.
-2. Filtered out any malformed objects if missing any crucial info(e.g No movie title, no actor 
-   name, etc) before inserting. Increases runtime and memory moderately since we will store less 
-   objects before insertion. Run time is reduced by 1/2 of original since less things to insert.
-
-## Inconsistent Data found in BadFormat.txt in the root dir, BadFormat is written to after parsing
 
 ## Contributions:
 Jose:
