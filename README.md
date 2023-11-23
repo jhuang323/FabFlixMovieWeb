@@ -10,29 +10,20 @@ URL for video:
 
 Note: To connect you must be on UCI VPN FULL!
 
-## List of Files with Prepared Statements
-1. LoginEmployeeServlet.java 
-2. EmployeeDashServlet.java 
-3. SingleMovieServlet.java 
-4. ShoppingCart.java 
-5. MovieListServlet.java 
-6. MainPageServlet.java 
-7. LoginServlet.java 
-8. InsertMainsAndCasts.java 
-9. CheckoutServlet.java 
-10. SingleStarServlet.java
+## Part 1: Full Text search
+We implemented the full text (replaced with fuzzy search) according to 
+specifications ex font end cache, limit 3 characters, etc.
+On autocomplete and full text search page(movie list).
 
+## Part 2: Android App
+Our android app uses the back end api and recieves the data in json format.
+Parses the data and displays it to the user. We implement the login page without
+recaptcha, movie list, single movie, and main page
 
-### Files with Prepared Statements
-1. src/SingleStarServlet.java
-2. src/SingleMovieServlet.java
-3. src/ShoppingCart.java
-4. src/MovieListServlet.java
-5. src/LoginServlet.java
-6. src/LoginEmployeeServlet.java
-7. src/EmployeeDashServlet.java
-8. src/CheckoutServlet.java
-9. src/InsertMainsAndCasts.java
+## EC: Fuzzy Search
+We implement the fuzzy search according to specification using the 
+flamingo library. We normalized each result so it is a number between 0 and 1.
+
 
 ### Parsing XML Optimizations:
 1. Utilized executeBatch with our prepared statements to insert multiple entries at a time. 
