@@ -46,25 +46,13 @@ Note: To connect you must be on UCI VPN FULL!
 
 ## Contributions:
 Jose:
-1. Wrote and Optimize Main parser
-2. Wrote and Optimize Cast parser
-3. Write and Optimize actor parser
-4. Parsers generate error/inconsistency report
-5. Designed front end for the admin page
-6. Set up HTTPS
-7. Task 2 developing android app
+1. Worked on Android Application
+2. Made sure the activities were connected and front end works
 
 Justin:
-1. Wrote stored procedure for add_movie
-2. Implement backend for the admin pages
-3. Switched all Statements over to prepared Statements
-4. Inserted all casts,movies, and genres into tables
-5. Optimized the inserting of data from parse
-6. Set up domain
-7. Task 1 and fuzzy search
+1. Worked on part 1 the full text search
+2. Implement fuzzy search using the library (flamingo) LEDA algorithm tested it works on android
 
-Inconsistency Report:
-It is generate during parsing and as shown in the video it is a file called BadFormat.txt
 
 
 ## Instructions for Use:
