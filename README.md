@@ -6,7 +6,7 @@ Members:
 
 ## URLS:
 URL for Website on AWS: https://cs122bfabflix.mooo.com:8443/cs122b-project4/
-URL for video: https://youtu.be/NZg1Ae8mAjk
+URL for video: https://youtu.be/BaGheEZml8A
 
 Note: To connect you must be on UCI VPN FULL!
 
