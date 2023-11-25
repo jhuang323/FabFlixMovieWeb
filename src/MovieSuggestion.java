@@ -180,6 +180,10 @@ public class MovieSuggestion extends HttpServlet {
 
 			}
 
+			//close things
+			movieSuggestStatement.close();
+			movieSuggestResultSet.close();
+
 
 
 

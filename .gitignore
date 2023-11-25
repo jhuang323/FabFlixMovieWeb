@@ -173,3 +173,11 @@ buildNumber.properties
 redplu.sh
 .vscode/settings.json
 
+androidSrcFiles/.gradle/file-system.probe
+androidSrcFiles/.gradle/7.5/executionHistory/executionHistory.bin
+androidSrcFiles/.gradle/7.5/executionHistory/executionHistory.lock
+androidSrcFiles/.gradle/7.5/fileHashes/fileHashes.bin
+androidSrcFiles/.gradle/7.5/fileHashes/fileHashes.lock
+androidSrcFiles/.gradle/7.5/fileHashes/resourceHashesCache.bin
+androidSrcFiles/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+androidSrcFiles/.gradle/buildOutputCleanup/outputFiles.bin
