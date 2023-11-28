@@ -188,7 +188,7 @@ public class MovieSuggestion extends HttpServlet {
 
 
 
-			response.getWriter().write(jsonArray.toString());
+			out.write(jsonArray.toString());
 		} catch (Exception e) {
 			// Write error message JSON object to output
 			JsonObject jsonObject = new JsonObject();
