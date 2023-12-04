@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -100,19 +102,15 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        long servletStartTime = System.nanoTime();
+        long totalJDBCTime = 0;
         response.setContentType("application/json"); // Response mime type
-
         //get session and store url
         HttpSession currUserSess = (HttpSession) request.getSession();
-
         //set the curr session Movie List store URL
         String theFullUrlString = "MovieList.html" + "?" + request.getQueryString();
         currUserSess.setAttribute("MovieStoreUrl",theFullUrlString);
-
-
         //searching
-
         // Retrieve parameter title from url request.
         String title = request.getParameter("title");
         // The log message can be found in localhost log
@@ -416,7 +414,10 @@ public class MovieListServlet extends HttpServlet {
 
 
             // Perform the query
+            long startJDBCTime = System.nanoTime();
             ResultSet resultSet = MainPrepStatement.executeQuery();
+            long finishJDBCTime = System.nanoTime();
+            totalJDBCTime += finishJDBCTime - startJDBCTime;
             //Create the final json array to be returned
             JsonArray jsonArrayMovieList = new JsonArray();
             JsonObject retJsonObjChecking = new JsonObject();
@@ -431,11 +432,6 @@ public class MovieListServlet extends HttpServlet {
                 }
             }
             else{
-
-
-
-                //            //queryFirstThreeGenres and queryFirstThreeStars
-                // Declare our FirstThreeGenres statement
                 PreparedStatement statementFirstThreeGenres = conn.prepareStatement(queryFirstThreeGenres);
 
                 // Declare our FirstThreeGenres statement
@@ -466,38 +462,29 @@ public class MovieListServlet extends HttpServlet {
                     statementFirstThreeGenres.setString(1, currentMovId);
 
 //                //Execute statement
+                    startJDBCTime = System.nanoTime();
                     ResultSet resultSetFirstThreeGenres = statementFirstThreeGenres.executeQuery();
+                    finishJDBCTime = System.nanoTime();
+                    totalJDBCTime += finishJDBCTime - startJDBCTime;
 
                     JsonArray InnerGenreArry = new JsonArray();
-//
                     while (resultSetFirstThreeGenres.next()){
-//                    System.out.println("Genres:" + resultSetFirstThreeGenres.getString("name"));
                         InnerGenreArry.add(resultSetFirstThreeGenres.getString("name"));
 
                     }
-
-
-
-
                     //closing genres
                     resultSetFirstThreeGenres.close();
 
 
                     //append inner array
                     SingleMovieJsonObj.add("genre",InnerGenreArry);
-
-                    //Getting the three stars portion
-
-//
-//                // Set the parameter represented by "?" in the query to the movie id from top20,
-//                // num 1 indicates the first "?" in the query
                     statementFirstThreeStars.setString(1, currentMovId);
-
 //                //Execute statement
+                    startJDBCTime = System.nanoTime();
                     ResultSet resultSetFirstThreeStars = statementFirstThreeStars.executeQuery();
-
+                    finishJDBCTime = System.nanoTime();
+                    totalJDBCTime += finishJDBCTime - startJDBCTime;
                     JsonArray InnerStarArry = new JsonArray();
-//
                     while (resultSetFirstThreeStars.next()){
                         JsonObject InnerStarObj = new JsonObject();
 //                    System.out.println("Star:" + resultSetFirstThreeStars.getString("name"));
@@ -523,33 +510,20 @@ public class MovieListServlet extends HttpServlet {
                     else {
                         SingleMovieJsonObj.addProperty("rating",ratingStr);
                     }
-
-
-
                     //append json obj to array
                     jsonArrayMovieList.add(SingleMovieJsonObj);
-
-//
                 }
                 //close prepare statements
                 //first 3 genres
                 statementFirstThreeGenres.close();
                 //stars prepare statement
                 statementFirstThreeStars.close();
-
             }
-
-
-
             //close top20
             resultSet.close();
             MainPrepStatement.close();
-
-
-
             // Log to localhost log
             request.getServletContext().log("getting " + jsonArrayMovieList.size() + " results");
-
             // Write JSON string to output
             if(isChecking.equals("true")){
                 out.write(retJsonObjChecking.toString());
@@ -557,12 +531,10 @@ public class MovieListServlet extends HttpServlet {
             else {
                 out.write(jsonArrayMovieList.toString());
             }
-
             // Set response status to 200 (OK)
             response.setStatus(200);
 
         } catch (Exception e) {
-
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
@@ -571,9 +543,24 @@ public class MovieListServlet extends HttpServlet {
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
+            long servletFinishTime = System.nanoTime();
+            long servletElapsedTime = servletFinishTime - servletStartTime;
+            //write to file with servletElapsedTime and totalJDBCTime
+            String fullPath = request.getServletContext().getRealPath("/") + "times.txt";
+            System.out.println(fullPath);
+            try{
+                FileWriter fw = new FileWriter(fullPath, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter timesOut = new PrintWriter(bw);
+                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
+                timesOut.close();
+                bw.close();
+                fw.close();
+            } catch (IOException e) {
+                System.out.println("File Error with MovieList");
+            }
             out.close();
         }
-
         // Always remember to close db connection after usage. Here it's done by try-with-resources
 
     }
