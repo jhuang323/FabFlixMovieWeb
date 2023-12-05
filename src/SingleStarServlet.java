@@ -35,8 +35,8 @@ public class SingleStarServlet extends HttpServlet {
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        long servletStartTime = System.nanoTime();
-        long totalJDBCTime = 0;
+//        long servletStartTime = System.nanoTime();
+//        long totalJDBCTime = 0;
 
         response.setContentType("application/json"); // Response mime type
 
@@ -66,10 +66,10 @@ public class SingleStarServlet extends HttpServlet {
             statementStarInfo.setString(1, id);
 
             // Perform the query
-            long startJDBCTime = System.nanoTime();
+//            long startJDBCTime = System.nanoTime();
             ResultSet resultSetStarInfo = statementStarInfo.executeQuery();
-            long finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            long finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
 
             JsonObject jsonObjStar = new JsonObject();
 
@@ -108,10 +108,10 @@ public class SingleStarServlet extends HttpServlet {
             statementStarMovieInfo.setString(1, id);
 
             // Perform the query
-            startJDBCTime = System.nanoTime();
+//            startJDBCTime = System.nanoTime();
             ResultSet resultSetStarMovieInfo = statementStarMovieInfo.executeQuery();
-            finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
             //Create Movie jsonArray
             JsonArray jsonArrayMovies = new JsonArray();
             // Iterate through each row of rs
@@ -158,22 +158,22 @@ public class SingleStarServlet extends HttpServlet {
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
-            long servletFinishTime = System.nanoTime();
-            long servletElapsedTime = servletFinishTime - servletStartTime;
-            //write to file with servletElapsedTime and totalJDBCTime
-            String fullPath = request.getServletContext().getRealPath("/") + "times.txt";
-            System.out.println(fullPath);
-            try{
-                FileWriter fw = new FileWriter(fullPath, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter timesOut = new PrintWriter(bw);
-                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
-                timesOut.close();
-                bw.close();
-                fw.close();
-            } catch (IOException e) {
-                System.out.println("File Error with SingleStar");
-            }
+//            long servletFinishTime = System.nanoTime();
+//            long servletElapsedTime = servletFinishTime - servletStartTime;
+//            //write to file with servletElapsedTime and totalJDBCTime
+//            String fullPath = request.getServletContext().getRealPath("/") + "times.txt";
+//            System.out.println(fullPath);
+//            try{
+//                FileWriter fw = new FileWriter(fullPath, true);
+//                BufferedWriter bw = new BufferedWriter(fw);
+//                PrintWriter timesOut = new PrintWriter(bw);
+//                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
+//                timesOut.close();
+//                bw.close();
+//                fw.close();
+//            } catch (IOException e) {
+//                System.out.println("File Error with SingleStar");
+//            }
             out.close();
         }
 
