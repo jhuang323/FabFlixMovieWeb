@@ -79,8 +79,7 @@ public class LoginServlet extends HttpServlet {
                         responseJsonObject.addProperty("message", "Incorrect password");
                     }
 
-                    resultUserEmailInput.close();
-                    statementUserEmailInput.close();
+
 
 
                 }
@@ -95,6 +94,9 @@ public class LoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "fail");
                 responseJsonObject.addProperty("message", "Recaptcha FAILED");
             }
+
+            resultUserEmailInput.close();
+            statementUserEmailInput.close();
 
             out.write(responseJsonObject.toString());
 

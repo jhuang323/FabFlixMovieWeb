@@ -71,8 +71,7 @@ public class AndroidLoginServlet extends HttpServlet {
                         responseJsonObject.addProperty("status", "fail");
                         responseJsonObject.addProperty("message", "Incorrect password");
                     }
-                    resultUserEmailInput.close();
-                    statementUserEmailInput.close();
+
                 }
                 else{
                     responseJsonObject.addProperty("status", "fail");
@@ -85,6 +84,9 @@ public class AndroidLoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "fail");
                 responseJsonObject.addProperty("message", "Error");
             }
+
+            resultUserEmailInput.close();
+            statementUserEmailInput.close();
 
             out.write(responseJsonObject.toString());
 
