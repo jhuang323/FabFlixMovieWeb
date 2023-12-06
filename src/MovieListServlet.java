@@ -552,7 +552,9 @@ public class MovieListServlet extends HttpServlet {
                 FileWriter fw = new FileWriter(fullPath, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter timesOut = new PrintWriter(bw);
-                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
+                synchronized (timesOut){
+                    timesOut.println(servletElapsedTime + " " + totalJDBCTime);
+                }
                 timesOut.close();
                 bw.close();
                 fw.close();

@@ -39,8 +39,8 @@ public class SingleMovieServlet extends HttpServlet {
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        long servletStartTime = System.nanoTime();
-        long totalJDBCTime = 0;
+//        long servletStartTime = System.nanoTime();
+//        long totalJDBCTime = 0;
         response.setContentType("application/json");
         String id = request.getParameter("id");
         // The log message can be found in localhost log
@@ -85,11 +85,11 @@ public class SingleMovieServlet extends HttpServlet {
 
             System.out.println("the mvstatement" + movieStatement);
 
-            long startJDBCTime = System.nanoTime();
+//            long startJDBCTime = System.nanoTime();
             ResultSet movieResultSet = movieStatement.executeQuery();
-            long finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
-            movieResultSet.next();
+//            long finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            movieResultSet.next();
 
 
             System.out.println("the title:" + movieResultSet.getString("title"));
@@ -117,10 +117,10 @@ public class SingleMovieServlet extends HttpServlet {
             PreparedStatement genreStatement = conn.prepareStatement(querygenre);
             genreStatement.setString(1,id);
 
-            startJDBCTime = System.nanoTime();
+//            startJDBCTime = System.nanoTime();
             ResultSet genreResultSet = genreStatement.executeQuery();
-            finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
             JsonArray GenrejsonArray = new JsonArray();
 
             while(genreResultSet.next()){
@@ -144,10 +144,10 @@ public class SingleMovieServlet extends HttpServlet {
             PreparedStatement starStatement = conn.prepareStatement(querystar);
             starStatement.setString(1,id);
 
-            startJDBCTime = System.nanoTime();
+//            startJDBCTime = System.nanoTime();
             ResultSet starResultSet = starStatement.executeQuery();
-            finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
 
             JsonArray StarjsonArray = new JsonArray();
 
@@ -185,10 +185,10 @@ public class SingleMovieServlet extends HttpServlet {
 
             System.out.println(ratingStatement);
 
-            startJDBCTime = System.nanoTime();
+//            startJDBCTime = System.nanoTime();
             ResultSet ratingResultSet = ratingStatement.executeQuery();
-            finishJDBCTime = System.nanoTime();
-            totalJDBCTime += finishJDBCTime - startJDBCTime;
+//            finishJDBCTime = System.nanoTime();
+//            totalJDBCTime += finishJDBCTime - startJDBCTime;
 
             String TheRating = "N/A";
             if(ratingResultSet.next()){
@@ -247,22 +247,22 @@ public class SingleMovieServlet extends HttpServlet {
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
-            long servletFinishTime = System.nanoTime();
-            long servletElapsedTime = servletFinishTime - servletStartTime;
-            //write to file with servletElapsedTime and totalJDBCTime
-            String fullPath = request.getServletContext().getRealPath("/") + "times.txt";
-            System.out.println(fullPath);
-            try{
-                FileWriter fw = new FileWriter(fullPath, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter timesOut = new PrintWriter(bw);
-                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
-                timesOut.close();
-                bw.close();
-                fw.close();
-            } catch (IOException e) {
-                System.out.println("File Error with SingleMovie");
-            }
+//            long servletFinishTime = System.nanoTime();
+//            long servletElapsedTime = servletFinishTime - servletStartTime;
+//            //write to file with servletElapsedTime and totalJDBCTime
+//            String fullPath = request.getServletContext().getRealPath("/") + "times.txt";
+//            System.out.println(fullPath);
+//            try{
+//                FileWriter fw = new FileWriter(fullPath, true);
+//                BufferedWriter bw = new BufferedWriter(fw);
+//                PrintWriter timesOut = new PrintWriter(bw);
+//                timesOut.println(servletElapsedTime + " " + totalJDBCTime);
+//                timesOut.close();
+//                bw.close();
+//                fw.close();
+//            } catch (IOException e) {
+//                System.out.println("File Error with SingleMovie");
+//            }
             out.close();
         }
         // Always remember to close db connection after usage. Here it's done by try-with-resources
