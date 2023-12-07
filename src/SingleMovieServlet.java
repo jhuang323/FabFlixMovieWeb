@@ -89,7 +89,7 @@ public class SingleMovieServlet extends HttpServlet {
             ResultSet movieResultSet = movieStatement.executeQuery();
 //            long finishJDBCTime = System.nanoTime();
 //            totalJDBCTime += finishJDBCTime - startJDBCTime;
-//            movieResultSet.next();
+            movieResultSet.next();
 
 
             System.out.println("the title:" + movieResultSet.getString("title"));
