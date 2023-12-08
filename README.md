@@ -90,15 +90,16 @@ master instance only.
     2. Select whether testing single or scaled version
     3. Input file name for log(default is times.txt)
     4. Values for servlet and JDBC will be printed
+    5. If file name is typed wrong then run script again
 
 
 - # JMeter TS/TJ Time Measurement Report
 
 | **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
 |------------------------------------------------|-----------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
-| Case 1: HTTP/1 thread                          | ![](img/HTTP10ThreadNoPool.png) | 113                              | 22.402                              | 21.017                      <br/>  | Connection pooling being enabled saves time from needing to open constantly new connections however only 1 thread being open allows for a fast speeds.           |
-| Case 2: HTTP/10 threads                        | ![](img/HTTP10Threads.png)  | 291                              | 170.050                              | 169.201                   <br/>     | Connection pooling is still being used so with 10 threads the performance speed is still pretty good with servlet and jdbc times compared to 1 thread.           |
-| Case 3: HTTPS/10 threads                       | ![](img/HTTPS10Threads.png) | 305                              | 150.414                              | 148.298                      <br/>  | Using HTTPS slows down due to the extra security measure which does show in comparison to case 3 but still has good speeds.           |
+| Case 1: HTTP/1 thread                          | ![](img/HTTP1Thread.png) | 107                              | 212.768                              | 202.175                      <br/>  | Connection pooling being enabled saves time from needing to open constantly new connections however only 1 thread being open allows for a fast speeds.           |
+| Case 2: HTTP/10 threads                        | ![](img/HTTP10Threads.png)  | 304                              | 179.524                              | 178.063                   <br/>     | Connection pooling is still being used so with 10 threads the performance speed is still pretty good with servlet and jdbc times compared to 1 thread.           |
+| Case 3: HTTPS/10 threads                       | ![](img/HTTPS10Threads.png) | 303                              | 158.179                              | 155.784                      <br/>  | Using HTTPS slows down due to the extra security measure which does show in comparison to case 3 but still has good speeds.           |
 | Case 4: HTTP/10 threads/No connection pooling  | ![](img/HTTP10ThreadNoPool.png) | 827                          | 370.680                                  | 236.513                       <br/> | In theory this should be the slowest however the performance is on par with cases 2 and 3 with overall query time and somehow better in servlet and jdbc times.           |
 
 | **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)**        | **Analysis** |
