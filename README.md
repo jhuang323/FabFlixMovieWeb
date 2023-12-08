@@ -86,15 +86,10 @@ master instance only.
 
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
-    1. Run: sudo su
-    2. Locate log_processing.py: /home/ubuntu/2023-fall-cs122b-team-mips/src
-    3. Move log_processing.py to tomcat, run following command: mv log_processing.py /var/lib/tomcat10/webapps/cs122b-project5
-    4. Run Jmeter
-    5. Change dir to where log_processing.py is(where log file will be found): cd /var/lib/tomcat10/webapps/cs122b-project5
-    6. Run script: python3 log_processing.py
-    7. Select whether testing single or scaled version
-    8. Input file name for log(default is times.txt)
-    9. Values for servlet and JDBC will be printed
+    1. Run script on local machine: python3 log_processing.py
+    2. Select whether testing single or scaled version
+    3. Input file name for log(default is times.txt)
+    4. Values for servlet and JDBC will be printed
 
 
 - # JMeter TS/TJ Time Measurement Report
