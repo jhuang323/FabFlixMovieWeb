@@ -3,23 +3,28 @@
 
     - #### Names:Jose Ruvalcaba, Justin Huang
 
-    - #### Project 5 Video Demo Link:
+    - #### Project 5 Video Demo Link: https://youtu.be/-Wpt8krQDys
+    - #### Project 5 IPS
+    - Single Instance: https://54.213.82.81:8443/cs122b-project5/login.html
+    - Instance 1(load balancer): http://34.222.46.140/cs122b-project5/login.html
+    - Instance 2(Master): https://34.217.176.8:8443/cs122b-project5/login.html
+    - Instance 3(Slave): https://54.218.125.43:8443/cs122b-project5/login.html
 
-    - #### Instruction of deployment:
+  - #### Instruction of deployment:
 
-    1. Git clone project
-    2. Make sure all dependencies are installed ex tomcat,maven java11 ...
-    3. Make sure a mysql user is created with username: mytestuser password: My6$Password
-    4. Make sure the database is imported into mysql
+  1. Git clone project
+  2. Make sure all dependencies are installed ex tomcat,maven java11 ...
+  3. Make sure a mysql user is created with username: mytestuser password: My6$Password
+  4. Make sure the database is imported into mysql
 
-    - #### Collaborations and Work Distribution:
+  - #### Collaborations and Work Distribution:
   Jose:
-    1. Script for taking average time
-    2. Added timers for movielist servlet
-    3. Ran tests for JMeter for single instance
-       Justin:
-    1. Tasks 1-3
-    2. Ran tests for JMeter for scaled version
+  1. Script for taking average time
+  2. Added timers for movielist servlet
+  3. Ran tests for JMeter for single instance
+     Justin:
+  1. Tasks 1-3
+  2. Ran tests for JMeter for scaled version
 
 
 - # Connection Pooling
