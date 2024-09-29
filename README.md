@@ -1,4 +1,8 @@
 # Welcome to the CS122B Web Development Project
+
+Summary: In this project we developed a Movie Website called Fabflix designed to sell users movies. It is feature complete with a shopping cart, checkout pages, and confirmation page.
+It uses ajax, HTML, CSS, and javascript.
+
 Group: Team mips
 Members:
 1. Justin K Huang (huangjk2)
